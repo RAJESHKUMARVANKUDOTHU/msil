@@ -1,0 +1,219 @@
+<div class="d-flex flex-wrap justify-content-around m-2">
+    <mat-card class="text-center m-2">
+        <mat-card-title color="primary">
+            Vehicle Wise Report
+        </mat-card-title> <br>
+        <mat-card-subtitle>
+            Enter date range and Select Report type
+        </mat-card-subtitle>
+        <hr>
+        <mat-card-content>
+            <mat-error *ngIf="dayError">
+                Report date range should be maximum of 30 days.
+            </mat-error> <br>
+            <form [formGroup]="vehicleReport">
+                <div>
+                    <mat-radio-group color="primary" formControlName="days" class="d-flex justify-content-around">
+                        <mat-radio-button class="example-radio-button" [value]="0">Today </mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="7">Last week</mat-radio-button>
+                    </mat-radio-group>
+                </div> <br>
+                <mat-form-field>
+                    <mat-label>Choose Report Type</mat-label>
+                    <mat-select disableRipple formControlName="type">
+                        <mat-option value="1">Generic report </mat-option>
+                        <!-- <mat-option value="2">Device ID wise report </mat-option> -->
+                        <!-- <mat-option value="3">Vehicle Name wise report </mat-option> -->
+                        <mat-option value="4">Number of vehicles serviced </mat-option>
+                        <mat-option value="3">Vehicle wise report based on location </mat-option>
+                        <mat-option value="6">Vehicle wise report based on zone </mat-option>
+                        <mat-option value="7">Vehicle and JC wise report</mat-option>
+                        <!-- <mat-option value="8">Service time for vehicle</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="vehicleReport.get('type').value == '2'">
+                    <mat-label> Device Id</mat-label>
+                    <mat-select formControlName="deviceId">
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">
+                            {{find.deviceId}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="vehicleReport.get('type').value == '3' || vehicleReport.get('type').value == '6'">
+                    <mat-label> Vehicle Name</mat-label>
+                    <mat-select formControlName="deviceName">
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceName">
+                            {{find.deviceName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> <br>
+
+                <mat-form-field>
+                    <mat-label>From date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker1" formControlName="fromDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker1"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker1></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid from date
+                    </mat-error>
+                </mat-form-field> <br>
+
+                <mat-form-field>
+                    <mat-label>To date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker2" [min]="vehicleReport.get('fromDate').value" formControlName="toDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker2"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker2></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid to date
+                    </mat-error>
+                </mat-form-field> <br>
+            </form>
+            <button class="btn-set" mat-raised-button [disabled]="!vehicleReport.valid" color="primary" (click)="onsubmitVehicleReport(vehicleReport.value)">Submit</button>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="text-center m-2">
+        <mat-card-title color="primary">
+            Location wise Report
+        </mat-card-title> <br>
+        <mat-card-subtitle>
+            Enter date range and Select Report type
+        </mat-card-subtitle>
+        <hr>
+        <mat-card-content>
+            <mat-error *ngIf="dayError1">
+                Report date range should be maximum of 30 days.
+            </mat-error> <br>
+            <form [formGroup]="locationReport">
+                <div>
+                    <mat-radio-group color="primary" formControlName="days" class="d-flex justify-content-around">
+                        <mat-radio-button class="example-radio-button" [value]="0">Today </mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="7">Last week</mat-radio-button>
+                    </mat-radio-group>
+                </div> <br>
+                <mat-form-field>
+                    <mat-label>Choose Report Type</mat-label>
+                    <mat-select disableRipple formControlName="type">
+                        <mat-option value="1">Location wise report</mat-option>
+                        <mat-option value="2">Bay wise report </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="locationReport.get('type').value == '1'">
+                    <mat-label> Location Name</mat-label>
+                    <mat-select formControlName="coinId">
+                        <mat-option *ngFor="let coin of coinData" [value]="coin">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="locationReport.get('type').value == '2'">
+                    <mat-label> Zone Name</mat-label>
+                    <mat-select formControlName="zoneId">
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone">
+                            {{zone.zoneName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>From date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker3" formControlName="fromDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker3"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker3></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid from date
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>To date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker4" [min]="locationReport.get('fromDate').value" formControlName="toDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker4"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker4></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid to date
+                    </mat-error>
+                </mat-form-field> <br>
+            </form>
+            <button class="btn-set" mat-raised-button [disabled]="!locationReport.valid" color="primary" (click)="onsubmitLocationReport(locationReport.value)">Submit</button>
+        </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="text-center m-2">
+        <mat-card-title color="primary">
+            Zone wise Report
+        </mat-card-title> <br>
+        <mat-card-subtitle>
+            Enter date range and Select Report type
+        </mat-card-subtitle>
+        <hr>
+        <mat-card-content>
+            <mat-error *ngIf="dayError2">
+                Report date range should be maximum of 30 days.
+            </mat-error> <br>
+            <form [formGroup]="zoneReport">
+                <div>
+                    <mat-radio-group color="primary" formControlName="days" class="d-flex justify-content-around">
+                        <mat-radio-button class="example-radio-button" [value]="0">Today</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="7">Last week</mat-radio-button>
+                    </mat-radio-group><br>
+                </div>
+                <mat-form-field>
+                    <mat-label>Choose Report Type</mat-label>
+                    <mat-select disableRipple formControlName="type">
+                        <mat-option value="1">Zone wise report</mat-option>
+                        <mat-option value="2">Zone wise performance </mat-option>
+                        <mat-option value="3">Zone wise performance per day</mat-option>
+                        <mat-option value="4">Zone wise efficiency </mat-option>
+                        <mat-option value="5">Zone wise efficiency per day </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="zoneReport.get('type').value == '1'">
+                    <mat-label> Zone Name</mat-label>
+                    <mat-select formControlName="zoneId">
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone">
+                            {{zone.zoneName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>From date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker5" formControlName="fromDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker5"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker5></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid from date.
+                    </mat-error>
+                </mat-form-field> <br>
+
+                <mat-form-field>
+                    <mat-label>To date</mat-label>
+                    <input matInput [matDatepicker]="myDatepicker6" [min]="zoneReport.get('fromDate').value" formControlName="toDate" autocomplete="off" required>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker6"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker6></mat-datepicker>
+                    <mat-error>
+                        Please provide a valid to date
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-radio-group color="primary" formControlName="dayType" class="d-flex justify-content-around" *ngIf="zoneReport.get('type').value == '3' || zoneReport.get('type').value == '5'">
+                    <mat-radio-button class="example-radio-button" value="day">Day</mat-radio-button>
+                    <mat-radio-button class="example-radio-button" value="week">Week</mat-radio-button>
+                </mat-radio-group>
+                <mat-form-field *ngIf="zoneReport.get('dayType').value == 'week'">
+                    <mat-label>Select Day</mat-label>
+                    <mat-select formControlName="weekDay">
+                        <mat-option value='SUN'>Sunday</mat-option>
+                        <mat-option value='MON'>Monday</mat-option>
+                        <mat-option value='TUE'>Tuesday</mat-option>
+                        <mat-option value='WED'>Wednesday</mat-option>
+                        <mat-option value='THU'>Thursday</mat-option>
+                        <mat-option value='FRI'>Friday</mat-option>
+                        <mat-option value='SAT'>Saturday</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please provide day
+                    </mat-error>
+                </mat-form-field>
+            </form>
+            <button class="btn-set" mat-raised-button [disabled]="!zoneReport.valid" color="primary" (click)="onsubmitZoneReport(zoneReport.value)">Submit</button>
+        </mat-card-content>
+    </mat-card>
+</div>

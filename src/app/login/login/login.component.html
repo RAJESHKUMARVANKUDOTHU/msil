@@ -1,0 +1,52 @@
+<div class="log-in">
+    <div class="login">
+        <h1>Log in</h1>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" class="p-3">
+        <mat-error *ngIf="loginInvalid">
+            Invalid User Name or Password
+        </mat-error>
+        <mat-form-field class="full-width-input" appearance="outline">
+            <input matInput placeholder="Email" formControlName="userName" required>
+            <mat-error>
+                Please provide a valid email address
+            </mat-error>
+        </mat-form-field> <br> <br>
+        <mat-form-field class="full-width-input" appearance="outline">
+            <input matInput [type]="passwordType" placeholder="Password" formControlName="password" matInput required>
+            <mat-icon matSuffix (click)="hideShowPassword()" class="cursor">{{passwordIcon}}</mat-icon>
+            <mat-error>
+                Please provide a valid password
+            </mat-error>
+        </mat-form-field> <br>
+        <div *ngIf="verifyOtp">
+            <span class="enter-otp">OTP has sent to Email ID. Please enter OTP.</span> <br><br>
+            <div  class="d-flex justify-content-center">
+               <mat-form-field class="otp text-center">
+                  <input matInput id="codeBox1" class="codebox" type="text" maxlength="1" formControlName="otp1" (keyup)="onKeyUpEvent(1, $event)" autocomplete="off">
+              </mat-form-field> &nbsp;&nbsp;
+              <mat-form-field class="otp text-center">
+                  <input matInput id="codeBox2" class="codebox" type="text" maxlength="1" formControlName="otp2" (keyup)="onKeyUpEvent(2, $event)" autocomplete="off">
+              </mat-form-field >&nbsp;&nbsp;
+              <mat-form-field class="otp text-center">
+                  <input matInput id="codeBox3" class="codebox" type="text" maxlength="1" formControlName="otp3" (keyup)="onKeyUpEvent(3, $event)" autocomplete="off">
+              </mat-form-field>&nbsp;&nbsp;
+              <mat-form-field class="otp text-center">
+                  <input matInput id="codeBox4" class="codebox" type="text" maxlength="1" formControlName="otp4" (keyup)="onKeyUpEvent(4, $event)" autocomplete="off" >
+              </mat-form-field>&nbsp;&nbsp;
+              <mat-form-field class="otp text-center">
+                <input matInput id="codeBox5" class="codebox" type="text" maxlength="1" formControlName="otp5" (keyup)="onKeyUpEvent(5, $event)" autocomplete="off" >
+            </mat-form-field>&nbsp;&nbsp;
+            <mat-form-field class="otp text-center">
+                <input matInput id="codeBox6" class="codebox" type="text" maxlength="1" formControlName="otp6" (keyup)="onKeyUpEvent(6, $event)" autocomplete="off" >
+            </mat-form-field>
+            </div> 
+            <span *ngIf="verifyOtp" (click)=openOTP(this.loginForm.value)>
+                <p  class="line cursor"  id="blink">Verify</p>
+            </span>
+          </div> <br>
+    
+        <button mat-raised-button class="btn-set" [disabled]="!loginForm.valid">Login</button> <br>
+        <span (click)="forgetPassword()" class="line float-right cursor">Forgot password</span> <br>
+        </form>
+</div>

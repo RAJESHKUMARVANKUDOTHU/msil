@@ -1,0 +1,119 @@
+<div class="container-fluid">
+    <div class="row  text-center">
+        <div class="col-md-4">
+            <mat-card class="w-100  text-center">
+                <mat-card-title>Subuser Registration</mat-card-title>
+                <hr>
+                <mat-card-content>
+                    <form [formGroup]="addSubUserForm">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>User type</mat-label>
+                            <mat-select formControlName="role" required>
+                                <mat-option value="coAdminRole">
+                                    <span>Co. Admin</span>
+                                </mat-option>
+                                <mat-option value="subAdminRole">
+                                    <span>Sub admin</span>
+                                </mat-option>
+                                <mat-option value="userRole">
+                                    <span>Normal user</span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="w-100" *ngIf="addSubUserForm.get('role').value == 'subAdminRole'">
+                            <input matInput placeholder="Department" formControlName="department" required>
+                            <mat-error>
+                                Please provide a valid department
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100">
+                            <mat-label>UserName</mat-label>
+                            <input matInput type="email" formControlName="userName" required>
+                            <mat-error>
+                                Please provide valid user name.
+                            </mat-error>
+                        </mat-form-field><br>
+                        <mat-form-field class="w-100">
+                            <mat-label>Portal Password</mat-label>
+                            <input matInput [type]="passwordType" formControlName="password" required>
+                            <mat-icon matSuffix (click)="hideShowPassword()" class="cursor">{{passwordIcon}}</mat-icon>
+                            <mat-error>
+                                Please provide a valid password
+                            </mat-error>
+                        </mat-form-field> <br>
+                    </form>
+                    <button mat-raised-button [disabled]="!addSubUserForm.valid" (click)="addSubUser(addSubUserForm.value)">Add User</button>
+                </mat-card-content>
+            </mat-card>
+        </div><br>
+        <div class="col-md-8">
+            <mat-card class="w-100  text-center">
+                <mat-card-title>Subuser Details</mat-card-title>
+                <hr>
+                <mat-card-content>
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataSource" class="table table-md-responsive text-center">
+                            <ng-container matColumnDef="i">
+                                <th mat-header-cell *matHeaderCellDef> Sl.NO </th>
+                                <td mat-cell *matCellDef="let element=index"> {{element+1}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="userName">
+                                <th mat-header-cell *matHeaderCellDef> User Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="department">
+                                <th mat-header-cell *matHeaderCellDef> Department </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span *ngIf="element.department != null; else dept">{{element.department}} </span>
+                                    <ng-template #dept>
+                                        <span>-</span>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="role">
+                                <th mat-header-cell *matHeaderCellDef> Role </th>
+                                <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="updatedAt">
+                                <th mat-header-cell *matHeaderCellDef> Time </th>
+                                <td mat-cell *matCellDef="let element"> {{element.updatedAt | date : 'medium' : 'IST'}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="edit">
+                                <th mat-header-cell *matHeaderCellDef> Edit </th>
+                                <td mat-cell *matCellDef="let element" class="cursor" (click)="openDailog(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="isDeleted">
+                                <th mat-header-cell *matHeaderCellDef> &nbsp;IsDeleted </th>
+                                <td mat-cell *matCellDef="let element ;let i=index" (click)="isDeleted(element)" [ngStyle]="{'cursor':element.isDeleted== true?'not-allowed':'pointer'}">
+                                    <span *ngIf="element.isDeleted==true" matTooltip="user deleted">
+                                        <mat-icon>clear</mat-icon>
+                                    </span>
+                                    <span *ngIf="element.isDeleted==false">
+                                        <mat-icon>done</mat-icon>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[10,20,100]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-card-content>
+
+            </mat-card>
+        </div>
+
+    </div>
+</div>

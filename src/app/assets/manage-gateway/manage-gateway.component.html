@@ -1,0 +1,56 @@
+<button mat-raised-button (click)="openDailog()" [hidden]="role=='userRole'">
+    <mat-icon>add</mat-icon> Add Gateway
+</button>
+<span style="flex: 1 1 auto;"></span>
+<span style="float: right;">
+    <button mat-flat-button color="primary" [disabled]="!this.gatewayData?.length" (click)="download()">Download <mat-icon>download</mat-icon></button><br>
+</span>
+<div class="mat-elevation-z8">
+
+    <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+        <div>
+            <ng-container matColumnDef="i">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="gatewayName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Name </th>
+                <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="gatewayId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Id </th>
+                <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="macId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mac Id </th>
+                <td mat-cell *matCellDef="let gateway"> {{gateway.macId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="updatedOn">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+                <td mat-cell *matCellDef="let gateway">
+                    <span *ngIf="gateway.updatedOn != null;else date">
+                        {{gateway?.updatedOn | date : 'medium'}}
+                    </span>
+                    <ng-template #date>
+                        <span>-</span>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="role=='userRole'"> Edit </th>
+                <td mat-cell *matCellDef="let gateway" (click)="edit(gateway)" class="cursor" [hidden]="role=='userRole'">
+                    <mat-icon>{{gateway.edit}} </mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="role=='userRole'"> Delete </th>
+                <td mat-cell *matCellDef="let gateway" matTooltip="delete gateway" (click)="delete(gateway)" class="cursor" [hidden]="role=='userRole'">
+                    <mat-icon>{{gateway.delete}}</mat-icon>
+                </td>
+            </ng-container>
+        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator (page)="getUpdate($event)" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>

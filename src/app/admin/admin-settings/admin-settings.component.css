@@ -1,0 +1,22 @@
+
+mat-card.mat-card.mat-focus-indicator {
+    width: 25%;
+    margin: 1rem;
+    text-align: center;
+}
+
+mat-card-title{
+    font-size: large;
+    color: #002060;
+}
+@media only screen and (max-width: 768px) {
+    mat-card.mat-card.mat-focus-indicator {
+         width: 100%;
+         margin: 1rem;
+     }
+     button.mat-focus-indicator.mat-raised-button.mat-button-base.btn {
+        position: unset;
+     
+    }
+
+}

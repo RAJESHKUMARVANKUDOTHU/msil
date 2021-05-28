@@ -1,0 +1,43 @@
+<button mat-button mat-dialog-close class="float-right">
+	<mat-icon>clear</mat-icon>
+</button>
+
+<h1 mat-dialog-title *ngIf="meshData?.length">Mesh</h1>
+<div mat-dialog-content *ngIf="meshData?.length" class="d-flex justify-content-around diagWrapper text-center">
+	<form [formGroup]="meshForm">
+		<table formArrayName="items" *ngIf="meshForm.get('items')['controls']?.length>0">
+			<tr *ngFor="let a of meshForm.get('items')['controls']; let i=index;">
+				<ng-container [formGroupName]="i">
+					<td>{{i+1}}.&nbsp;&nbsp;</td>
+					<td>
+						<mat-form-field>
+                            <input type="number" min="1" max="255" matInput  formControlName="meshId" required>
+                            <mat-error>
+                                MeshId should be between 0-255.
+                            </mat-error>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field class="full-width-input">
+							<mat-select formControlName="gatewayId">
+                                <mat-option  [value]="a.get('gatewayId').value" >{{a.get('gatewayName').value}}</mat-option>
+                            </mat-select>
+							<mat-error>
+								Please select gateway.
+							</mat-error>
+						</mat-form-field>
+
+					</td>
+			
+					<td>
+						<button type="button" mat-raised-button color="primary"
+							(click)="submit(a.value)" [disabled]="!meshForm.valid">Submit</button>
+					</td>
+	
+				</ng-container>
+			</tr>
+		</table>
+	</form>
+</div>
+
+

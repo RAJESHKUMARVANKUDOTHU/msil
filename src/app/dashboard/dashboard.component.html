@@ -1,0 +1,205 @@
+<br>
+<!-- <div class="container-fluid"> -->
+<div class="container-fluid" *ngIf="general.isDesktopDevice">
+    <mat-card>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <table class="table table-borderless  text-center">
+                    <thead>
+                        <tr>
+                            <th class="pl-md-3">Vehicle for <br> service today</th>
+                            <th class="pl-md-5">Vehicle under <br>service</th>
+                            <th class="pl-md-5"> Serviced <br> vehicle</th>
+                            <th class="pl-md-5">OverAll efficiency <br> of the SC</th>
+                            <th class="pl-md-5">Avg. servicing time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pl-md-3">
+                                <circle-progress class="circle" [percent]="serviceCount.vehicleForServiceTodayCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false
+                                    [radius]=60 [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                            </td>
+                            <td class="pl-md-5">
+                                <circle-progress class="circle" [percent]="serviceCount.vehicleUnderServiceCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false
+                                    [radius]=60 [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                            </td>
+                            <td class="pl-md-5">
+                                <span *ngIf="general.isTablet"><br></span>
+                                <circle-progress class="circle" [percent]="serviceCount.servicedVehicleCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
+                                    [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                            </td>
+                            <td class="pl-md-5">
+                                <circle-progress class="circle" [percent]="serviceCount.overAllEfficiency" [maxPercent]="1000" [showUnits]="true" [unitsColor]="'#ffffff'" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false
+                                    [radius]=60 [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true">
+                                </circle-progress>
+                            </td>
+                            <td class="pl-md-5 pt-md-5">
+                                <span class="font">{{serviceCount.avgServiceTime}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="col-md-3 col-sm-5 text-center pt-5">
+                    <mat-card>
+                        <mat-card-content>Least Performing zone</mat-card-content>
+                    </mat-card> <br>
+                    <mat-card>
+                        <mat-card-content>High Congestion zone</mat-card-content>
+                    </mat-card>
+                </div> -->
+        </div>
+    </mat-card>
+</div>
+
+<div class="container-fluid" *ngIf="!general.isDesktopDevice">
+    <mat-card>
+        <div class="row">
+            <div class="col-md-9 mt-3">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <h2>Vehicle for Service Today</h2>
+                        <circle-progress class="circle" [percent]="vehicleForServiceTodayCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
+                            [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Vehicle Under Service</h2>
+                        <circle-progress class="circle " [percent]="vehicleUnderServiceCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
+                            [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                    </div>
+                </div> <br>
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <h2>Serviced Vehicle</h2>
+                        <circle-progress class="circle" [percent]="this.servicedVehicleCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
+                            [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>OverAll Efficiency of the SC</h2>
+                        <circle-progress class="circle" [percent]="50" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60 [titleColor]="'#ffffff'"
+                            [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <span class="pl-md-5">
+                    <h1>Avg. servicing time</h1>
+                    <span class="font">{{serviceCount.avgServiceTime}}</span>
+                </span>
+            </div>
+        </div>
+    </mat-card>
+</div>
+
+<br>
+<mat-card class="ml-3 mr-3">
+    <div>
+        <div class="flex">
+            <div>
+                <form>
+                    <mat-form-field class="search">
+                        <mat-label>Vehicle number</mat-label>
+                        <mat-icon matPrefix>search</mat-icon>
+                        <input matInput tabindex="1" type='search' (keyup)="searchVehicle($event.target.value)">
+                        <mat-hint class="align-items-start"><strong>Search using vehicle number</strong> </mat-hint>
+                    </mat-form-field>
+                </form>
+                <p class="error" *ngIf="errStatus.searchError">{{errStatus.searchMessage}}</p>
+            </div>
+            <div>
+                <button *ngIf="!general.isMobile" mat-flat-button routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">Congestion</button>&nbsp;&nbsp;
+                <button *ngIf="general.isMobile" mat-mini-fab routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">
+                    <mat-icon>commute</mat-icon>
+                </button>&nbsp;&nbsp;
+                <button mat-mini-fab color="primary" class="cursor" (click)="getZones()" matTooltip="Refresh">
+                    <mat-icon>autorenew</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row"> -->
+    <div class="map-container">
+        <div class="map-frame">
+            <div id="map" #mapId></div>
+        </div>
+    </div>
+    <!-- </div> -->
+</mat-card> <br>
+<!-- <div class="container-fluid"> -->
+<div class="row container-fluid">
+    <div class="col-md-7">
+        <mat-card>
+            <mat-card-title *ngIf="zoneClickStatus.status">
+                {{zoneClickStatus.zone}}
+            </mat-card-title>
+            <mat-card-content class="table-responsive">
+                <table *ngIf="!zoneClickStatus.status" class="table  bordered table-striped text-center ">
+                    <!-- <thead class="thead-dark font-weight-bold"> -->
+                    <tr class="thead-dark font-weight-bold">
+                        <th>Zone</th>
+                        <th>No. of Vehicles</th>
+                        <th>Avg. Time</th>
+                    </tr>
+                    <!-- </thead> -->
+                    <tbody>
+                        <tr class="cursor" *ngFor="let a of zoneList; let i = index" (click)="zoneClick(a)" [ngClass]='a.highlight ? "selected" : "not-selected"'>
+                            <td>{{a.zoneName}}</td>
+                            <td>{{a.vehicleCount}}</td>
+                            <td [ngClass]="a.isDelay ? 'delay' : '' ">{{a.time}} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table *ngIf="deviceGroupList.length && zoneClickStatus.status" class="table bordered table-striped text-center ">
+                    <thead class="thead-dark font-weight-bold">
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Location</th>
+                            <th>SDT</th>
+                            <th>EDT</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let a of deviceGroupList; let i = index" [routerLink]="['/vehicle-status']" [queryParams]="{deviceId:a.deviceId,deviceName:a.deviceName,userId:id}" class="cursor">
+                            <ng-container>
+
+                                <td>{{a.deviceName}}</td>
+                                <td>{{a.coinName}}</td>
+                                <td>{{getSDT(a) | date : 'medium'}}</td>
+                                <td>{{getEDT(a) | date : 'medium'}}</td>
+                                <td *ngIf="a.isDelay">Delayed</td>
+                                <td *ngIf="!a.isDelay">On time</td>
+                                <td [ngClass]="a.isDelay ? 'delay' : 'not-delay' ">{{a.time}} minutes</td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="!deviceGroupList.length && zoneClickStatus.status" class="nodata">
+                    No data found
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <!-- <mat-card *ngIf="zoneClickStatus.status">
+                    {{zoneClickStatus.status}}
+                    <mat-card-title>
+                        {{zoneClickStatus.zone}}
+                    </mat-card-title>
+                    <mat-card-content>
+ 
+                       
+                    </mat-card-content>
+                </mat-card> -->
+    </div>
+    <div class="col-md-5">
+        <mat-card class="w-100">
+            <mat-card-content>
+                <div id="line" style="height:300px; width: 100%;"></div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<!-- </div> -->
+<!-- </div> -->

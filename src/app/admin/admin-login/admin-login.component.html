@@ -1,0 +1,29 @@
+<div class="fadeInDown">
+
+  <div class="log-in">
+    <div class="login">
+      <h1> Admin Login</h1>
+    </div>
+    <form [formGroup]="adminLoginform" (ngSubmit)="onSubmit(adminLoginform.value)" class="log">
+      <mat-error *ngIf="loginInvalid">
+        Invalid User Name or Password
+      </mat-error>
+      <mat-form-field class="w-100" appearance="outline">
+        <input matInput placeholder="Email" formControlName="userName" required>
+        <mat-error>
+          Please provide a valid email address
+        </mat-error>
+      </mat-form-field> <br> <br>
+      <mat-form-field class="w-100" appearance="outline">
+        <input matInput [type]="passwordType" placeholder="Password" formControlName="password" matInput required>
+        <mat-icon matSuffix (click)="hideShowPassword()" class="cursor">{{passwordIcon}}</mat-icon>
+        <mat-error>
+          Please provide a valid password
+        </mat-error>
+      </mat-form-field> <br>
+
+      <button mat-raised-button class="btn-set" [disabled]="!adminLoginform.valid">Login</button> <br>
+
+    </form>
+  </div>
+</div>

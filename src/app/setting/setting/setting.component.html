@@ -1,0 +1,394 @@
+<div class="d-flex flex-wrap justify-content-around m-2">
+
+    <!-- <mat-card>
+<mat-card-title> Select DateTime Format.</mat-card-title>
+<mat-card-subtitle></mat-card-subtitle>
+<mat-card-content>
+<form [formGroup]="dateTimeForm" (ngSubmit)="onSubmitDateTime(dateTimeForm.value)">
+<mat-form-field >
+<mat-label>DateTime Format</mat-label>
+<mat-select formControlName="dateTimeFormat">
+<mat-option value="DD-MM-YYYY HH:mm:ss">DD-MM-YYYY HH:mm:ss</mat-option>
+<mat-option value="DD/MM/YYYY HH:mm:ss">DD/MM/YYYY HH:mm:ss</mat-option>
+<mat-option value="MM-DD-YYYY HH:mm:ss">MM-DD-YYYY HH:mm:ss</mat-option>
+<mat-option value="MM/DD/YYYY HH:mm:ss">MM/DD/YYYY HH:mm:ss</mat-option>
+<mat-option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss </mat-option>
+<mat-option value="YYYY/MM/DD HH:mm:ss">YYYY/MM/DD HH:mm:ss </mat-option>
+</mat-select>
+</mat-form-field> <br>
+<button class="btn" mat-raised-button [disabled]="!dateTimeForm.valid" color="primary">submit</button>
+</form>
+</mat-card-content>
+</mat-card> -->
+    <mat-card class="text-center ">
+        <mat-card-title>
+            Upload Logo
+        </mat-card-title>
+        <br>
+        <mat-card-content>
+            <form [formGroup]="uploadForm" (ngSubmit)="formSubmit(uploadForm.value)">
+                <input class="ml-5" id="Upload" type="file" #fileInput (change)="fileChange($event.target.files);" />
+                <span *ngIf="loading" style="color:red">Please choose jpg/jpeg/png*</span>
+                <br><br> <br>
+                <button class="btn-set" mat-raised-button color="primary">Submit</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>
+            Two Step Authentication
+        </mat-card-title> <br>
+        <mat-card-content>
+            <mat-slide-toggle class="toggle" color="primary" [checked]="twoStepAuthStatus.status" (change)="twoStepAuthchange($event)">
+                {{twoStepAuthStatus.value}}
+            </mat-slide-toggle>
+            <br><br>
+            <button class="btn" mat-raised-button (click)="onSubmitTwoAuth(twoStepAuthStatus.status)" color="primary">Submit</button>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Range</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="distanceForm">
+                <mat-form-field>
+                    <mat-label>In feet</mat-label>
+                    <mat-select formControlName="range">
+                        <mat-option [value]=25>25</mat-option>
+                        <mat-option [value]=50>50</mat-option>
+                        <mat-option [value]=75>75</mat-option>
+                        <mat-option [value]=100>100</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select range.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <button class="btn" mat-raised-button [disabled]="!distanceForm.valid" color="primary" (click)="onSubmitDistanceForm(distanceForm.value)">submit</button>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="text-center">
+        <mat-card-title>Set Group name</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="groupRegister">
+                <mat-form-field>
+                    <mat-label>Enter group name</mat-label>
+                    <input type="text" matInput formControlName="groupName" autocomplete="off" required>
+                    <mat-error *ngIf="groupRegister.get('groupName').value ==''">
+                        Service name is required
+                    </mat-error>
+                    <mat-error *ngIf="groupRegister.get('groupName').value !='' || general.mismatch">
+                        No special characters are allowed. And service name cannot start/end with space(s).
+                    </mat-error>
+                </mat-form-field> <br><br> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!groupRegister.valid" color="primary" (click)="onSubmitGroup(groupRegister.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('groupName')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Group for Coins</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="groupCoinForm">
+                <mat-form-field>
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected5 (click)="toggleAllSelectionCoin2(groupCoinForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId" [disabled]="coin.groupId != null">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Select group name</mat-label>
+                    <mat-select formControlName="groupId" required>
+                        <mat-option *ngFor="let group of groupData" [value]="group._id">{{group.groupName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select group.
+                    </mat-error>
+                </mat-form-field> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!groupCoinForm.valid" color="primary" (click)="onSubmitGroupCoinForm(groupCoinForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('coinGrp')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Time Delay for Devices</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="timeDelay" id="time">
+                <mat-form-field>
+                    <mat-label>Select Device</mat-label>
+                    <mat-select formControlName="deviceId" multiple>
+                        <mat-option #allSelected (click)="toggleAllSelectionDevice(timeDelay)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">{{find.deviceName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select device(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter time delay</mat-label>
+                    <input type="number" matInput formControlName="timeDelay" autocomplete="off" required>
+                    <mat-error>
+                        Please enter valid time delay.
+                    </mat-error>
+                </mat-form-field> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!timeDelay.valid" color="primary" (click)="onSubmitTimeDelay(timeDelay.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('timeDelay')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Maximum finds to be assigned</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="maxFindForm">
+                <mat-form-field>
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected1 (click)="toggleAllSelectionCoins(maxFindForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId">{{coin.coinName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Set maximum number of finds to assign</mat-label>
+                    <input type="number" matInput formControlName="maxFindAsset" autocomplete="off" required>
+                    <mat-error>
+                        Please select maximum finds you want to assign.
+                    </mat-error>
+                </mat-form-field> <br> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!maxFindForm.valid" color="primary" (click)="onSubmitMaxFindForm(maxFindForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('max-find')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+
+
+    <!-- <mat-card class="text-center">
+        <mat-card-title>Create zone </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="zoneForm">
+                <mat-form-field>
+                    <mat-label>Enter name for Zone</mat-label>
+                    <input matInput type="text" formControlName="zoneName" autocomplete="off" required>
+                    <mat-error *ngIf="zoneForm.get('zoneName').value ==''">
+                        Zone name is required.
+                    </mat-error>
+                    <mat-error *ngIf="zoneForm.get('zoneName').value !='' || general.mismatch">
+                        No special characters are allowed. And zone name cannot start/end with space(s). <br><br>
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter Standard time for the zone</mat-label>
+                    <input type="number" matInput formControlName="standardTime" placeholder="in Minutes" autocomplete="off" required>
+                    <mat-error>
+                        Standard time is required.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!zoneForm.valid" color="primary"
+                    (click)="onSubmitZoneForm(zoneForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('zone')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card> -->
+
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Standard time for zone(s) </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="zoneSTDForm">
+                <mat-form-field>
+                    <mat-label>Select zone category</mat-label>
+                    <mat-select formControlName="zoneId" multiple>
+                        <mat-option #allSelected7 (click)="toggleAllSelectionZone1(zoneSTDForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select zone.
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter Standard time for the zone</mat-label>
+                    <input type="number" matInput min="0" formControlName="standardTime" placeholder="in Minutes" autocomplete="off" required>
+                    <mat-error>
+                        Standard time is required.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!zoneSTDForm.valid" color="primary" (click)="onSubmitZoneSTDForm(zoneSTDForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('zoneSTD')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Zone for Coins</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="coinCategory">
+                <mat-form-field>
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected4 (click)="toggleAllSelectionCoin1(coinCategory)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId" [disabled]="coin.zoneId != null">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Select zone category</mat-label>
+                    <mat-select formControlName="zoneId">
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select zone.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!coinCategory.valid" color="primary" (click)="onSumbitCoinCategory(coinCategory.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('coin-cat')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- <mat-card class="text-center">
+        <mat-card-title> Create Service Type</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="createServiceType">
+                <mat-form-field>
+                    <mat-label>Enter service type name</mat-label>
+                    <input type="text" matInput formControlName="serviceName" autocomplete="off" required>
+                    <mat-error *ngIf="createServiceType.get('serviceName').value ==''">
+                        Service name is required
+                    </mat-error>
+                    <mat-error *ngIf="createServiceType.get('serviceName').value !='' || general.mismatch">
+                        No special characters are allowed. And service name cannot start/end with space(s). <br><br>
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Select zone category</mat-label>
+                    <mat-select formControlName="zoneId" multiple>
+                        <mat-option #allSelected6 (click)="toggleAllSelectionZone(createServiceType)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select zone.
+                    </mat-error>
+                </mat-form-field> <br><br><br><br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!createServiceType.valid" color="primary"
+                    (click)="onSubmitServiceType(createServiceType.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('serviceType')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card> -->
+
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Inactivity Time for Finds</mat-card-title> <br>
+        <mat-card-content>
+            <form [formGroup]="inactivityFind">
+                <mat-radio-group color="primary" formControlName="alert" class="d-flex justify-content-around">
+                    <mat-label>Alert through :</mat-label>
+                    <mat-radio-button class="example-radio-button" value="sms">SMS</mat-radio-button>
+                    <mat-radio-button class="example-radio-button" value="email">Email</mat-radio-button>
+                </mat-radio-group><br>
+                <mat-form-field>
+                    <mat-label>Select Device</mat-label>
+                    <mat-select formControlName="deviceId" multiple>
+                        <mat-option #allSelected2 (click)="toggleAllSelectionDevice2(inactivityFind)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">{{find.deviceName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select device(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter inactivity Time</mat-label>
+                    <input type="number" matInput formControlName="inactivityTime" autocomplete="off" placeholder="in Minutes" required>
+                    <mat-error>
+                        Please enter inactivty time.
+                    </mat-error>
+                </mat-form-field> <br> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!inactivityFind.valid" color="primary" (click)="onSubmitInactivityFind(inactivityFind.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('find-inactive')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Inactivity Time For Coins</mat-card-title> <br>
+        <mat-card-content>
+            <form [formGroup]="inactivityCoin">
+                <mat-radio-group color="primary" formControlName="alert" class="d-flex justify-content-around">
+                    <mat-label>Alert through :</mat-label>
+                    <mat-radio-button class="example-radio-button" value="sms">SMS</mat-radio-button>
+                    <mat-radio-button class="example-radio-button" value="email">Email</mat-radio-button>
+                </mat-radio-group> <br>
+                <mat-form-field>
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected3 (click)="toggleAllSelectionCoin(inactivityCoin)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId">{{coin.coinName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter inactivity Time</mat-label>
+                    <input type="number" matInput formControlName="inactivityTime" autocomplete="off" placeholder="in Minutes" required>
+                    <mat-error>
+                        Please enter inactivty time.
+                    </mat-error>
+                </mat-form-field> <br> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!inactivityCoin.valid" color="primary" (click)="onSubmitInactivityCoin(inactivityCoin.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('coin')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

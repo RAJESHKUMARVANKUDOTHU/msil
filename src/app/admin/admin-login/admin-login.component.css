@@ -1,0 +1,54 @@
+    button.mat-focus-indicator.btn-set.mat-raised-button.mat-button-base  {
+        width: -webkit-fill-available;
+        background: #2d92c8;
+        height: 3rem;
+        color: white;
+        font-size: large;
+    }
+
+    .login{
+        background: black;
+        color: white;
+        height: 3rem;
+        padding-top: 0.5rem;
+        border: 1px solid black;
+        box-shadow: 0px 0px 1px 1px black;
+    }
+    .log-in{
+        text-align: center;
+        width: 25rem;
+        margin: 10rem 29rem;
+        border: 1px solid beige;
+        box-shadow: 0px 0px 1px 1px beige;
+    }
+    .log{
+        padding: 1rem;
+
+    }
+    @keyframes fadeInDown {
+        0% {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+        }
+        100% {
+        opacity: 1;
+        transform: none;
+        }
+    }
+
+
+    .fadeInDown {
+        /* margin-top: 100px; */
+        animation-name: fadeInDown;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+    @media only screen and (max-width: 768px) {
+        .log-in{
+            text-align: center;
+            width: 22rem;
+            margin: 6rem 1rem;
+            border: 1px solid beige;
+            box-shadow: 0px 0px 1px 1px beige;
+        }
+    }

@@ -1,0 +1,59 @@
+.parallellogram {
+    transform: skew(-20deg);
+    z-index: 1;
+    background: #7ea6e0;
+}
+
+.zone {
+    width: fit-content;
+    background: #7ea6e0;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px transparent;
+}
+
+#card {
+    padding: 16px 16px 0 16px !important;
+    align-items: center;
+}
+
+.noSkew {
+    transform: skew(20deg) !important;
+}
+
+.border-less {
+    border: 1px solid transparent;
+    box-shadow: 1px 0 1px 0 transparent;
+    background: #7ea6e0;
+}
+
+.status {
+    font-weight: 500;
+    font-size: x-large;
+}
+
+.status-bar {
+    border: 1px solid black;
+    border-radius: 0 !important;
+    box-shadow: none;
+    width: 100%;
+    height: 1px;
+    padding: 5px 16px 5px 16px;
+}
+
+table.mat-table {
+    width: 100%;
+    margin-top: 0rem;
+}
+
+td.mat-cell,
+.mat-paginator {
+    background-color: #d4e1f5
+}
+
+.mat-header-cell {
+    text-align: center;
+    background-color: #7ea6e0 !important;
+    font-size: 13px;
+    color: black;
+}

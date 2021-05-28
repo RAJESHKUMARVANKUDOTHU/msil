@@ -1,0 +1,89 @@
+<mat-card>
+    <button mat-button mat-dialog-close class="float-right">
+        <mat-icon>clear</mat-icon>
+    </button>
+
+    <div *ngIf="type=='find'">
+        <h1 mat-dialog-title class="text-center">Edit Find</h1>
+
+        <div mat-dialog-content class="h-100 text-center">
+            <form [formGroup]="editFind">
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label> Vehicle Name</mat-label>
+                    <input type="text" matInput formControlName="deviceName" autocomplete="off" required>
+                    <mat-error *ngIf="editFind.get('deviceName').value ==''">
+                        Vehicle name is required.
+                    </mat-error>
+                    <mat-error *ngIf="general.mismatch">
+                        No special characters are allowed. And Vehicle name cannot start/end with space(s).
+                    </mat-error> <br>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label> Find Id</mat-label>
+                    <input type="number" matInput min="1" formControlName="deviceId" autocomplete="off" disabled>
+                </mat-form-field> <br>
+            </form>
+            <button mat-raised-button (click)="updateFind(editFind.value)" [disabled]="!editFind.valid" color="primary">Submit</button>
+        </div>
+    </div>
+
+    <div *ngIf="type=='gateway'">
+        <h1 mat-dialog-title class="text-center">Edit Gateway</h1>
+
+        <div mat-dialog-content class="h-100 text-center">
+            <form [formGroup]="editGateway">
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label> Gateway Name</mat-label>
+                    <input type="text" matInput formControlName="gatewayName" autocomplete="off" required>
+                    <mat-error *ngIf="editGateway.get('gatewayName').value ==''">
+                        Gateway name is required.
+                    </mat-error>
+                    <mat-error *ngIf="general.mismatch">
+                        No special characters are allowed. And gateway name cannot start/end with space(s).
+                    </mat-error> <br>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label> Gateway Id</mat-label>
+                    <input type="text" matInput formControlName="gatewayId" autocomplete="off" disabled>
+                </mat-form-field> <br>
+            </form>
+            <button mat-raised-button (click)="updateGateway(editGateway.value)" [disabled]="!editGateway.valid" color="primary">Submit</button>
+        </div>
+    </div>
+
+    <div *ngIf="type=='coin'">
+        <h1 mat-dialog-title class="text-center">Edit Coin</h1>
+
+        <div mat-dialog-content class="h-100 text-center">
+            <form [formGroup]="editCoin">
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label>Coin Name</mat-label>
+                    <input type="text" matInput formControlName="coinName" autocomplete="off" required>
+                    <mat-error *ngIf="editCoin.get('coinName').value ==''">
+                        Coin Name is required.
+                    </mat-error>
+                    <mat-error *ngIf="general.mismatch">
+                        No special characters are allowed. And coin name cannot start/end with space(s).
+                    </mat-error> <br>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label>Coin Id</mat-label>
+                    <input type="number" matInput formControlName="coinId" autocomplete="off" disabled>
+                    <mat-error></mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75" appearance="fill">
+                    <mat-label> Select Gateway Id</mat-label>
+                    <mat-select formControlName="gatewayId" autocomplete="off">
+                        <mat-option *ngFor="let b of gateway" [(value)]="b.gatewayId">
+                            {{b.gatewayId}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select gateway Id.
+                    </mat-error>
+                </mat-form-field> <br>
+            </form>
+            <button mat-raised-button (click)="updateCoin(editCoin.value)" [disabled]="!editCoin.valid" color="primary">Submit</button>
+        </div>
+    </div>
+</mat-card>

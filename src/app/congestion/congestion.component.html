@@ -1,0 +1,108 @@
+<div class="container-fluid">
+    <button mat-fab color="primary" (click)="destroy()" class="float-right" matTooltip="Refresh">
+        <mat-icon>autorenew</mat-icon>
+    </button>
+    <br><br>
+
+    <div class="d-md-flex flex-wrap justify-content-md-around">
+        <mat-card class="text-center">
+            <mat-card-title>Congestion</mat-card-title> <br>
+            <mat-card-content>
+                <form [formGroup]="congestionForm">
+                    <mat-form-field>
+                        <mat-label>Date</mat-label>
+                        <input matInput placeholder="MM/DD/YYYY" [matDatepicker]="myDatepicker" formControlName="date" autocomplete="off" required>
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                        <mat-error>
+                            Please provide a valid date
+                        </mat-error>
+                    </mat-form-field><br>
+                    <mat-form-field>
+                        <mat-label>From time</mat-label>
+                        <input type='time' matInput placeholder="From time" formControlName="fromTime" required>
+                        <mat-icon matPrefix>schedule</mat-icon>
+                        <mat-error>
+                            Please provide a valid from time
+                        </mat-error>
+                    </mat-form-field><br>
+                    <mat-form-field>
+                        <mat-label>To time</mat-label>
+                        <input type='time' matInput placeholder="To time" formControlName="toTime" required>
+                        <mat-icon matPrefix>schedule</mat-icon>
+                        <mat-error>
+                            Please provide a valid to time
+                        </mat-error>
+                    </mat-form-field> <br><br><br>
+                </form>
+                <div class="btn">
+                    <button mat-raised-button color="primary" [disabled]="!congestionForm.valid" (click)="onSubmit(congestionForm.value)">Search</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="text-center">
+            <mat-card-title>Congestion per day</mat-card-title>
+            <mat-card-subtitle>Trend of the congestion of the zones.</mat-card-subtitle>
+            <mat-card-content>
+                <mat-error *ngIf="enable.dayError">
+                    Date range should be maximum of 30 days.<br>
+                </mat-error>
+                <form [formGroup]="congestionTrendForm">
+                    <mat-form-field>
+                        <mat-label>From date</mat-label>
+                        <input matInput placeholder="MM/DD/YYYY" [matDatepicker]="myDatepicker1" formControlName="fromDate" autocomplete="off" required>
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker1"></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker1></mat-datepicker>
+                        <mat-error>
+                            Please provide a valid from date
+                        </mat-error>
+                    </mat-form-field><br>
+                    <mat-form-field>
+                        <mat-label>To date</mat-label>
+                        <input matInput placeholder="MM/DD/YYYY" [min]="congestionTrendForm.get('fromDate').value" [matDatepicker]="myDatepicker2" formControlName="toDate" autocomplete="off" required>
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker2"></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker2></mat-datepicker>
+                        <mat-error>
+                            Please provide a valid to date
+                        </mat-error>
+                    </mat-form-field><br>
+                    <mat-radio-group color="primary" formControlName="dayType" class="d-flex justify-content-around w-100">
+                        <mat-radio-button class="example-radio-button" value="day">Day</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" value="week">Week</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field *ngIf="congestionTrendForm.get('dayType').value == 'week'">
+                        <mat-label>Select Day</mat-label>
+                        <mat-select formControlName="weekDay">
+                            <mat-option value='SUN'>Sunday</mat-option>
+                            <mat-option value='MON'>Monday</mat-option>
+                            <mat-option value='TUE'>Tuesday</mat-option>
+                            <mat-option value='WED'>Wednesday</mat-option>
+                            <mat-option value='THU'>Thursday</mat-option>
+                            <mat-option value='FRI'>Friday</mat-option>
+                            <mat-option value='SAT'>Saturday</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please provide day
+                        </mat-error>
+                    </mat-form-field>
+                </form> <br><br><br>
+                <div class="btn">
+                    <button mat-raised-button color="primary" [disabled]="!congestionTrendForm.valid" (click)="onSubmitCongestionTrendForm(congestionTrendForm.value)">Search</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div> <br>
+
+
+    <div *ngIf="enable.map">
+        <div class="map-container">
+            <div class="map-frame">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!enable.map">
+        <div id="chartContainer" style="height:300px; width: 100%;"></div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+    /* You can add global styles to this file, and also import other style files */
+    
+    @import "@runette/leaflet-fullscreen/dist/leaflet.fullscreen.css";
+    html,
+    body {
+        height: 100%;
+        width: 100%
+    }
+    
+    body {
+        margin: 0;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+    }
+    
+    .cursor {
+        cursor: pointer;
+    }
+    
+    table.mat-table {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .table thead th {
+        vertical-align: middle;
+        /* border-bottom: 2px solid #dee2e6; */
+    }
+    
+    .mat-sort-header-container {
+        display: flex;
+        color: white;
+        justify-content: center;
+        padding-left: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    hr {
+        border: 1px solid #009ad3;
+    }
+    
+    .mat-header-cell {
+        text-align: center;
+        background-color: orange;
+        font-size: 13px;
+        color: white;
+    }
+    
+    .mat-cell {
+        text-align: center;
+    }
+    
+    .mat-tab-label-container,
+    .mat-tab-header {
+        display: flex;
+        justify-content: space-around;
+        background: #002060 !important;
+    }
+    
+    .mat-tab-label .mat-tab-label-content {
+        background: transparent;
+        color: white;
+    }
+    
+    .mat-tab-labels {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .statusFreeze {
+        position: absolute;
+        z-index: 10000;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: 0 auto;
+        display: flex;
+    }
+    
+    a.canvasjs-chart-credit {
+        display: none !important;
+    }
+    
+    button {
+        outline: none !important;
+        border: none;
+    }
+    
+    @media only screen and (max-width: 768px) {
+        .mat-menu-panel {
+            margin-left: -15px !important;
+            background-color: #002060 !important;
+            color: white !important;
+            border: none;
+        }
+        .mat-tab-label-container,
+        .mat-tab-header {
+            display: flex;
+            justify-content: unset;
+            background: #002060 !important;
+        }
+        .cdk-overlay-pane {
+            max-width: 95vw !important;
+            width: 95vh !important;
+        }
+        .mat-select-panel {
+            width: 15rem;
+            /* margin-left: 1.3rem; */
+            /* padding: 0 2rem 0 1rem; */
+        }
+        .mat-select-panel .mat-optgroup-label,
+        .mat-select-panel .mat-option {
+            font-size: inherit;
+            line-height: 3em;
+            height: 3em;
+            margin-left: 1rem;
+            /* color: white !important; */
+        }
+        .mat-menu-item .mat-icon {
+            margin-right: 16px;
+            vertical-align: middle;
+            color: white !important;
+        }
+        button.mat-focus-indicator.mat-menu-item {
+            color: white !important;
+        }
+    }
