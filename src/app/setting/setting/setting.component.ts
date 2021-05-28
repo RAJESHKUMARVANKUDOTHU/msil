@@ -21,7 +21,6 @@ export class SettingComponent implements OnInit {
   @ViewChild('allSelected4') private allSelected4: MatOption
   @ViewChild('allSelected5') private allSelected5: MatOption
   @ViewChild('allSelected6') private allSelected6: MatOption
-  @ViewChild('allSelected7') private allSelected7: MatOption
   @ViewChild('fileInput') fileInput: ElementRef;
   dateTimeForm: FormGroup;
   distanceForm: FormGroup;
@@ -31,8 +30,7 @@ export class SettingComponent implements OnInit {
   groupCoinForm: FormGroup;
   coinCategory: FormGroup;
   zoneForm: FormGroup;
-  zoneSTDForm: FormGroup;
-  maxFindForm: FormGroup;
+   maxFindForm: FormGroup;
   groupRegister: FormGroup;
   createServiceType: FormGroup;
   coinData: any = [];
@@ -114,10 +112,7 @@ export class SettingComponent implements OnInit {
     //   zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
     //   standardTime: ['', Validators.required]
     // });
-    this.zoneSTDForm = this.fb.group({
-      zoneId: ['', Validators.required],
-      standardTime: ['',[ Validators.required ,Validators.min(0)]]
-    });
+  
 
     this.maxFindForm = this.fb.group({
       coinId: ['', Validators.required],
@@ -430,33 +425,7 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
-  onSubmitZoneSTDForm(data) {
-    data.zoneId = this.general.filterArray(data.zoneId);
-    console.log("onSubmitZoneSTDForm data==", data)
-    try {
-      if (this.zoneSTDForm.valid) {
-        this.api.updateZoneInfo(data).then((res: any) => {
-
-          console.log("zone setting res===", res);
-          if (res.status) {
-            this.zoneSTDForm.reset();
-            this.getZoneDetails();
-            this.general.openSnackBar(res.success, '');
-          }
-          else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-          }
-        }).catch((err) => {
-          console.log("err=", err);
-        })
-      }
-      else { }
-    }
-    catch (error) {
-      console.log("error==", error);
-    }
-  }
-
+ 
   onSubmitGroup(data) {
     console.log("onSubmitZoneForm data==", data);
 
@@ -696,14 +665,7 @@ export class SettingComponent implements OnInit {
       formData.controls.zoneId.patchValue([]);
     }
   }
-  toggleAllSelectionZone1(formData) {
-    if (this.allSelected7.selected) {
-      formData.controls.zoneId.patchValue([...this.zoneData.map(obj => obj._id), 0]);
-    }
-    else {
-      formData.controls.zoneId.patchValue([]);
-    }
-  }
+
 
   openInfo(data) {
     console.log("data==", data);

@@ -71,5 +71,17 @@
   },
   "browser": {
     "crypto": false
-  }
+  },
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sensegiz/newAtFrontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sensegiz/newAtFrontend/issues"
+  },
+  "homepage": "https://github.com/sensegiz/newAtFrontend#readme",
+  "description": ""
 }

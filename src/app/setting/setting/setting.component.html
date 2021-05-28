@@ -220,35 +220,7 @@
     </mat-card> -->
 
 
-    <mat-card class="text-center">
-        <mat-card-title>Set Standard time for zone(s) </mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="zoneSTDForm">
-                <mat-form-field>
-                    <mat-label>Select zone category</mat-label>
-                    <mat-select formControlName="zoneId" multiple>
-                        <mat-option #allSelected7 (click)="toggleAllSelectionZone1(zoneSTDForm)" [value]="0">All
-                        </mat-option>
-                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Please select zone.
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field>
-                    <mat-label>Enter Standard time for the zone</mat-label>
-                    <input type="number" matInput min="0" formControlName="standardTime" placeholder="in Minutes" autocomplete="off" required>
-                    <mat-error>
-                        Standard time is required.
-                    </mat-error>
-                </mat-form-field> <br><br>
-            </form>
-            <div class="d-flex justify-content-around">
-                <button mat-raised-button [disabled]="!zoneSTDForm.valid" color="primary" (click)="onSubmitZoneSTDForm(zoneSTDForm.value)">submit</button>
-                <button mat-raised-button (click)="openInfo('zoneSTD')" color="primary">Info</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
+
 
     <mat-card class="text-center">
         <mat-card-title> Set Zone for Coins</mat-card-title>

@@ -272,46 +272,6 @@
     </div>
 </div> -->
 
-<div *ngIf="type=='zoneSTD'">
-    <h1 mat-dialog-title *ngIf="zoneData?.length">Standard time of zones.</h1>
-    <div mat-dialog-content *ngIf="zoneData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
-        <form [formGroup]="form3">
-            <table formArrayName="items" *ngIf="form3.get('items')['controls']?.length>0">
-                <tr *ngFor="let a of form3.get('items')['controls']; let i=index;">
-                    <ng-container [formGroupName]="i">
-                        <td> {{i+1}}.&nbsp;&nbsp;</td>
-                        <td> <br>
-                            <mat-form-field>
-                                <mat-label>Zone Name</mat-label>
-                                <mat-select formControlName="zoneName">
-                                    <mat-option [value]="a.get('zoneName').value">{{a.get('zoneName').value}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field><br><br>
-                        </td><br>
-                        <td>
-                            <mat-form-field>
-                                <mat-label> Standard Time</mat-label>
-                                <input type="number" min="0" formControlName="standardTime" matInput required>
-                                <mat-error>
-                                    Please provide a valid standard time
-                                </mat-error>
-                            </mat-form-field>
-                        </td>
-                        <!-- <td>
-                            <mat-icon matListIcon (click)="deleteZoneForm(a.value)" class="cursor">delete_forever
-                            </mat-icon>
-                        </td> -->
-                        <td>
-                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitZoneSTDForm(a.value)">Submit</button>
-                        </td>
-                    </ng-container>
-                </tr>
-            </table>
-        </form>
-    </div>
-</div>
-
 <div *ngIf="type=='coinGrp'">
     <h1 mat-dialog-title *ngIf="coinDataTemp?.length">Group coin setting</h1>
     <div mat-dialog-content *ngIf="coinDataTemp?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
