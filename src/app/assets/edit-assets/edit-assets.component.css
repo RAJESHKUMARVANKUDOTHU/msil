@@ -1,0 +1,6 @@
+.full-width-field{
+    width: -webkit-fill-available;
+}
+mat-card.mat-card.mat-focus-indicator {
+    text-align: center;
+}

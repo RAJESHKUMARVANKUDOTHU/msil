@@ -1,0 +1,96 @@
+<!-- <div class="container-fluid"> --><br>
+<div class="d-flex justify-content-around">
+    <div [ngStyle]="{'font-size':general.isDesktopDevice? 'xxx-large':'large'}">
+        <span><strong>{{vehicleData.vehicleName}}</strong></span>
+    </div>
+
+</div> <br> <br>
+
+
+<div class="d-flex justify-content-around">
+    <div>
+        <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small'}"> <span>Estimated Delivery Time
+                </span>: {{getEDT(vehicleData) | date : 'medium'}}</span>
+    </div>
+</div> <br> <br>
+
+<div class="d-flex justify-content-around">
+
+    <div>
+        <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small','margin-left':general.isDesktopDevice?'-5rem':'-4rem'}"><span>Service
+                    Type :</span> {{vehicleData.serviceType}} </span>
+    </div>
+    <div>
+        <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small','margin-left':general.isDesktopDevice?'0rem':'-8rem'}"><span>Delayed
+                    Time :</span> {{vehicleData.delayTime}} min </span>
+    </div>
+</div>
+<br>
+
+
+<div class="d-flex text-center zone h-25 ml-2">
+    <mat-card id="card" *ngFor="let zone of zoneData ; let i = index; let first = first ;let last = last;" [ngClass]="first || last ? 'border-less': 'parallellogram'">
+        <span class="text-center">
+                <span *ngIf="first"><i>{{zone.zoneName}}</i></span>
+        <span *ngIf="!first && !last" class="noSkew">{{zone.zoneName}}</span>
+        <span *ngIf="last"><i>{{zone.zoneName}}</i></span>
+        <span style="visibility:hidden;">{{zone.time}} min</span>
+        </span>
+    </mat-card> <br>
+</div> <br>
+<div class="d-flex text-center zone ml-2">
+    <mat-card class="status-bar" *ngFor="let zone of zoneData ;let i=index" [ngStyle]="getFillColor(zone)">
+        <span>
+                <span style="line-height: 3;">
+                    {{zone.time}} min
+                </span>
+        <span style="visibility:hidden"> {{zone.zoneName}}</span>
+        </span>
+    </mat-card>
+</div>
+
+<br><br>
+
+<div style="font-size:x-large" class="text-center">
+    <span><strong>Current Location : </strong> {{vehicleData.currentLocation?.coinName}}</span>
+</div> <br>
+
+
+
+<div class="mat-elevation-z8 ml-2" *ngIf="vehicleData.locations?.length">
+    <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+        <div>
+
+            <ng-container matColumnDef="coinName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location </th>
+                <td mat-cell *matCellDef="let vehicle"> {{vehicle.coinName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="inTime">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
+                <td mat-cell *matCellDef="let vehicle"> {{vehicle.inTime | date : 'medium'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="outTime">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
+                <td mat-cell *matCellDef="let vehicle">
+                    <span *ngIf="vehicle.outTime != null"> {{vehicle.outTime | date : 'medium'}}</span>
+                    <span *ngIf="vehicle.outTime == null"> -</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="totTime">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                <td mat-cell *matCellDef="let vehicle"> {{vehicle.totTime}} </td>
+            </ng-container>
+        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator pageSize="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+<div id="line">
+
+</div>
+
+
+
+
+<!-- </div> -->

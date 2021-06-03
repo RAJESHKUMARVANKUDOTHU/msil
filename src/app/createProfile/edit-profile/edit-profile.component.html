@@ -1,0 +1,45 @@
+<button mat-button mat-dialog-close style="float: right;z-index: 999;">
+    <mat-icon>clear</mat-icon>
+</button>
+<br><br>
+<div>
+    <mat-card>
+        <mat-card-title>Edit Profile</mat-card-title> <br>
+        <mat-card-content>
+            <form [formGroup]="editProfile" (ngSubmit)="submit(editProfile.value)">
+                <mat-form-field appearance="fill">
+                    <mat-label>Email Id</mat-label>
+                    <input matInput type="email" formControlName="userName" required>
+                    <mat-error>
+                        Please provide valid Email Id.
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field appearance="fill">
+                    <mat-label>User type</mat-label>
+                    <mat-select formControlName="role" required>
+                        <mat-option value="coAdminRole">
+                            <span>Co. Admin</span>
+                        </mat-option>
+                        <mat-option value="subAdminRole">
+                            <span>Sub admin</span>
+                        </mat-option>
+                        <mat-option value="userRole">
+                            <span>Normal user</span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please provide valid Email Id.
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field appearance="fill" *ngIf="editProfile.get('role').value == 'subAdminRole'">
+                    <mat-label>Department</mat-label>
+                    <input matInput type="department" formControlName="department" required>
+                    <mat-error>
+                        Please provide valid Email Id.
+                    </mat-error>
+                </mat-form-field> <br>
+                <button mat-flat-button [disabled]="!editProfile.valid" color="primary">Submit</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

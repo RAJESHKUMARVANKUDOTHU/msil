@@ -1,0 +1,15 @@
+/* .flex{
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 1em;
+} */
+.location{
+    text-align: center;
+}
+.map {
+    margin-right: 3rem;
+    text-align: center;
+}
+hr{
+    width: 15rem;
+}

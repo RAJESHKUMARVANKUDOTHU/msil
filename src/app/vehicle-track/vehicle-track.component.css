@@ -1,0 +1,18 @@
+.map-container {
+    margin: 2rem auto;
+    height: 36rem;
+    width: 60rem;
+}
+
+.map-frame {
+    border: 2px solid black;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.mat-card {
+    width: 35%;
+}

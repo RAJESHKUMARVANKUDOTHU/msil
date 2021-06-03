@@ -1,0 +1,133 @@
+<br>
+<div class="d-flex flex-wrap justify-content-center font-weight-bold">
+    <div class="h-25 w-25 text-center">
+        <p>Registered</p>
+        <canvas baseChart chartType="doughnut" [data]="doughnutChartData2" [labels]="doughnutChartLabels" [options]="chartOptions" [colors]="colors" [legend]="false">
+    </canvas>
+    </div>
+    <div class="h-25 w-25 text-center">
+        <p>Active</p>
+        <canvas baseChart chartType="doughnut" [data]="doughnutChartData" [labels]="doughnutChartLabels" [options]="chartOptions" [colors]="colors" [legend]="false">
+    </canvas>
+    </div>
+    <div class="h-25 w-25 text-center">
+        <p>Offline</p>
+        <canvas baseChart chartType="doughnut" [data]="doughnutChartData1" [labels]="doughnutChartLabels" [options]="chartOptions" [colors]="colors" [legend]="false">
+    </canvas>
+    </div>
+
+    <div class="text-center">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <span>
+              <mat-icon style="vertical-align: bottom !important;">arrow_circle_up</mat-icon>&nbsp; Assign Asset
+            </span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <form [formGroup]="assignAssetForm">
+                    <mat-form-field>
+                        <mat-label>Find Id</mat-label>
+                        <mat-select formControlName="deviceId">
+                            <mat-option *ngFor="let list of getAssetList" [value]="list.deviceId" (click)="getAssetInfo(list)">
+                                {{list.deviceId}}</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Find Id is required
+                        </mat-error>
+                    </mat-form-field> <br>
+                    <mat-form-field>
+                        <mat-label>Vehicle Name</mat-label>
+                        <input type="text" matInput formControlName="deviceName" autocomplete="off" required>
+                        <mat-error>
+                            Vehicle name is required
+                        </mat-error>
+                    </mat-form-field> <br>
+                </form>
+                <button mat-raised-button [disabled]="!assignAssetForm.valid" color="primary" (click)="assignAsset(assignAssetForm.value)">Submit</button>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <span>
+              <mat-icon style="vertical-align: bottom !important;">arrow_circle_down</mat-icon>&nbsp; Deassign Asset
+            </span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <form [formGroup]="deassignAssetForm">
+                    <mat-form-field>
+                        <mat-label>Find Id</mat-label>
+
+                        <mat-select formControlName="deviceId" multiple>
+                            <mat-option #allSelected (click)="toggleAllSelectionDevice(deassignAssetForm)" [value]="0">All
+                            </mat-option>
+                            <mat-option *ngFor=" let list of getDeAssetList" [value]="list.deviceId" (click)="getAssetInfo(list)">
+                                {{list.deviceId}}</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Find Id is required
+                        </mat-error>
+                    </mat-form-field> <br>
+
+                </form>
+                <button mat-raised-button [disabled]="!deassignAssetForm.valid" color="primary" (click)="deassignAsset(deassignAssetForm.value)">Submit</button>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+    </div>
+</div> <br>
+
+<mat-tab-group>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button>
+        <mat-icon>verified_user</mat-icon> &nbsp;
+        <span>Manage Finds</span>
+      </button>
+        </ng-template>
+        <br>
+        <app-manage-device></app-manage-device>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button>
+        <mat-icon>verified_user</mat-icon> &nbsp;
+        <span>Manage Coins</span>
+      </button>
+        </ng-template> <br>
+        <app-manage-coin></app-manage-coin>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button>
+        <mat-icon>verified_user</mat-icon> &nbsp;
+        <span>Manage Gateways</span>
+      </button>
+        </ng-template>
+        <br>
+        <app-manage-gateway></app-manage-gateway>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button>
+        <mat-icon>verified_user</mat-icon> &nbsp;
+        <span>Active Devices</span>
+      </button>
+        </ng-template> <br>
+        <app-active-device></app-active-device>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button>
+        <mat-icon>verified_user</mat-icon> &nbsp;
+        <span>Offline Devices</span>
+      </button>
+        </ng-template> <br>
+        <app-offline-device></app-offline-device>
+    </mat-tab>
+
+</mat-tab-group>

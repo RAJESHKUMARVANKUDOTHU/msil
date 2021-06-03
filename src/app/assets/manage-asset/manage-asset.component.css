@@ -1,0 +1,10 @@
+button.mat-focus-indicator.mat-button.mat-button-base {
+    color: #f8f9fa;
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+    mat-expansion-panel.mat-expansion-panel {
+        margin-top: 1rem;
+    }
+}

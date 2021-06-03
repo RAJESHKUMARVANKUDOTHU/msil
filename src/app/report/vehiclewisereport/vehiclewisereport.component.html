@@ -1,0 +1,414 @@
+<button mat-button mat-dialog-close class="float-right">
+    <mat-icon>clear</mat-icon>
+</button>
+
+
+<br> <br>
+<div *ngIf="vehicleReportData.type == '1'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+        <p mat-dialog-title>
+            From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <div class="d-flex justify-content-between">
+        <span>
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!vehicleName?.length">
+                <span> Download</span>&nbsp;&nbsp;
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!vehicleName.length">
+            <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, vehicleName)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+            <div>
+                <ng-container matColumnDef="i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="deviceId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Id </th>
+                    <td mat-cell *matCellDef="let find"> {{find.deviceId}} </td>
+                </ng-container>
+                <ng-container matColumnDef="deviceName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Device Name </th>
+                    <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="coinName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location </th>
+                    <td mat-cell *matCellDef="let find"> {{find.coinName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="inTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.inTime != null &&  find.inTime != '-';else temp"> {{find.inTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="outTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.outTime != null &&  find.outTime != '-';else temp"> {{find.outTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                    <td mat-cell *matCellDef="let find"> {{find.totTime}} </td>
+                </ng-container>
+            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        </table>
+        <mat-paginator (page)="getUpdate($event,'1')" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<div *ngIf="vehicleReportData.type == '2'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+
+        <p mat-dialog-title>
+            Based on Find Id <br> Find Id - <b>{{vehicleReportData.deviceId}}</b>
+            <br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <div class="d-flex justify-content-between">
+        <span>
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!deviceId?.length">
+                <span> Download</span>&nbsp;&nbsp;
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!deviceId.length">
+            <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search location" autocomplete="off" matInput (input)="search($event.target.value, deviceId)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+            <div>
+                <ng-container matColumnDef="i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="deviceName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                    <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="coinName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location </th>
+                    <td mat-cell *matCellDef="let find"> {{find.coinName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="inTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.inTime != null &&  find.inTime != '-';else temp"> {{find.inTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="outTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.outTime != null &&  find.outTime != '-';else temp"> {{find.outTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                    <td mat-cell *matCellDef="let find"> {{find.totTime}} </td>
+                </ng-container>
+            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+        </table>
+        <mat-paginator (page)="getUpdate($event,'2')" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+
+<div *ngIf="vehicleReportData.type == '3'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+        <p mat-dialog-title>
+            Based on Location <br> Vehicle Name - <b>{{vehicleReportData.deviceName }}</b>
+            <br>From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <div class="d-flex justify-content-between">
+        <span>
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!vehicleName?.length">
+                <span> Download</span>&nbsp;&nbsp;
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!vehicleName.length">
+            <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, vehicleName)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+            <div>
+                <ng-container matColumnDef="i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="deviceId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Id </th>
+                    <td mat-cell *matCellDef="let find"> {{find.deviceId}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="coinName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location </th>
+                    <td mat-cell *matCellDef="let find"> {{find.coinName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="inTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.inTime != null && find.inTime != '-';else temp"> {{find.inTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="outTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
+                    <td mat-cell *matCellDef="let find">
+                        <span *ngIf="find.outTime != null && find.outTime != '-';else temp"> {{find.outTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                    <td mat-cell *matCellDef="let find"> {{find.totTime}} </td>
+                </ng-container>
+            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+        </table>
+        <mat-paginator (page)="getUpdate($event,'3')" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+
+<div *ngIf="vehicleReportData.type == '4'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+        <p mat-dialog-title>
+            Number of vehicle Serviced.<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <div class="d-flex justify-content-between">
+        <span>
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!servicedVehicleData?.length">
+                <span> Download</span>&nbsp;&nbsp;
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!servicedVehicleData.length">
+            <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, servicedVehicleData)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div>
+        <h2> Total number of vehicles serviced: {{vehicleTotLen}}</h2>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+            <div>
+                <ng-container matColumnDef="i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                    <!-- <td mat-footer-cell *matFooterCellDef></td> -->
+                </ng-container>
+
+                <ng-container matColumnDef="deviceName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                    <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
+                    <!-- <td mat-footer-cell *matFooterCellDef class="text-center">  Total number of vehicles serviced -->
+                    <!-- </td> -->
+                </ng-container>
+
+                <ng-container matColumnDef="totTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                    <td mat-cell *matCellDef="let find"> {{find.totTime != null || find.totTime != '0' ? find.totTime:'-' }} </td>
+                    <!-- <td mat-footer-cell *matFooterCellDef class="text-center"> {{vehicleTotLen}} </td> -->
+                </ng-container>
+            </div>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
+            <!-- <tr mat-footer-row *matFooterRowDef="displayedColumns4"></tr> -->
+        </table>
+        <!-- <mat-paginator pageSize="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator> -->
+        <mat-paginator (page)="getUpdate($event,'4')" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+
+<div *ngIf="vehicleReportData.type == '6'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+        <p mat-dialog-title>
+            Based on zone <br> Vehicle Name - <b>{{vehicleReportData.deviceName }}</b>
+            <br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <div class="d-flex justify-content-between">
+        <span>
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!vehicleZoneData?.length">
+                <span> Download</span>&nbsp;&nbsp;
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!vehicleZoneData.length">
+            <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, vehilceZoneData)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+            <div>
+                <ng-container matColumnDef="i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="deviceId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Id </th>
+                    <td mat-cell *matCellDef="let zone"> {{zone.deviceId}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="zoneName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Zone Name </th>
+                    <td mat-cell *matCellDef="let zone"> {{zone.zoneName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="inTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
+                    <td mat-cell *matCellDef="let zone"> {{zone.inTime | date : 'medium'}} </td>
+                </ng-container>
+                <ng-container matColumnDef="outTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
+                    <td mat-cell *matCellDef="let zone">
+                        <span *ngIf="zone.outTime != null"> {{zone.outTime | date : 'medium'}}</span>
+                        <span *ngIf="zone.outTime == null"> -</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="totalTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+                    <td mat-cell *matCellDef="let zone"> {{zone.totalTime}} </td>
+                </ng-container>
+            </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
+        </table>
+        <mat-paginator (page)="getUpdate($event)" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<div *ngIf="vehicleReportData.type == '7'">
+    <div class="text-center">
+        <h1 class="color">REPORT</h1>
+        <p mat-dialog-title>
+            JC wise report<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+        </p>
+        <hr>
+    </div>
+    <!-- <div class="d-flex justify-content-between">
+        <span>
+            <button mat-raised-button (click)="download()" color="primary" [disabled]="!vehilceZoneData?.length">
+                <span> Download</span>&nbsp;&nbsp;
+                <mat-icon>download </mat-icon>
+            </button>
+        </span>
+        <mat-form-field>
+            <input matInput placeholder="Search" autocomplete="off" matInput
+                (input)="search($event.target.value, vehilceZoneData)">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div> -->
+
+    <div class="table-responsive-md">
+        <table class="table text-center">
+            <thead class="thead-light ">
+                <tr>
+                    <th *ngFor="let a of jcSummaryData.head ">
+                        {{a}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let a of jcSummaryData.data; let i=index ">
+                    <td>
+                        {{i+1}}
+                    </td>
+                    <td>
+                        {{ a.latestUpdatedOn | date : 'medium'}}
+                    </td>
+                    <td>
+                        {{a.deviceName}}
+                    </td>
+                    <td>
+                        {{a.deviceId}}
+                    </td>
+                    <ng-container *ngFor="let b of a.zoneJC ">
+                        <td>
+                            {{b?.tripCount == 0 ? 0 : b.tripCount}}
+                        </td>
+                        <td>
+                            {{b?.inTime == null ? '-' : b.inTime | date : 'medium'}}
+                        </td>
+                        <td>
+                            {{b?.outTime == null ? '-' : b.outTime | date : 'medium'}}
+                        </td>
+                        <td>
+                            {{b?.standardTime == 0 ? 0 : b.standardTime}} min
+                        </td>
+                        <td>
+                            {{b?.delayTime == 0 ? 0 : general.getMillisecondToMinutes(b.delayTime)}} min
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

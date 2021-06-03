@@ -1,0 +1,94 @@
+<button mat-raised-button (click)="openDailog()" [hidden]="role=='userRole'">
+    <mat-icon>add</mat-icon> Add Device
+</button>
+<span style="flex: 1 1 auto;"></span>
+<span class="float-right">
+    <button mat-flat-button color="primary" [disabled]="!this.findData?.length" (click)="download()">Download <mat-icon>
+            download</mat-icon></button><br>
+</span>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="table-md-responsive">
+        <div>
+            <ng-container matColumnDef="i">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="deviceId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Find ID </th>
+                <td mat-cell *matCellDef="let find"> {{find.deviceId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="deviceName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="deviceToggleStatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> On/Off </th>
+                <td mat-cell *matCellDef="let live">
+                    <span>
+                        <mat-slide-toggle color="primary" [checked]="live.deviceToggleStatus" (change)="toggle(live)">
+                        </mat-slide-toggle>
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="serviceCategoryId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Type</th>
+                <td mat-cell *matCellDef="let find">
+                    <mat-form-field>
+
+                        <mat-select [(value)]="find.serviceCategoryId" [disabled]="find.deviceAssignedStatus == false || find.deviceToggleStatus == false">
+                            <mat-option *ngFor=" let a of serviceData" [value]="a._id" (click)="onServiceSelection(find,a)">
+                                {{a.serviceName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="batteryStatus">
+<th mat-header-cell *matHeaderCellDef mat-sort-header> Battery </th>
+<td mat-cell *matCellDef="let find" > 
+<span  *ngIf="getBatteryUpdatedOn(live.batteryUpdatedOn)!='0000-00-00 00:00:00' &&  live.batteryStatus!='0'" matTooltip="last synced time : {{getBatteryUpdatedOn(live.batteryUpdatedOn) | date: 'medium'}}" >
+<div class="batteryContainer">
+<div class="batteryOuter"><div id="batteryLevel"  [ngStyle]="getBatteryStatus(live.batteryStatus)" > </div></div>
+<div class="batteryBump"></div>
+</div>
+</span>
+
+<span  *ngIf="getBatteryUpdatedOn(live.batteryUpdatedOn)=='0000-00-00 00:00:00' || live.batteryStatus=='0'" >
+<div class="batteryContainer">
+<div class="batteryOuter"><div id="batteryLevel"  [ngStyle]="getBatteryStatus(live.batteryStatus)" > </div></div>
+<div class="batteryBump"></div>
+</div>
+</span>
+</td>
+</ng-container>  -->
+            <ng-container matColumnDef="updatedOn">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+                <td mat-cell *matCellDef="let find">
+                    <span *ngIf="find.updatedOn != null;else date">
+                        {{find?.updatedOn | date : 'medium'}}
+                    </span>
+                    <ng-template #date>
+                        <span>-</span>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="role=='userRole'"> Edit </th>
+                <td mat-cell *matCellDef="let find" (click)="edit(find)" [hidden]="role=='userRole'">
+                    <mat-icon [ngClass]="find.deviceAssignedStatus == true?'disabled':'cursor' ">{{find.edit}}
+                    </mat-icon>
+                </td>
+            </ng-container> -->
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="role=='userRole'"> Delete </th>
+                <td mat-cell *matCellDef="let find" matTooltip="delete find" (click)="delete(find)" class="cursor" [hidden]="role=='userRole'">
+                    <mat-icon> {{find.delete}}</mat-icon>
+                </td>
+            </ng-container>
+        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator (page)="getUpdate($event)" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>

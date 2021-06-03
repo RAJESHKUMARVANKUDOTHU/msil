@@ -1,0 +1,86 @@
+mat-card-title.mat-card-title {
+    font-size: 1.3rem;
+}
+
+
+/* mat-card.mat-card.mat-focus-indicator.border-card {
+    border: 1px solid grey;
+    
+} */
+
+.example-form {
+    /* padding-left: 3rem; */
+    width: 20%;
+}
+
+.example-form1 {
+    width: 10%;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    border: 1px solid beige;
+}
+
+.hide {
+    pointer-events: none;
+}
+
+.visible {
+    pointer-events: all;
+}
+
+
+/* .selectCoinFalse{
+    color: white;
+    background-color: #002060;
+} */
+
+.selectCoinTrue {
+    color: white;
+    background-color: #002060;
+}
+
+.map-container {
+    /* position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; */
+    margin: 30px;
+    height: 36rem;
+    width: 60rem;
+}
+
+.map-frame {
+    border: 2px solid black;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.leaflet-control-container {
+    display: none;
+}
+
+.map-alternative {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #c32828;
+    font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+    .example-form {
+        width: 10%;
+    }
+}

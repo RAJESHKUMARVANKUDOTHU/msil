@@ -1,0 +1,128 @@
+::ng-deep svg.circle {
+    height: 120px !important;
+    width: 120px !important;
+}
+
+#line {
+    height: 300px;
+    width: 450px;
+    border: 1px solid beige;
+}
+
+.map-container {
+    /* position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; */
+    margin: 2rem auto;
+    height: 36rem;
+    width: 60rem;
+}
+
+.map-frame {
+    border: 2px solid black;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.leaflet-control-container {
+    display: none;
+}
+
+.selected {
+    color: white;
+    background-color: #002060 !important;
+}
+
+.error {
+    font-size: 13px;
+    font-weight: 600;
+    color: red;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    margin: auto 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+mat-card-title.mat-card-title {
+    text-align: center;
+    padding: 15px;
+    background: #002060;
+    color: white;
+}
+
+.font {
+    font-size: 2rem;
+}
+
+th {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.nodata.ng-star-inserted {
+    text-align: center;
+    margin: 1rem 0 0 0;
+    font-weight: 500;
+}
+
+.leaflet-popup-content-wrapper {
+    position: absolute !important;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    position: absolute !important;
+}
+
+.popup {
+    /* position: absolute !important; */
+    z-index: 999 !important;
+    top: -20px;
+    left: 64px;
+    transform: rotate(180deg);
+}
+
+.delay {
+    background-color: #d10606eb;
+    color: white;
+}
+
+.not-delay {
+    background-color: #168616;
+    color: white;
+}
+
+::ng-deep tspan.ng-star-inserted {
+    font-size: 1rem;
+}
+
+.mat-form-field-flex.ng-tns-c65-2 {
+    align-items: flex-end !important;
+}
+
+.refresh-congestion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 12rem;
+}
+
+@media only screen and (max-width: 768px) {
+    #line {
+        height: 300px;
+        width: 350px;
+        border: 1px solid beige;
+    }
+    .mat-card {
+        width: fit-content;
+        margin-top: 2rem;
+    }
+}

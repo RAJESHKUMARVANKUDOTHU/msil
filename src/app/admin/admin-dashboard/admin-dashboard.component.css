@@ -1,0 +1,36 @@
+button.mat-focus-indicator.mat-raised-button.mat-button-base{
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
+    background-color:rgb(97, 163, 194);
+    border: none;
+    color: white;
+}
+mat-card.mat-card.mat-focus-indicator {
+    width: 100%;
+    margin: 2rem 1rem 0 1rem;
+    height: 100%
+}
+mat-card-title{
+    text-align: center;
+    font-size: large;
+    color: #002060;
+}
+hr{
+    width: 12rem;
+}
+.mat-header-cell {
+    text-align: center;
+    background-color: orange;
+    font-size: 13px;
+    color: white;
+}
+
+.mat-cell {
+    text-align: center;
+}
+
+    

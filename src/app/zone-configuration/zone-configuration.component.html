@@ -1,0 +1,44 @@
+<form [formGroup]="selectZoneForm">
+    <div class="row container-fluid">
+        <div class="col-md-4">
+            <mat-form-field>
+                <mat-label>Layout</mat-label>
+                <mat-select formControlName="layout" (selectionChange)="layoutSelect($event.value)">
+                    <mat-option *ngFor="let list of gatewayList" [value]="list._id">{{list.layoutName}}</mat-option>
+                </mat-select>
+                <mat-error>
+                    Select the layout
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <mat-form-field>
+                <mat-label>Select zone</mat-label>
+                <mat-select formControlName="id" (selectionChange)="zoneSelect($event.value)">
+                    <mat-option *ngFor="let list of zoneList" [value]="list._id">{{list.zoneName}}</mat-option>
+                </mat-select>
+                <mat-error>
+                    Select the layout
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <button mat-flat-button color="primary"  (click)="submitZone()" [disabled]="!selectZoneForm.valid">Create</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-flat-button color="primary"  (click)="removeZone()" [disabled]="!selectZoneForm.valid">Remove</button>
+        </div>
+    </div>
+</form>
+
+<div [ngClass]=" !selectZoneForm.get('layout') && !selectZoneForm.get('id') ? 'hide' : 'visible' ">
+    <div class = "map-alternative" *ngIf = "mapDisable">
+        Please select the layout..!
+      </div>
+      <div class="map-container" >
+        <div class="map-frame">
+          <div id="map" #mapElement></div>
+        </div>
+      </div>
+      
+</div>
+
+<br> 

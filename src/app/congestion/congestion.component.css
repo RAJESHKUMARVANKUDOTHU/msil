@@ -1,0 +1,44 @@
+.map-container {
+    margin: 2rem auto;
+    height: 36rem;
+    width: 60rem;
+}
+
+.map-frame {
+    border: 2px solid black;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.mat-card {
+    width: 45%;
+}
+
+mat-form-field {
+    width: 66%;
+}
+
+button {
+    outline: none !important;
+    border: none;
+}
+
+.btn {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+}
+
+@media only screen and (max-width: 768px) {
+    mat-card.mat-card.mat-focus-indicator {
+        width: 100%;
+        margin-top: 2rem;
+    }
+    button.mat-focus-indicator.mat-raised-button.mat-button-base.btn {
+        position: unset;
+    }
+}

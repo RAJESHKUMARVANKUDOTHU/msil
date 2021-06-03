@@ -1,0 +1,61 @@
+<button mat-button mat-dialog-close class="float-right">
+	<mat-icon>clear</mat-icon>
+</button>
+
+<h1 mat-dialog-title *ngIf="shifts?.length">Shifts</h1>
+<div mat-dialog-content *ngIf="shifts?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+	<form [formGroup]="shiftForm">
+		<table formArrayName="items" *ngIf="shiftForm.get('items')['controls']?.length>0">
+			<tr *ngFor="let a of shiftForm.get('items')['controls']; let i=index;">
+				<ng-container [formGroupName]="i">
+					<td>{{i+1}}.&nbsp;&nbsp;</td>
+					<td>
+						<mat-form-field>
+							<mat-label>Shift Name</mat-label>
+							<mat-select formControlName="shiftName" required>
+								<mat-option value="general">General</mat-option>
+								<mat-option value="morning">Morning</mat-option>
+								<mat-option value="evening">Evening</mat-option>
+								<mat-option value="night">Night</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field class="full-width-input">
+							<input matInput type="time" placeholder="From time" formControlName="startTime" matInput
+								required>
+							<mat-error>
+								Please provide a valid from time
+							</mat-error>
+						</mat-form-field>
+
+					</td>
+					<td>
+						<mat-form-field class="full-width-input">
+							<input matInput type="time" placeholder="To time" formControlName="endTime" matInput
+								required>
+							<mat-error>
+								Please provide a valid to time
+							</mat-error>
+						</mat-form-field>
+					</td>
+					<td>
+						<button type="button" mat-raised-button color="primary"
+							(click)="submit(a.value)">Submit</button>
+					</td>
+					<td>
+						<mat-icon matListIcon (click)="delete(a.value)" class="cursor">delete</mat-icon>
+					</td>
+				</ng-container>
+			</tr>
+		</table>
+	</form>
+</div>
+
+<ng-template #nodata>
+<table class="border">
+	<tr >
+		<td style="font-size: xx-large;" class="p-2">No Data</td>
+	</tr>
+</table>
+</ng-template>

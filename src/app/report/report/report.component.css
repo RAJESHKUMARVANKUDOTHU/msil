@@ -1,0 +1,17 @@
+
+mat-card.mat-card.mat-focus-indicator {
+   text-align: center;
+    width: 30%;
+
+}
+
+mat-form-field{
+    width: 70%;
+}
+@media only screen and (max-width: 768px) {
+    mat-card.mat-card.mat-focus-indicator {
+        text-align: center;
+         width: 100%;
+         margin: 1rem;
+     }
+}
