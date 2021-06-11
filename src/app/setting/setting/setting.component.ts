@@ -108,11 +108,11 @@ export class SettingComponent implements OnInit {
 
     });
 
-    // this.zoneForm = this.fb.group({
-    //   zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
-    //   standardTime: ['', Validators.required]
-    // });
-  
+     this.zoneForm = this.fb.group({
+       zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+       standardTime: ['', Validators.required]
+     });
+
 
     this.maxFindForm = this.fb.group({
       coinId: ['', Validators.required],
@@ -425,7 +425,7 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
- 
+
   onSubmitGroup(data) {
     console.log("onSubmitZoneForm data==", data);
 
