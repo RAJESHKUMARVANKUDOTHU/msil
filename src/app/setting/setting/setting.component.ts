@@ -118,18 +118,11 @@ export class SettingComponent implements OnInit {
 
     });
 
-    this.mainZoneForm = this.fb.group({
-      zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
-      standardTime: ['', [Validators.required,Validators.min(0)]]
-    });
-    this.subZoneForm = this.fb.group({
-      mainZoneId: ['', Validators.required],
-      zoneName: ['', Validators.required]
-    });
-    // this.zoneSTDForm = this.fb.group({
-    //   zoneId: ['', Validators.required],
-    //   standardTime: ['',[ Validators.required ,Validators.min(0)]]
-    // });
+     this.zoneForm = this.fb.group({
+       zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+       standardTime: ['', Validators.required]
+     });
+
 
     // this.maxFindForm = this.fb.group({
     //   coinId: ['', Validators.required],
@@ -441,9 +434,10 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
-  
-  onSubmitMainZoneForm(data) {
-    console.log("onSubmitZoneForm data==", data)
+
+  onSubmitGroup(data) {
+    console.log("onSubmitZoneForm data==", data);
+
     try {
       if (this.mainZoneForm.valid) {
         data.zoneName = data.zoneName.trim().replace(/\s\s+/g, ' ');
