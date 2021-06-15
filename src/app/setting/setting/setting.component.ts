@@ -483,6 +483,33 @@ export class SettingComponent implements OnInit {
       console.log("error==", error)
     }
   }
+  onSubmitMainZoneForm(data) {
+    console.log("onSubmitMainZoneForm data==", data);
+    data.zoneName = data.zoneName.trim();
+    try {
+      if (this.mainZoneForm.valid) {
+        this.api.updateMainZones(data).then((res: any) => {
+          console.log("zone setting res===", res);
+          if (res.status) {
+            this.getMainZone();
+            this.general.openSnackBar(res.success, '');
+          }
+          else {
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            this.getMainZone();
+          }
+        }).catch((err) => {
+          console.log("err=", err);
+        })
+      }
+      else { }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+
+ 
 
   onSubmitSubZoneForm(data) {
     console.log("onSubmitZoneForm data==", data)
