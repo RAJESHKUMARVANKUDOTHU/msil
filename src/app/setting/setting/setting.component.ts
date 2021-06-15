@@ -14,24 +14,28 @@ import { MatOption } from '@angular/material/core';
   styleUrls: ['./setting.component.css']
 })
 export class SettingComponent implements OnInit {
-  @ViewChild('allSelected') private allSelected: MatOption
-  @ViewChild('allSelected1') private allSelected1: MatOption
+  // @ViewChild('allSelected') private allSelected: MatOption
+  // @ViewChild('allSelected1') private allSelected1: MatOption
   @ViewChild('allSelected2') private allSelected2: MatOption
   @ViewChild('allSelected3') private allSelected3: MatOption
   @ViewChild('allSelected4') private allSelected4: MatOption
-  @ViewChild('allSelected5') private allSelected5: MatOption
+  // @ViewChild('allSelected5') private allSelected5: MatOption
   @ViewChild('allSelected6') private allSelected6: MatOption
+  @ViewChild('allSelected7') private allSelected7: MatOption
   @ViewChild('fileInput') fileInput: ElementRef;
   dateTimeForm: FormGroup;
   distanceForm: FormGroup;
-  timeDelay: FormGroup;
+  // timeDelay: FormGroup;
   inactivityFind: FormGroup;
   inactivityCoin: FormGroup;
-  groupCoinForm: FormGroup;
+  // groupCoinForm: FormGroup;
   coinCategory: FormGroup;
   zoneForm: FormGroup;
-   maxFindForm: FormGroup;
-  groupRegister: FormGroup;
+  mainZoneForm: FormGroup;
+  subZoneForm: FormGroup;
+  // zoneSTDForm: FormGroup;
+  // maxFindForm: FormGroup;
+  // groupRegister: FormGroup;
   createServiceType: FormGroup;
   coinData: any = [];
   coinDataTemp: any = [];
@@ -39,6 +43,8 @@ export class SettingComponent implements OnInit {
   deviceData: any = [];
   groupData: any = [];
   twoStepAuthStatus: any = [];
+  mainZone: any = [];
+  subZone: any = [];
   name: any;
   zoneData: any;
   tempImagePath: any;
@@ -60,23 +66,23 @@ export class SettingComponent implements OnInit {
     this.refreshCoin();
     this.refreshSetting();
     this.getZoneDetails();
-    this.getGroups();
-
+    // this.getGroups();
+    this.getMainZone();
   }
   createForm() {
     // this.dateTimeForm=this.fb.group({
     //   dateTimeFormat:['',Validators.required]
     // })
 
-    this.distanceForm = this.fb.group({
-      range: ['', Validators.required]
-    })
+    // this.distanceForm = this.fb.group({
+    //   range: ['', Validators.required]
+    // })
 
-    this.timeDelay = this.fb.group({
-      deviceId: ['', Validators.required],
-      timeDelay: ['', Validators.required],
-
-    });
+    // this.timeDelay = this.fb.group({
+    //   deviceId: ['', Validators.required],
+    //   timeDelay: ['', Validators.required],
+    //
+    // });
 
     this.inactivityFind = this.fb.group({
       deviceId: ['', Validators.required],
@@ -91,15 +97,19 @@ export class SettingComponent implements OnInit {
       alert: ['', Validators.required]
     });
 
-    this.groupRegister = this.fb.group({
-      groupName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]]
-    });
+    // this.groupRegister = this.fb.group({
+    //   groupName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]]
+    // });
 
 
-    this.groupCoinForm = this.fb.group({
-      coinId: ['', Validators.required],
-      groupId: ['', Validators.required],
-
+    // this.groupCoinForm = this.fb.group({
+    //   coinId: ['', Validators.required],
+    //   groupId: ['', Validators.required],
+    //
+    // });
+      this.zoneForm = this.fb.group({
+      zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
+      standardTime: ['', Validators.required]
     });
 
     this.coinCategory = this.fb.group({
@@ -108,20 +118,27 @@ export class SettingComponent implements OnInit {
 
     });
 
-    // this.zoneForm = this.fb.group({
-    //   zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
-    //   standardTime: ['', Validators.required]
-    // });
-  
-
-    this.maxFindForm = this.fb.group({
-      coinId: ['', Validators.required],
-      maxFindAsset: ['', Validators.required],
+    this.mainZoneForm = this.fb.group({
+      zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
+      standardTime: ['', [Validators.required,Validators.min(0)]]
     });
+    this.subZoneForm = this.fb.group({
+      mainZoneId: ['', Validators.required],
+      zoneName: ['', Validators.required]
+    });
+    // this.zoneSTDForm = this.fb.group({
+    //   zoneId: ['', Validators.required],
+    //   standardTime: ['',[ Validators.required ,Validators.min(0)]]
+    // });
+
+    // this.maxFindForm = this.fb.group({
+    //   coinId: ['', Validators.required],
+    //   maxFindAsset: ['', Validators.required],
+    // });
 
     this.createServiceType = this.fb.group({
       zoneId: ['', Validators.required],
-      serviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]]
+      serviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]]
     });
 
     this.uploadForm = this.fb.group({
@@ -135,9 +152,9 @@ export class SettingComponent implements OnInit {
 
       console.log("refresh Settings====", res);
       if (res.status) {
-        this.distanceForm.patchValue({
-          range: res.success.range
-        })
+        // this.distanceForm.patchValue({
+        //   range: res.success.range
+        // })
         if (res.success.isTwoStepAuth == false) {
           this.twoStepAuthStatus = {
             value: 'Enable',
@@ -164,7 +181,7 @@ export class SettingComponent implements OnInit {
   }
 
   refreshCoin() {
-    var data=''
+    var data = ''
     this.api.getCoinData(data).then((res: any) => {
 
       console.log("coin submit====", res);
@@ -183,7 +200,7 @@ export class SettingComponent implements OnInit {
   }
 
   refreshDevice() {
-    var data=''
+    var data = ''
     this.api.getDeviceData(data).then((res: any) => {
 
       this.deviceData = [];
@@ -222,60 +239,59 @@ export class SettingComponent implements OnInit {
   //   }
   // }
 
-  onSubmitDistanceForm(data) {
-    console.log("data===", data);
-    try {
-      if (this.distanceForm.valid) {
-        this.api.setRange(data).then((res: any) => {
-          console.log("range res===", res);
-          if (res.status) {
-            this.distanceForm.reset();
-            this.general.openSnackBar(res.success, '');
-            this.refreshSetting();
-          }
-          else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-          }
-        }).catch((err) => {
-          console.log("err=", err);
-        })
-      }
-      else { }
-    }
-    catch (error) {
-      console.log("error==", error);
-    }
+  // onSubmitDistanceForm(data) {
+  //   console.log("data===", data);
+  //   try {
+  //     if (this.distanceForm.valid) {
+  //       this.api.setRange(data).then((res: any) => {
+  //         console.log("range res===", res);
+  //         if (res.status) {
+  //           this.distanceForm.reset();
+  //           this.general.openSnackBar(res.success, '');
+  //           this.refreshSetting();
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       })
+  //     }
+  //     else { }
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
 
-  }
+  // }
 
-  onSubmitTimeDelay(data) {
-    data.deviceId = this.general.filterArray(data.deviceId);
-    console.log("onSubmitTimeDelay data==", data);
-;
-    try {
-      if (this.timeDelay.valid) {
-        this.api.timeDelay(data).then((res: any) => {
-
-          console.log("timeDelay res===", res);
-          if (res.status) {
-            this.timeDelay.reset();
-            this.refreshDevice();
-            this.general.openSnackBar(res.success, '');
-          }
-          else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-          }
-        }).catch((err) => {
-          console.log("err=", err);
-        })
-      }
-      else { }
-    }
-    catch (error) {
-      console.log("error==", error);
-    }
-
-  }
+  // onSubmitTimeDelay(data) {
+  //   data.deviceId = this.general.filterArray(data.deviceId);
+  //   console.log("onSubmitTimeDelay data==", data);
+  //   try {
+  //     if (this.timeDelay.valid) {
+  //       this.api.timeDelay(data).then((res: any) => {
+  //
+  //         console.log("timeDelay res===", res);
+  //         if (res.status) {
+  //           this.timeDelay.reset();
+  //           this.refreshDevice();
+  //           this.general.openSnackBar(res.success, '');
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       })
+  //     }
+  //     else { }
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
+  //
+  // }
 
   onSubmitInactivityFind(data) {
     data.deviceId = this.general.filterArray(data.deviceId)
@@ -338,42 +354,41 @@ export class SettingComponent implements OnInit {
 
   }
 
-  onSubmitMaxFindForm(data) {
-    data.coinId = this.general.filterArray(data.coinId);
-    console.log("onSubmitMaxFindForm data==", data);
-
-    try {
-      if (this.maxFindForm.valid) {
-        this.api.updateMaxFind(data).then((res: any) => {
-          console.log("max find res===", res);
-          if (res.status) {
-            this.maxFindForm.reset();
-            this.refreshDevice();
-            this.general.openSnackBar(res.success, '');
-          }
-          else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-
-          }
-        }).catch((err) => {
-          console.log("err=", err);
-        })
-      }
-      else { };
-    }
-    catch (error) {
-      console.log("error==", error);
-    }
-  }
+  // onSubmitMaxFindForm(data) {
+  //   data.coinId = this.general.filterArray(data.coinId);
+  //   console.log("onSubmitMaxFindForm data==", data);
+  //
+  //   try {
+  //     if (this.maxFindForm.valid) {
+  //       this.api.updateMaxFind(data).then((res: any) => {
+  //         console.log("max find res===", res);
+  //         if (res.status) {
+  //           this.maxFindForm.reset();
+  //           this.refreshDevice();
+  //           this.general.openSnackBar(res.success, '');
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       })
+  //     }
+  //     else { };
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
+  // }
 
   onSumbitCoinCategory(data) {
     data.coinId = this.general.filterArray(data.coinId);
     console.log("onSumbitCoinCategory data==", data);
-
     try {
       if (this.coinCategory.valid) {
+       if(data.coinId.length>0){
         this.api.zoneConfiguration(data).then((res: any) => {
-
           console.log("zone setting res===", res);
           if (res.status) {
             this.coinCategory.reset();
@@ -383,28 +398,29 @@ export class SettingComponent implements OnInit {
           }
           else {
             this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-
           }
         }).catch((err) => {
           console.log("err=", err);
         })
+       }
+       else{
+        this.coinCategory.reset();
+        this.general.openSnackBar("Update unsuccessfull. There are no more coin left in the list",'');
+       }
       }
       else { };
     }
     catch (error) {
       console.log("error==", error);
     }
-
-
   }
 
   onSubmitZoneForm(data) {
     console.log("onSubmitZoneForm data==", data)
-
     try {
       if (this.zoneForm.valid) {
+        data.zoneName= data.zoneName.trim().replace(/\s\s+/g, ' ');
         this.api.zoneSetting(data).then((res: any) => {
-
           console.log("zone setting res===", res);
           if (res.status) {
             this.zoneForm.reset();
@@ -425,49 +441,17 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
- 
-  onSubmitGroup(data) {
-    console.log("onSubmitZoneForm data==", data);
-
+  
+  onSubmitMainZoneForm(data) {
+    console.log("onSubmitZoneForm data==", data)
     try {
-      if (this.groupRegister.valid) {
-        this.api.groupRegister(data).then((res: any) => {
-
-          console.log("Group register res===", res)
+      if (this.mainZoneForm.valid) {
+        data.zoneName = data.zoneName.trim().replace(/\s\s+/g, ' ');
+        this.api.createMainZone(data).then((res: any) => {
+          console.log("zone setting res===", res);
           if (res.status) {
-            this.groupRegister.reset();
-            this.getGroups();
-            this.general.openSnackBar(res.success, '');
-          }
-          else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-
-          }
-        }).catch((err) => {
-          console.log("err=", err);
-        });
-      }
-      else { }
-    }
-    catch (error) {
-      console.log("error==", error);
-    }
-  }
-
-  onSubmitGroupCoinForm(data) {
-    data.groupName = this.groupData.filter(obj => obj._id == data.groupId)[0].groupName;
-    data.coinId = this.general.filterArray(data.coinId);
-
-    console.log("onSubmitGroupCoinForm data==", data);
-    try {
-      if (this.groupCoinForm.valid) {
-        this.api.updateGroup(data).then((res: any) => {
-
-          console.log("Group coin res===", res);
-          if (res.status) {
-            this.groupCoinForm.reset();
-            this.refreshCoin();
-            this.getGroups();
+            this.mainZoneForm.reset();
+            this.getMainZone();
             this.general.openSnackBar(res.success, '');
           }
           else {
@@ -484,6 +468,151 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
+
+  getMainZone() {
+    try {
+      this.api.getMainZones().then((res: any) => {
+        console.log("zone setting res===", res);
+        this.mainZone = [];
+        if (res.status) {
+          this.mainZone = res.success;
+        }
+        else {
+          this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+
+        }
+      }).catch((err) => {
+        console.log("err=", err);
+      })
+    }
+    catch (error) {
+      console.log("error==", error)
+    }
+  }
+
+  onSubmitSubZoneForm(data) {
+    console.log("onSubmitZoneForm data==", data)
+    data.zoneName=this.general.filterArray(data.zoneName);
+    try {
+      if (this.subZoneForm.valid) {
+     if(data.zoneName.length>0){
+       data.standardTime = 0;
+      // data['standardTime'] = this.mainZone.filter(obj=>{
+      //   if(obj._id == data.mainZoneId){
+      //     return obj;
+      //   }
+      // })[0].standardTime;
+      this.api.updateSubZones(data).then((res: any) => {
+        console.log("zone setting res===", res);
+        if (res.status) {
+          this.subZoneForm.reset();
+          this.getZoneDetails();
+          this.general.openSnackBar(res.success, '');
+        }
+        else {
+          this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+        }
+      }).catch((err) => {
+        console.log("err=", err);
+      })
+     }
+     else{
+      this.subZoneForm.reset();
+      this.general.openSnackBar("Update unsuccessfull. There are no more zone left in the list",'');
+     }
+      }
+      else { }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+
+  // onSubmitZoneSTDForm(data) {
+  //   data.zoneId = this.general.filterArray(data.zoneId);
+  //   console.log("onSubmitZoneSTDForm data==", data)
+  //   try {
+  //     if (this.zoneSTDForm.valid) {
+  //       this.api.updateZoneInfo(data).then((res: any) => {
+
+  //         console.log("zone setting res===", res);
+  //         if (res.status) {
+  //           this.zoneSTDForm.reset();
+  //           this.getZoneDetails();
+  //           this.general.openSnackBar(res.success, '');
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       })
+  //     }
+  //     else { }
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
+  // }
+
+  // onSubmitGroup(data) {
+  //   console.log("onSubmitZoneForm data==", data);
+  //
+  //   try {
+  //     if (this.groupRegister.valid) {
+  //       this.api.groupRegister(data).then((res: any) => {
+  //
+  //         console.log("Group register res===", res)
+  //         if (res.status) {
+  //           this.groupRegister.reset();
+  //           this.getGroups();
+  //           this.general.openSnackBar(res.success, '');
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       });
+  //     }
+  //     else { }
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
+  // }
+  //
+  // onSubmitGroupCoinForm(data) {
+  //   data.groupName = this.groupData.filter(obj => obj._id == data.groupId)[0].groupName;
+  //   data.coinId = this.general.filterArray(data.coinId);
+  //
+  //   console.log("onSubmitGroupCoinForm data==", data);
+  //   try {
+  //     if (this.groupCoinForm.valid) {
+  //       this.api.updateGroup(data).then((res: any) => {
+  //
+  //         console.log("Group coin res===", res);
+  //         if (res.status) {
+  //           this.groupCoinForm.reset();
+  //           this.refreshCoin();
+  //           this.getGroups();
+  //           this.general.openSnackBar(res.success, '');
+  //         }
+  //         else {
+  //           this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+  //
+  //         }
+  //       }).catch((err) => {
+  //         console.log("err=", err);
+  //       })
+  //     }
+  //     else { }
+  //   }
+  //   catch (error) {
+  //     console.log("error==", error);
+  //   }
+  // }
 
   onSubmitServiceType(data) {
     data.zoneId = this.general.filterArray(data.zoneId);
@@ -513,7 +642,7 @@ export class SettingComponent implements OnInit {
       console.log("error==", error);
     }
   }
-;
+  ;
   twoStepAuthchange(event) {
     console.log(event)
     if (event.checked == true) {
@@ -601,61 +730,78 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  toggleAllSelectionDevice(formData) {
-    if (this.allSelected.selected) {
-      formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
-    }
-    else {
-      formData.controls.deviceId.patchValue([]);
-    }
-  }
+  // toggleAllSelectionDevice(formData) {
+  //   if (this.allSelected.selected) {
+  //     formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
+  //   }
+  //   else {
+  //     formData.controls.deviceId.patchValue([]);
+  //   }
+  // }
 
-  toggleAllSelectionCoins(formData) {
-    if (this.allSelected1.selected) {
-      formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
-    }
-    else {
-      formData.controls.coinId.patchValue([]);
-    }
-  }
+  // toggleAllSelectionCoins(formData) {
+  //   if (this.allSelected1.selected) {
+  //     formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
+  //   }
+  //   else {
+  //     formData.controls.coinId.patchValue([]);
+  //   }
+  // }
 
   toggleAllSelectionDevice2(formData) {
-    if (this.allSelected2.selected) {
-      formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
-    }
-    else {
-      formData.controls.deviceId.patchValue([]);
+    if(formData.controls.deviceId.length>0){
+      if (this.allSelected2.selected) {
+        formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
+      }
+      else {
+        formData.controls.deviceId.patchValue([]);
+        formData.controls.deviceId.setError(null);
+      }
     }
   }
 
-
-  toggleAllSelectionCoin(formData) {
-
+ toggleAllSelectionCoin(formData) {
+   if(formData.controls.coinId.length>0){
     if (this.allSelected3.selected) {
       formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
     }
     else {
       formData.controls.coinId.patchValue([]);
+      formData.controls.coinId.setError(null);
+   }
     }
   }
+
   toggleAllSelectionCoin1(formData) {
 
-    if (this.allSelected4.selected) {
-      formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
-    }
-    else {
-      formData.controls.coinId.patchValue([]);
+    if(formData.controls.coinId.length>0){
+      if (this.allSelected4.selected) {
+        formData.controls.coinId.patchValue([...this.coinData.map(obj =>{
+          if(!(obj.zoneId)){
+          return  obj.coinId
+          }
+        }
+        ), 0]);
+      }
+      else {
+        formData.controls.coinId.patchValue([]);
+        formData.controls.coinId.setError(null);
+      }
     }
   }
 
-  toggleAllSelectionCoin2(formData) {
-    if (this.allSelected5.selected) {
-      formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
-    }
-    else {
-      formData.controls.coinId.patchValue([]);
-    }
-  }
+  // toggleAllSelectionCoin2(formData) {
+  //   if (this.allSelected5.selected) {
+  //     formData.controls.coinId.patchValue([...this.coinData.map(obj =>{
+  //       if(!(obj.groupId)){
+  //         return  obj.coinId
+  //       }
+  //     }), 0]);
+  //   }
+  //   else {
+  //     formData.controls.coinId.patchValue([]);
+  //   }
+  // }
 
   toggleAllSelectionZone(formData) {
     if (this.allSelected6.selected) {
@@ -663,9 +809,25 @@ export class SettingComponent implements OnInit {
     }
     else {
       formData.controls.zoneId.patchValue([]);
+      formData.controls.zoneId.setError(null);
     }
   }
-
+  toggleAllSelectionZone1(formData) {
+    if(formData.controls.zoneName.length>0){
+      if (this.allSelected7.selected) {
+        formData.controls.zoneName.patchValue([...this.zoneData.map(obj =>{
+            if(!obj.mainZoneId){
+              return obj.zoneName;
+            }
+  
+        }), 0]);
+      }
+      else {
+        formData.controls.zoneName.patchValue([]);
+        formData.controls.zoneName.setError(null);
+      }
+    }
+  }
 
   openInfo(data) {
     console.log("data==", data);
@@ -690,10 +852,10 @@ export class SettingComponent implements OnInit {
         this.refreshCoin();
         this.getZoneDetails();
       }
-      else if (data == 'groupName' || data == 'coinGrp') {
-        this.refreshCoin();
-        this.getGroups();
-      }
+      // else if (data == 'groupName' || data == 'coinGrp') {
+      //   this.refreshCoin();
+      //   this.getGroups();
+      // }
       else {
         this.getZoneDetails();
       }
@@ -714,18 +876,18 @@ export class SettingComponent implements OnInit {
     })
   }
 
-  getGroups() {
-    this.api.getGroup().then((res: any) => {
+  // getGroups() {
+  //   this.api.getGroup().then((res: any) => {
 
-      console.log("group details response==", res);
-      this.groupData = [];
-      if (res.status) {
-        this.groupData = res.success;
-      }
-      else {
-        this.groupData = [];
-      }
-    })
-  }
+  //     console.log("group details response==", res);
+  //     this.groupData = [];
+  //     if (res.status) {
+  //       this.groupData = res.success;
+  //     }
+  //     else {
+  //       this.groupData = [];
+  //     }
+  //   })
+  // }
 
 }

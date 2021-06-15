@@ -42,6 +42,7 @@ export class SetPasswordComponent implements OnInit {
         otp6: ['', Validators.required],
       },
     );
+    
   }
   getCodeBoxElement(index) {
     return document.getElementById('codeBox' + index);
@@ -94,7 +95,7 @@ export class SetPasswordComponent implements OnInit {
           this.router.navigate(['/login']);
         }
         else {
-          this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+          // this.general.openSnackdBar(res.success == false ? res.message : res.success, '')
 
         }
       });
@@ -106,5 +107,4 @@ export class SetPasswordComponent implements OnInit {
     this.passwordIcon =
       this.passwordIcon === 'visibility_off' ? 'visibility' : 'visibility_off';
   }
-
 }

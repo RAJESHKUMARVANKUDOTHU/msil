@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
           password: value.password
         }
         console.log("data===", data)
-        localStorage.clear()
+        localStorage.clear();
         this.api.login(data).then((res: any) => {
           console.log("login res===", res)
           this.loginData = res.success
@@ -141,9 +141,15 @@ export class LoginComponent implements OnInit {
   }
 
   forgetPassword() {
-    this.router.navigate(['/set-password'])
-
+    localStorage.clear();
+    var a={
+      menu:false,
+      other:false,
+    }
+    this.login.loginCheckData.next(a);
+    this.router.navigate(['/set-password']);
   }
+
   hideShowPassword() {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'visibility_off' ? 'visibility' : 'visibility_off';

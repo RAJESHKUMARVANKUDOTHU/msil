@@ -96,8 +96,8 @@ export class ZoneReportComponent implements OnInit {
         console.log("res 2==", res)
         if (res.status) {
           this.zoneData = res.success
-          this.avgTime = []
-          this.sdtTime = []
+          this.avgTime = [];
+          this.sdtTime = [];
           for (let i = 0; i < this.zoneData.length; i++) {
             this.avgTime.push(
               {
@@ -165,7 +165,6 @@ export class ZoneReportComponent implements OnInit {
         fromDate: from,
         toDate: to,
         timeZoneOffset: this.general.getZone(),
-
       }
       console.log("data to send==", data)
       this.api.zoneWiseEfficiency(data).then((res: any) => {
@@ -250,6 +249,8 @@ export class ZoneReportComponent implements OnInit {
       axisX: {
         title: "Zone",
         labelMaxWidth: 120,
+        labelAutoFit: true,
+        labelAngle: 0,
       },
       axisY: {
         title: "Avg. time (in minutes)",
@@ -327,7 +328,9 @@ export class ZoneReportComponent implements OnInit {
         suffix: "%",
       },
       axisX: {
-        title: "Zone"
+        title: "Zone",
+        labelAutoFit: true,
+        labelAngle: 0,
       },
       dataPointWidth: 30,
       data: [{
@@ -354,11 +357,11 @@ export class ZoneReportComponent implements OnInit {
         valueFormatString: "DD MMM,YY",
         //labelMaxWidth: 120,
         labelAutoFit: true,
+        labelAngle: 0,
         intervalType: "day",
         // interval: 1,
-        labelAngle: 0,
 
-      },
+      }, 
       axisY: {
         title: "Avg time(in min)",
         suffix: "min",

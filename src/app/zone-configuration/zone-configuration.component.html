@@ -23,22 +23,22 @@
             </mat-form-field>
         </div>
         <div class="col-md-4">
-            <button mat-flat-button color="primary"  (click)="submitZone()" [disabled]="!selectZoneForm.valid">Create</button> &nbsp;&nbsp;&nbsp;&nbsp;
-            <button mat-flat-button color="primary"  (click)="removeZone()" [disabled]="!selectZoneForm.valid">Remove</button>
+            <button mat-flat-button color="primary" (click)="submitZone()" [disabled]="!selectZoneForm.valid">Create</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-flat-button color="primary" (click)="removeZone()" [disabled]="!selectZoneForm.valid">Remove</button>
         </div>
     </div>
 </form>
 
 <div [ngClass]=" !selectZoneForm.get('layout') && !selectZoneForm.get('id') ? 'hide' : 'visible' ">
-    <div class = "map-alternative" *ngIf = "mapDisable">
+    <div class="map-alternative" *ngIf="mapDisable">
         Please select the layout..!
-      </div>
-      <div class="map-container" >
+    </div>
+    <div class="map-container">
         <div class="map-frame">
-          <div id="map" #mapElement></div>
+            <div id="map" #mapElement></div>
         </div>
-      </div>
-      
+    </div>
+
 </div>
 
-<br> 
+<br>

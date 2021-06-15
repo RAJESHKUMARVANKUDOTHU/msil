@@ -40,7 +40,7 @@
                     <td mat-cell *matCellDef="let find"> {{find.deviceId}} </td>
                 </ng-container>
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Device Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle No. </th>
                     <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
                 </ng-container>
 
@@ -113,7 +113,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle No. </th>
                     <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
                 </ng-container>
                 <ng-container matColumnDef="coinName">
@@ -156,7 +156,7 @@
     <div class="text-center">
         <h1 class="color">REPORT</h1>
         <p mat-dialog-title>
-            Based on Location <br> Vehicle Name - <b>{{vehicleReportData.deviceName }}</b>
+            Based on Location <br> Vehicle No.- <b>{{vehicleReportData.deviceName }}</b>
             <br>From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
         </p>
         <hr>
@@ -229,7 +229,7 @@
     <div class="text-center">
         <h1 class="color">REPORT</h1>
         <p mat-dialog-title>
-            Number of vehicle Serviced.<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+            Number of vehicles Serviced.<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
         </p>
         <hr>
     </div>
@@ -261,7 +261,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle No.</th>
                     <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
                     <!-- <td mat-footer-cell *matFooterCellDef class="text-center">  Total number of vehicles serviced -->
                     <!-- </td> -->
@@ -287,7 +287,7 @@
     <div class="text-center">
         <h1 class="color">REPORT</h1>
         <p mat-dialog-title>
-            Based on zone <br> Vehicle Name - <b>{{vehicleReportData.deviceName }}</b>
+            Based on zone <br> Vehicle No. - <b>{{vehicleReportData.deviceName }}</b>
             <br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
         </p>
         <hr>
@@ -303,7 +303,7 @@
             </button>
         </span>
         <mat-form-field>
-            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, vehilceZoneData)">
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, vehicleZoneData)">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
     </div>
@@ -342,34 +342,37 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
         </table>
-        <mat-paginator (page)="getUpdate($event)" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator (page)="getUpdate($event,'6')" [length]="currentPageLength" [pageSize]="currentPageSize" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
     </div>
 </div>
 <div *ngIf="vehicleReportData.type == '7'">
     <div class="text-center">
         <h1 class="color">REPORT</h1>
         <p mat-dialog-title>
-            JC wise report<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
+            Job card wise Report<br> From {{vehicleReportData.fromDate | date : 'dd-MM-yyyy'}} to {{vehicleReportData.toDate | date : 'dd-MM-yyyy'}}
         </p>
         <hr>
     </div>
-    <!-- <div class="d-flex justify-content-between">
+
+    <div class="d-flex justify-content-between">
         <span>
-            <button mat-raised-button (click)="download()" color="primary" [disabled]="!vehilceZoneData?.length">
+            <button *ngIf="!general.isMobile" mat-raised-button (click)="download()" color="primary" [disabled]="!jcSummaryData.data?.length">
                 <span> Download</span>&nbsp;&nbsp;
-                <mat-icon>download </mat-icon>
+        <mat-icon>download </mat-icon>
+        </button>
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!jcSummaryData.data.length">
+            <mat-icon>download </mat-icon>
             </button>
         </span>
         <mat-form-field>
-            <input matInput placeholder="Search" autocomplete="off" matInput
-                (input)="search($event.target.value, vehilceZoneData)">
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="searchVehicle($event.target.value, vehicleZoneData)">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
-    </div> -->
+    </div>
 
-    <div class="table-responsive-md">
-        <table class="table text-center">
-            <thead class="thead-light ">
+    <div class="table-responsive-md" id="htmlData">
+        <table class="table text-center border">
+            <thead class="head text-white">
                 <tr>
                     <th *ngFor="let a of jcSummaryData.head ">
                         {{a}}
@@ -381,29 +384,29 @@
                     <td>
                         {{i+1}}
                     </td>
-                    <td>
+                    <td class="cell">
                         {{ a.latestUpdatedOn | date : 'medium'}}
                     </td>
-                    <td>
+                    <td class="cell">
                         {{a.deviceName}}
                     </td>
                     <td>
                         {{a.deviceId}}
                     </td>
                     <ng-container *ngFor="let b of a.zoneJC ">
-                        <td>
+                        <td class="cell">
                             {{b?.tripCount == 0 ? 0 : b.tripCount}}
                         </td>
-                        <td>
+                        <td class="cell">
                             {{b?.inTime == null ? '-' : b.inTime | date : 'medium'}}
                         </td>
-                        <td>
+                        <td class="cell">
                             {{b?.outTime == null ? '-' : b.outTime | date : 'medium'}}
                         </td>
-                        <td>
+                        <td class="cell">
                             {{b?.standardTime == 0 ? 0 : b.standardTime}} min
                         </td>
-                        <td>
+                        <td class="cell">
                             {{b?.delayTime == 0 ? 0 : general.getMillisecondToMinutes(b.delayTime)}} min
                         </td>
                     </ng-container>

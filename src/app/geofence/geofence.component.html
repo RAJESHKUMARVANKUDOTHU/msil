@@ -21,7 +21,7 @@
                                 <mat-radio-button class="example-radio-button" value="email">Email</mat-radio-button>
                             </mat-radio-group> <br>
                             <mat-form-field>
-                                <mat-label>Select vehicle</mat-label>
+                                <mat-label>Select find</mat-label>
                                 <mat-select formControlName="deviceId" multiple>
                                     <mat-option #allSelected (click)="toggleAllSelectionDevice(geofenceForm)" [value]="0">All</mat-option>
                                     <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">
@@ -50,7 +50,7 @@
         <hr>
     </div>
     <mat-form-field [ngStyle]="{'margin-left': !general.isDesktopDevice?'7rem':'0rem'}" class="mt-2">
-        <input matInput placeholder="Search device" autocomplete="off" matInput (input)="search($event.target.value)">
+        <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </div>
@@ -69,7 +69,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehilce Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Name </th>
                     <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
                 </ng-container>
 

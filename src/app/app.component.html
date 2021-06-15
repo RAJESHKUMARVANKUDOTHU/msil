@@ -31,8 +31,8 @@
                     <mat-icon mat-list-icon>home</mat-icon>
                 </mat-list-item>
 
-                <mat-list-item routerLink="/manage-asset">
-                    <span mat-line> Manage Assets</span>
+                <mat-list-item routerLink="/manage-devices">
+                    <span mat-line> Manage Devices</span>
                     <mat-icon mat-list-icon>dashboard</mat-icon>
                 </mat-list-item>
 
@@ -40,11 +40,6 @@
                     <span mat-line> Geofence Dashboard</span>
                     <mat-icon mat-list-icon>vpn_lock</mat-icon>
                 </mat-list-item>
-
-                <!-- <mat-list-item routerLink="/zone-dashboard">
-                    <span mat-line> Zone Dashboard</span>
-                    <mat-icon mat-list-icon>view_list</mat-icon>
-                </mat-list-item> -->
 
                 <mat-list-item routerLink="/map-actions" [hidden]="loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole'">
                     <span mat-line> Map Center</span>
@@ -113,7 +108,7 @@
                 <img src="../assets/logo.png" alt="" class="image">
             </div>
             <div class="w-100 flex-grow-1" *ngIf="(logged && menu)">
-                <button mat-mini-fab [matMenuTriggerFor]="belowMenu" class="menu">
+                <button mat-mini-fab [matMenuTriggerFor]="belowMenu" class="menu" color="primary">
                     <mat-icon>menu</mat-icon>
                 </button>
 
@@ -125,7 +120,7 @@
                         <mat-icon mat-list-icon>home</mat-icon>
                         <span mat-line>Home</span>
                     </button>
-                    <button mat-menu-item routerLink="/manage-asset">
+                    <button mat-menu-item routerLink="/manage-devices">
                         <mat-icon mat-list-icon>dashboard</mat-icon>
                         <span mat-line>Manage Assets</span>
                     </button>
@@ -133,10 +128,6 @@
                         <mat-icon mat-list-icon>vpn_lock</mat-icon>
                         <span mat-line>Geofence Dashboard</span>
                     </button>
-                    <!-- <button mat-menu-item routerLink="/zone-dashboard">
-                        <mat-icon mat-list-icon>view_list</mat-icon>
-                        <span mat-line> Zone Dashboard</span>
-                    </button> -->
                     <button mat-menu-item routerLink="/map-actions" [hidden]="loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole'">
                         <mat-icon mat-list-icon>map</mat-icon>
                         <span mat-line>Map center</span>
@@ -175,7 +166,7 @@
     </div>
 </div>
 
-<div *ngIf="(logged && !menu)||(!logged && !menu) ">
+<div *ngIf="(logged && !menu) || (!logged && !menu)">
     <router-outlet></router-outlet>
     <div *ngIf="(logged && !menu)">
         <br>

@@ -39,7 +39,7 @@ export class GeneralService {
 
   filterArray(array) {
     array = array.filter((obj) => {
-      return obj != 0
+      return obj != 0 && obj != undefined
     })
     return array
   }

@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import * as moment from 'moment';
+import * as XLSX from 'xlsx';
 import {
   MatDialog,
   MatDialogRef,
@@ -18,12 +19,12 @@ import { ApiService } from '../../services/api.service';
 export class VehiclewisereportComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  vehicleReportData: any
-  vehicleName: any = []
-  deviceId: any = []
-  servicedVehicleData: any = []
-  vehicleZoneData: any = []
-  jcSummaryData: any = []
+  vehicleReportData: any;
+  vehicleName: any = [];
+  deviceId: any = [];
+  servicedVehicleData: any = [];
+  vehicleZoneData: any = [];
+  jcSummaryData: any = [];
   dataSource: any = [];
   displayedColumns1 = ['i', 'deviceId', 'deviceName', 'coinName', 'inTime', 'outTime', 'totTime'];
   displayedColumns2 = ['i', 'deviceName', 'coinName', 'inTime', 'outTime', 'totTime'];
@@ -51,8 +52,8 @@ export class VehiclewisereportComponent implements OnInit {
     this.getData(10, 0, this.vehicleReportData.type)
   }
   getData(limit, offset, type) {
-    var data = {}
-    this.vehicleReportData.type = type
+    var data = {};
+    this.vehicleReportData.type = type;
     let from = moment(this.vehicleReportData.fromDate).format("YYYY-MM-DD")
     let to = moment(this.vehicleReportData.toDate).format("YYYY-MM-DD")
     console.log(from, to);
@@ -202,8 +203,8 @@ export class VehiclewisereportComponent implements OnInit {
         this.vehicleZoneData = []
         console.log("res 6==", res)
         if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength)
-          this.vehicleZoneData = res.success
+          this.currentPageLength = parseInt(res.totalLength);
+          this.vehicleZoneData = res.success;
           for (let i = 0; i < res.success.length; i++) {
             res.success[i].totalTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
 
@@ -228,28 +229,26 @@ export class VehiclewisereportComponent implements OnInit {
       }
       console.log("data to send==", data)
       this.api.getJcSummaryData(data).then((res: any) => {
-        console.log("res 7 from api==",res)
+        console.log("res 7 from api==", res)
         this.jcSummaryData = {}
         if (res.status) {
           this.jcSummaryData.data = res.success;
           this.jcSummaryData.head = ['Sl no.', 'Date', 'Vehicle no.', 'Tag no.'];
-   
-        if(this.jcSummaryData.data[0].hasOwnProperty('zoneJC')){
-          res.success[0].zoneJC.forEach(obj => {
-            let suffix = {
-              tripCount : 'trip count',
-              inTime : 'first in time',
-              outTime : 'last out time',
-              std : 'Standard time',
-              deviation : 'Deviation'
-            }
-            let a = [obj.zoneName+' '+suffix.tripCount, obj.zoneName+' '+suffix.inTime, obj.zoneName+' '+suffix.outTime, suffix.std, suffix.deviation]
-            this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
-          });
-        }
-    
 
-          console.log("res 7==", this.jcSummaryData)
+          if (this.jcSummaryData.data[0].hasOwnProperty('zoneJC')) {
+            res.success[0].zoneJC.forEach(obj => {
+              let suffix = {
+                tripCount: 'trip count',
+                inTime: 'first in time',
+                outTime: 'last out time',
+                std: 'Standard time',
+                deviation: 'Deviation'
+              }
+              let a = [obj.zoneName + ' ' + suffix.tripCount, obj.zoneName + ' ' + suffix.inTime, obj.zoneName + ' ' + suffix.outTime, suffix.std, suffix.deviation]
+              this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
+            });
+          }
+                console.log("res 7==", this.jcSummaryData)
         }
 
       }).catch(err => {
@@ -362,10 +361,22 @@ export class VehiclewisereportComponent implements OnInit {
         console.log("err===", err)
       })
     }
+    if (this.vehicleReportData.type == '7') {
+      let fileName = 'Job card wise Report.xlsx'
+
+      let element = document.getElementById('htmlData');
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+      /* generate workbook and add the worksheet */
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+      /* save to file */
+      XLSX.writeFile(wb, fileName);
+    }
   }
 
   getUpdate(event, type) {
-
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
     this.getData(this.limit, this.offset, type)
@@ -379,5 +390,23 @@ export class VehiclewisereportComponent implements OnInit {
       this.dataSource.filter = a.trim().toLowerCase()
     })
   }
-
+  searchVehicle(data) {
+    console.log('search data===', data);
+    if (data) {
+      this.jcSummaryData.data = this.jcSummaryData.data.filter((obj) => {
+        return (
+          (obj.deviceId
+            .toString()
+            .toLowerCase()
+            .indexOf(data.toString().toLowerCase()) > -1) || (obj.deviceName
+              .toString()
+              .toLowerCase()
+              .indexOf(data.toString().toLowerCase()) > -1)
+        );
+      });
+    }
+    else{
+      this.getData(this.limit, this.offset,'7');
+    }
+  }
 }

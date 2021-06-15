@@ -15,12 +15,13 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+
   title = 'ATapp';
   deviceInfo: any;
   isMobile: boolean;
   isTablet: boolean;
   isDesktopDevice: boolean;
-  // isExpanded = true;
+  isExpanded = true;
   // isShowing = false;
   showLabel: boolean;
   loginDetails: any = '';
@@ -32,8 +33,8 @@ export class AppComponent {
   countDownTimer: any;
   duration: any;
   time: any;
-  image: any = ''
-  host: any = environment.apiHost
+  image: any = '';
+  host: any = environment.apiHost;
 
 
   constructor(
@@ -51,9 +52,10 @@ export class AppComponent {
       if (res) {
         this.logged = res.other;
         this.menu = res.menu;
-        console.log("log meu==", this.logged, this.menu)
+        // console.log("log meu==", this.logged, this.menu)
         if (this.logged == true) {
           this.loginDetails = this.login.getLoginDetails();
+          console.log(this.loginDetails)
           this.duration = this.loginDetails.timer;
           this.startTimer()
           this.freezeSubscribe();
@@ -63,7 +65,7 @@ export class AppComponent {
         }
         else {
           clearInterval(this.countDownTimer);
-          this.loginDetails = ''
+          this.loginDetails = '';
         }
       }
     });
@@ -83,7 +85,7 @@ export class AppComponent {
 
   freezeSubscribe() {
     this.general.loadingFreez.subscribe((res: any) => {
-      console.log("free==", res);
+      // console.log("free==", res);
       this.statusFreeze = res.status
       this.freezeMessage = res.msg
     })
@@ -112,7 +114,7 @@ export class AppComponent {
           return;
         }
         if (minutes > 59) {
-          console.log("timer 22==", this.countDownTimer);
+          // console.log("timer 22==", this.countDownTimer);
           this.general.loadingFreez.next({ status: false, msg: '' })
           clearInterval(this.countDownTimer);
           this.login.logout();

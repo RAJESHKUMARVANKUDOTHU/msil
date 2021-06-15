@@ -223,7 +223,7 @@ export class VehicleTrackComponent implements OnInit {
     }).addTo(this.map);
 
     let angle = this.angleFromCoordinate(latlngPath[0].lat, latlngPath[0].lng, latlngPath[1].lat, latlngPath[1].lng)
-    
+
     var m = new L.marker([data.latLong[0].latitude, data.latLong[0].longitude], {
       icon: icon,
       // rotationAngle: (angle)// default rotation
@@ -243,7 +243,7 @@ export class VehicleTrackComponent implements OnInit {
   test(){
     let testData = [
       {
-        lat : '53.21003615423956', 
+        lat : '53.21003615423956',
         lng : '-87.38192666366524'
       },
       {
@@ -252,17 +252,17 @@ export class VehicleTrackComponent implements OnInit {
 
       },
       // {
-        
+
       //   lat: '142',
       //   lng:  '5.52810190302813'
       // },
       // {
-        
+
       //   lat: '169.58751257257663',
       //   lng:  '-82.319368017550774'
       // },
       // {
-        
+
       //   lat: '-40.5717684476798',
       //   lng:  '61.2861555820262'
       // },
@@ -297,7 +297,7 @@ export class VehicleTrackComponent implements OnInit {
     }).addTo(this.map);
 
     let angle = this.angleFromCoordinate(latlngPath[0].lat, latlngPath[0].lng, latlngPath[1].lat, latlngPath[1].lng)
-    
+
     var m = new L.marker([latlngPath[0].lat,latlngPath[0].lng], {
       icon: icon,
       // rotationAngle: (angle)// default rotation

@@ -56,16 +56,21 @@
         justify-content: space-around;
         background: #002060 !important;
     }
-    
-    .mat-tab-label .mat-tab-label-content {
+    /* .mat-tab-label .mat-tab-label-content {
         background: transparent;
         color: white;
-    }
+    } */
     
     .mat-tab-labels {
         display: flex;
         justify-content: space-around;
     }
+
+  /*   .mat-tab-label-active{
+      background-color: transparent ;
+      background:  #dee2e678;
+      opacity: 1 !important;
+    } */
     
     .statusFreeze {
         position: absolute;

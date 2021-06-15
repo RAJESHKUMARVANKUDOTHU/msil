@@ -95,8 +95,8 @@ export class MapActionsComponent implements OnInit {
       let latlng = [data.latlng.lat, data.latlng.lng];
 
       let coin = this.configCoinForm.get('coinId').value;
-      console.log("coin id==",coin);
-      
+      console.log("coin id==", coin);
+
       if (coin) {
         this.configCoinForm.patchValue({
           coinBounds: latlng,
@@ -104,7 +104,7 @@ export class MapActionsComponent implements OnInit {
       }
       this.createMarker();
     });
-    if(this.gatewayList.length == 1){
+    if (this.gatewayList.length) {
       this.layoutSelect(this.gatewayList[0].layoutName);
     }
     this.cd.detectChanges();
@@ -113,7 +113,7 @@ export class MapActionsComponent implements OnInit {
   createForm() {
     this.newLayoutForm = this.fb.group({
       gatewayId: ['', Validators.required],
-      layoutName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+      layoutName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       fileData: ['', Validators.required],
       height: ['', Validators.required],
       width: ['', Validators.required]
@@ -131,7 +131,8 @@ export class MapActionsComponent implements OnInit {
 
   layoutSelect(data, status = 1) {
     this.mapDisable = false;
-    this.gateway = []
+    this.gateway = [];
+    this.coinData = [];
     console.log('data layout===', data);
     if (data) {
       this.selectedLayout = data;
@@ -162,8 +163,8 @@ export class MapActionsComponent implements OnInit {
     this.api.getLayoutImage(data[0]._id).then((res: any) => {
       // console.log("image layout==", res);
       this.layoutData = data[0];
-      console.log("this.layoutData==",this.layoutData);
-      
+      console.log("this.layoutData==", this.layoutData);
+
       this.configCoinForm.reset()
       this.updateSelected();
       this.clearMapImage();
@@ -355,7 +356,12 @@ export class MapActionsComponent implements OnInit {
   toggleAllSelectionGateway(formData) {
     if (this.allSelected.selected) {
       formData.controls.gatewayId.patchValue([
-        ...this.newGatewayLayout.map((obj) => obj.gatewayId),
+        ...this.newGatewayLayout.map((obj) => {
+          if (obj.layoutName == null) {
+           return obj.gatewayId
+          }
+        }
+        ),
         0,
       ]);
     } else {
@@ -394,38 +400,46 @@ export class MapActionsComponent implements OnInit {
     // data.length = data.width;
     // data.breadth = data.height;
     data.gatewayObjectId = this.general.filterArray(data.gatewayId);
-    data.fileData.filename =
-      data.gatewayId[0] +
-      parseInt(this.randomNumber().toString()) +
-      data.fileData.filename;
-    // data.file=data.fileData.filename
-    console.log('file===', data);
-    if (
-      data.fileData.filetype == 'image/jpg' ||
-      data.fileData.filetype == 'image/jpeg' ||
-      data.fileData.filetype == 'image/png'
-    ) {
-      this.general.loadingFreez.next({ status: true, msg: 'Uploading layout..!' })
-      this.api
-        .createLayout(data)
-        .then((res: any) => {
-          console.log('create layout res===', res);
-          this.refreshGateway();
-          this.getLayout();
-          if (res.status) {
-            this.general.loadingFreez.next({ status: false, msg: '' })
-            this.getLayout()
-            this.newLayoutForm.reset()
-            this.clearFile()
-            this.general.openSnackBar(res.success, '');
-          } else {
-            this.general.openSnackBar(res.success, '');
-          }
-        })
-        .catch((err: any) => {
-          console.log('error==', err);
-        });
-    } else {
+    data.layoutName = data.layoutName.trim().replace(/\s\s+/g, ' ');
+    console.log("data.gatewayObjectId==",data.gatewayObjectId);
+    
+    if (data.gatewayObjectId.length > 0) {
+      data.fileData.filename =
+        data.gatewayId[0] +
+        parseInt(this.randomNumber().toString()) +
+        data.fileData.filename;
+      // data.file=data.fileData.filename
+      console.log('file===', data);
+      if (
+        data.fileData.filetype == 'image/jpg' ||
+        data.fileData.filetype == 'image/jpeg' ||
+        data.fileData.filetype == 'image/png'
+      ) {
+        this.general.loadingFreez.next({ status: true, msg: 'Uploading layout..!' })
+        this.api
+          .createLayout(data)
+          .then((res: any) => {
+            console.log('create layout res===', res);
+            this.refreshGateway();
+            this.getLayout();
+            if (res.status) {
+              this.general.loadingFreez.next({ status: false, msg: '' })
+              this.getLayout()
+              this.newLayoutForm.reset();
+              this.clearFile()
+              this.general.openSnackBar(res.success, '');
+            } else {
+              this.general.openSnackBar(res.success, '');
+            }
+          })
+          .catch((err: any) => {
+            console.log('error==', err);
+          });
+      } else { }
+    }
+    else {
+      this.newLayoutForm.reset();
+      this.general.openSnackBar("Sorry!! No more gateways in the list", '')
     }
   }
 
@@ -452,26 +466,26 @@ export class MapActionsComponent implements OnInit {
   deleteCoinBound(data) {
     console.log('submit coin===', data);
 
-    if(this.configCoinForm.valid){
-      try{
+    if (this.configCoinForm.valid) {
+      try {
         this.api
-        .deleteCoinBound(data)
-        .then((res: any) => {
-          console.log('delete bounds res==', res);
-          if (res.status) {
-            this.general.openSnackBar(res.success, '');
-            this.getLayout();
-            this.configCoinForm.reset()
-          } else {
-            this.general.openSnackBar( !res.success?res.message:res.success, '');
-          }
-        })
-        .catch((err) => {
-          console.log('err==', err);
-        });
+          .deleteCoinBound(data)
+          .then((res: any) => {
+            console.log('delete bounds res==', res);
+            if (res.status) {
+              this.general.openSnackBar(res.success, '');
+              this.getLayout();
+              this.configCoinForm.reset()
+            } else {
+              this.general.openSnackBar(!res.success ? res.message : res.success, '');
+            }
+          })
+          .catch((err) => {
+            console.log('err==', err);
+          });
       }
-      catch(err){
-        console.log("error",err)
+      catch (err) {
+        console.log("error", err)
       }
     }
   }
@@ -558,35 +572,35 @@ export class MapActionsComponent implements OnInit {
   }
 
   deleteLayout() {
-
     var data = {
-      fileName: this.gateway[0].fileName
+      fileName: this.gateway[0].fileName,
     }
     console.log("delete layout ==", data)
+    if (confirm("Are you sure?This operation will delete your layout permanently!")) {
 
-    this.api.deleteLayout(data).then((res: any) => {
-      console.log("delete layout res ==", res)
-      if (res.status) {
-        this.general.openSnackBar(res.success, '')
-        this.mapDisable = true
-        this.resetMap()
-        this.map = null
-        this.coinData = []
-        this.selectedLayout = []
-        this.layoutData = []
-        this.gateway = []
-        this.marker = []
-        this.getLayout();
-        this.refreshGateway()
-      }
-      else {
-        this.general.openSnackBar(!res.success ? res.message : res.success, '')
-
-      }
-    })
+      this.api.deleteLayout(data).then((res: any) => {
+        console.log("delete layout res ==", res)
+        if (res.status) {
+          this.general.openSnackBar(res.success, '');
+          this.mapDisable = true;
+          this.resetMap();
+          this.map = null;
+          this.coinData = [];
+          this.selectedLayout = [];
+          this.layoutData = [];
+          this.gateway = [];
+          this.marker = [];
+          this.getLayout();
+          this.refreshGateway();
+        }
+        else {
+          this.general.openSnackBar(!res.success ? res.message : res.success, '')
+        }
+      }).catch(err => {
+        console.log("err==", err);
+      })
+    }
   }
-
-
 
   heatMap(latlng: any) {
     console.log("heatmap", latlng)
@@ -620,124 +634,3 @@ export class MapActionsComponent implements OnInit {
     console.log("heatmap==", this.map)
   }
 }
-
-// selectedLayoutCoin: any = {
-//   layout: '',
-//   coin: [],
-// };
-// gatewayData: any = [];
-// coinData: any = [];
-// gatewayList: any = [
-//   {
-//     layoutName: 'layout.jpg',
-//     gateway: [
-//       {
-//         gatewayId: '123456789878',
-//         gatewayName: 'gateway1',
-//         coinData: [
-//           {
-//             _id: 1,
-//             coinId: 1,
-//             coinName: 'a',
-//             bound: [79.48061790228995, -189.84375],
-//           },
-//           {
-//             _id: 2,
-//             coinId: 2,
-//             coinName: 'b',
-//             bound: [-52.32191088594772, 253.12500000000003],
-//           },
-//           {
-//             _id: 3,
-//             coinId: 3,
-//             coinName: 'c',
-//             bound: [],
-//           },
-//         ],
-//       },
-//       {
-//         gatewayId: 'AB3456789878',
-//         gatewayName: 'gateway2',
-//         coinData: [
-//           {
-//             _id: 4,
-//             coinId: 4,
-//             coinName: 'aa',
-//             bound: [-69.56522590149099, -354.37500000000006],
-//           },
-//           {
-//             _id: 5,
-//             coinId: 5,
-//             coinName: 'bb',
-//             bound: [],
-//           },
-//           {
-//             _id: 6,
-//             coinId: 6,
-//             coinName: 'cc',
-//             bound: [],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     layoutName: 'layout.jpg',
-//     gateway: [
-//       {
-//         gatewayId: '123456789878',
-//         gatewayName: 'gateway1',
-//         coinData: [
-//           {
-//             _id: 1,
-//             coinId: 1,
-//             coinName: 'a',
-//             bound: [],
-//           },
-//           {
-//             _id: 2,
-//             coinId: 2,
-//             coinName: 'b',
-//             bound: [24.766784522874453, -514.6875000000001],
-//           },
-//           {
-//             _id: 3,
-//             coinId: 3,
-//             coinName: 'c',
-//             bound: [],
-//           },
-//         ],
-//       },
-//       {
-//         gatewayId: 'CD3456789878',
-//         gatewayName: 'gateway3',
-//         coinData: [
-//           {
-//             _id: 7,
-//             coinId: 7,
-//             coinName: 'aaa',
-//             bound: [],
-//           },
-//           {
-//             _id: 8,
-//             coinId: 8,
-//             coinName: 'bbb',
-//             bound: [],
-//           },
-//           {
-//             _id: 9,
-//             coinId: 9,
-//             coinName: 'ccc',
-//             bound: [],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   {
-//     layoutName: 'office-layout.png',
-//     gateway: [],
-//   },
-// ];
-// coinList: any = [];

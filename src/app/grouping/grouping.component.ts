@@ -33,7 +33,8 @@ dataSource: any = [];
     private api: ApiService,
     public general: GeneralService,
    ) {
-     this.groupData=data.data
+     this.groupData=data.data;
+     console.log("this.groupData====",this.groupData);
     }
 
   ngOnInit(): void {

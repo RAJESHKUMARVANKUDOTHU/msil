@@ -22,7 +22,7 @@ export class ApiService {
     // };
     return new Promise((resolve, reject) => {
       this.http.post(url, data, httpOptions).subscribe(
-        (res:any) => {
+        (res: any) => {
           resolve(res);
         },
         (err) => {
@@ -32,7 +32,7 @@ export class ApiService {
       );
     });
   }
-  verifyTwoStepOtp(data){
+  verifyTwoStepOtp(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -54,7 +54,7 @@ export class ApiService {
     });
   }
 
-  forgetPassword(data){
+  forgetPassword(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -76,7 +76,7 @@ export class ApiService {
     });
   }
 
-  forgetPasswordVerify(data){
+  forgetPasswordVerify(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -200,314 +200,314 @@ export class ApiService {
       );
     });
   }
-// ----------------superadmin settings------------------------
-getUserSettings(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  // ----------------superadmin settings------------------------
+  getUserSettings(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getUserSettings/'+data;
-  return new Promise((resolve, reject) => {
-    this.http.get(url).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/getUserSettings/' + data;
+    return new Promise((resolve, reject) => {
+      this.http.get(url).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
 
-updateOnlineStatus(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateOnlineStatus(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateOnlineStatus';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/updateOnlineStatus';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-updateOfflineStatus(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateOfflineStatus(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateOfflineStatus';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/updateOfflineStatus';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-updateRssi(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateRssi(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateRssi';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/updateRssi';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-updateTxPower(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateTxPower(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateTxPower';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/updateTxPower';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-createdDeviceShift(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  createdDeviceShift(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/createdDeviceShift';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-getUserShiftSuperAdmin(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/createdDeviceShift';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getUserShiftSuperAdmin(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getUserShiftSuperAdmin';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-updateUserShiftSuperAdmin(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/getUserShiftSuperAdmin';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  updateUserShiftSuperAdmin(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateUserShiftSuperAdmin';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-deleteUserShiftSuperAdmin(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/updateUserShiftSuperAdmin';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  deleteUserShiftSuperAdmin(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/deleteUserShiftSuperAdmin';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/deleteUserShiftSuperAdmin';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-updateMergingTime(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateMergingTime(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateMergingTime';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-updateDeletionTime(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/updateMergingTime';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  updateDeletionTime(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateDeletionTime'
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-updateMeshId(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/updateDeletionTime'
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  updateMeshId(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateMeshId'
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-getSuperAdminGatewayData(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/updateMeshId'
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getSuperAdminGatewayData(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/viewGatewaySuperAdmin'
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/viewGatewaySuperAdmin'
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-getMeshData(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  getMeshData(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getMeshData'
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+    let url = this.host + '/getMeshData'
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-updateInOutMergeTime(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  updateInOutMergeTime(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/updateInOutMergeTime'
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-// ---------------------end----------------------------
+    let url = this.host + '/updateInOutMergeTime'
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  // ---------------------end----------------------------
   createUsers(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -685,6 +685,45 @@ updateInOutMergeTime(data){
     let body = {
       data: data,
     };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  viewSuperAdminDevice(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/viewSuperAdminDevice';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getSuperAdminCoin(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    let body = {
+      data: data,
+    };
+    let url = this.host + '/getSuperAdminCoin';
     return new Promise((resolve, reject) => {
       this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
@@ -955,7 +994,7 @@ updateInOutMergeTime(data){
     let body = {
       data: data,
     };
-    
+
     return new Promise((resolve, reject) => {
       this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
@@ -976,7 +1015,7 @@ updateInOutMergeTime(data){
     let body = {
       data: data,
     };
-    
+
     return new Promise((resolve, reject) => {
       this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
@@ -1033,12 +1072,12 @@ updateInOutMergeTime(data){
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    let body={
-      data:data
+    let body = {
+      data: data
     }
     let url = this.host + '/getGeoFenceSetting';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,httpOptions).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1048,16 +1087,16 @@ updateInOutMergeTime(data){
       );
     });
   }
-  deleteGoefenceSetting(data){
+  deleteGoefenceSetting(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    let body={
-      data:data
+    let body = {
+      data: data
     }
     let url = this.host + '/deleteGeoFenceCoins';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,httpOptions).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1076,7 +1115,7 @@ updateInOutMergeTime(data){
     };
     let url = this.host + '/viewUserLocationDevice';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,httpOptions).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1086,7 +1125,7 @@ updateInOutMergeTime(data){
       );
     });
   }
-  getGroupingData(data){
+  getGroupingData(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1095,7 +1134,7 @@ updateInOutMergeTime(data){
     };
     let url = this.host + '/getGroupingData';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,httpOptions).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1258,14 +1297,17 @@ updateInOutMergeTime(data){
   }
 
 
-  getZoneVehicleData() {
+  getZoneVehicleData(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
 
     let url = this.host + '/getZoneVehicleData';
+    let body = {
+      data: data,
+    };
     return new Promise((resolve, reject) => {
-      this.http.get(url).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1441,14 +1483,16 @@ updateInOutMergeTime(data){
     });
   }
 
-  getGroup() {
+  getGroup(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-
+    let body = {
+      data: data,
+    };
     let url = this.host + '/getAllGroupDetails';
     return new Promise((resolve, reject) => {
-      this.http.get(url).subscribe(
+      this.http.post(url, body, httpOptions).subscribe(
         (res: any) => {
           resolve(res.data);
         },
@@ -1520,7 +1564,8 @@ updateInOutMergeTime(data){
       );
     });
   }
-  updateZoneInfo(data){
+
+  updateZoneInfo(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1667,7 +1712,7 @@ updateInOutMergeTime(data){
     });
   }
 
-  twoStepAuth(data){
+  twoStepAuth(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1689,21 +1734,21 @@ updateInOutMergeTime(data){
     });
   }
 
-  uploadLogo(data){
+  uploadLogo(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     let body = {
       data: data,
     };
-    let url = this.host+'/uploadLogo';
-    return new Promise((resolve,reject)=>{
-      this.http.post(url,body,httpOptions).subscribe(res=>{
+    let url = this.host + '/uploadLogo';
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(res => {
         resolve(res);
       })
     });
   }
-  getLogoImage(){
+  getLogoImage() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1728,6 +1773,139 @@ updateInOutMergeTime(data){
       );
     });
   }
+
+  // .......main zone.......................
+
+  createMainZone(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/createMainZoneDetails';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  getMainZones() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/getMainZoneDetails';
+
+    return new Promise((resolve, reject) => {
+      this.http.get(url).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  updateMainZones(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/updateMainZoneDetails';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  deleteMainZone(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/deleteMainZoneDetails';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+
+  // .....................subzone.........................
+  getSubZones() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/setTwoStepAuth';
+    return new Promise((resolve, reject) => {
+      this.http.get(url).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  updateSubZones(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/updateSubZones';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          console.log(res.data)
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+
   refreshSettings() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -1873,7 +2051,7 @@ updateInOutMergeTime(data){
     });
   }
 
-  deleteCoinBound(data){
+  deleteCoinBound(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1893,7 +2071,7 @@ updateInOutMergeTime(data){
       );
     });
   }
-  
+
   deleteLayout(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -1935,7 +2113,7 @@ updateInOutMergeTime(data){
       );
     });
   }
-  getVehicleStatus(data){
+  getVehicleStatus(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1955,7 +2133,7 @@ updateInOutMergeTime(data){
       );
     });
   }
-  getVehicleServiceCount(data){
+  getVehicleServiceCount(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1976,7 +2154,7 @@ updateInOutMergeTime(data){
     });
   }
 
-  getdeviceLatLngPerDay(data){
+  getdeviceLatLngPerDay(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -1996,28 +2174,28 @@ updateInOutMergeTime(data){
       );
     });
   }
-// -----------------report page APIs--------------------
-genericReport(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  // -----------------report page APIs--------------------
+  genericReport(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getGenericReport';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-vehicleNameReport(data){
+    let url = this.host + '/getGenericReport';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  vehicleNameReport(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
@@ -2036,9 +2214,9 @@ vehicleNameReport(data){
         }
       );
     });
-}
-deviceIdReport(data){
-      const httpOptions = {
+  }
+  deviceIdReport(data) {
+    const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
 
@@ -2056,9 +2234,9 @@ deviceIdReport(data){
         }
       );
     });
-}
-getLocationReport(data){
-      const httpOptions = {
+  }
+  getLocationReport(data) {
+    const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
 
@@ -2076,9 +2254,9 @@ getLocationReport(data){
         }
       );
     });
-}
-getZoneWiseReport(data){
-      const httpOptions = {
+  }
+  getZoneWiseReport(data) {
+    const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
 
@@ -2096,182 +2274,183 @@ getZoneWiseReport(data){
         }
       );
     });
-}
+  }
 
-getvehicleServicedReport(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  getvehicleServicedReport(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getVehicleReport';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-getAverageTimeOfBays(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/getVehicleReport';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getAverageTimeOfBays(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/getAverageTimeOfBays';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-getZonePerformance(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/getAverageTimeOfBays';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getZonePerformance(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  let url = this.host + '/zonePerformance';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
-zoneWisePerformancePerDay(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/zonePerformance';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-  let url = this.host + '/zoneWisePerformancePerDay';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+  zoneWisePerformancePerDay(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-getVehicleZoneWiseReport(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/zoneWisePerformancePerDay';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-  let url = this.host + '/getVehicleZoneWiseReport';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+  getVehicleZoneWiseReport(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-zoneWiseEfficiency(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/getVehicleZoneWiseReport';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-  let url = this.host + '/zoneWiseEfficiency';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+  zoneWiseEfficiency(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-getJcSummaryData(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/zoneWiseEfficiency';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-  let url = this.host + '/getJcSummaryData';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+  getJcSummaryData(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-getZoneWiseEfficiencyByDay(data){
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+    let url = this.host + '/getJcSummaryData';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-  let url = this.host + '/getZoneWisePerformanceByDelay';
-  let body = {
-    data: data,
-  };
-  return new Promise((resolve, reject) => {
-    this.http.post(url, body, httpOptions).subscribe(
-      (res: any) => {
-        resolve(res.data);
-      },
-      (err) => {
-        reject(err);
-      }
-    );
-  });
-}
+  getZoneWiseEfficiencyByDay(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/getZoneWisePerformanceByDelay';
+    let body = {
+      data: data,
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
   // ----------------report download-------------------------------
 
-  downloadGenericReport(data,fileName){
+  downloadGenericReport(data, fileName) {
     // this.general.loadingFreez.next({status:true})
     let body = {
       data: data,
     };
     let url = this.host + '/downloadGenericReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2282,14 +2461,14 @@ getZoneWiseEfficiencyByDay(data){
         })
     });
   }
-  downloadvehicleNameReport(data,fileName){
+  downloadvehicleNameReport(data, fileName) {
     // this.general.loadingFreez.next({status:true})
     let body = {
       data: data,
     };
     let url = this.host + '/downloadDeviceNameReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2300,14 +2479,14 @@ getZoneWiseEfficiencyByDay(data){
         })
     });
   }
-  downloadDeviceIdReport(data,fileName){
+  downloadDeviceIdReport(data, fileName) {
     // this.general.loadingFreez.next({status:true})
     let body = {
       data: data,
     };
     let url = this.host + '/downloadDeviceIdReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2318,13 +2497,13 @@ getZoneWiseEfficiencyByDay(data){
         })
     });
   }
-  downloadLocationReport(data,fileName){
+  downloadLocationReport(data, fileName) {
     let body = {
       data: data,
     };
     let url = this.host + '/downloadLocationReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2336,13 +2515,13 @@ getZoneWiseEfficiencyByDay(data){
     });
   }
 
-  downloadzoneWiseReport(data,fileName){
+  downloadzoneWiseReport(data, fileName) {
     let body = {
       data: data,
     };
     let url = this.host + '/downloadZoneIdReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2354,13 +2533,13 @@ getZoneWiseEfficiencyByDay(data){
     });
   }
 
-  downloadVehicleZoneWiseReport(data,fileName){
+  downloadVehicleZoneWiseReport(data, fileName) {
     let body = {
       data: data,
     };
     let url = this.host + '/downloadVehicleZoneWiseReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2371,13 +2550,13 @@ getZoneWiseEfficiencyByDay(data){
         })
     });
   }
-  downloadAverageTimeOfBays(data,fileName){
+  downloadAverageTimeOfBays(data, fileName) {
     let body = {
       data: data,
     };
     let url = this.host + '/getAverageTimeOfBaysDownload';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2388,13 +2567,13 @@ getZoneWiseEfficiencyByDay(data){
         })
     });
   }
-  downloadVehicleReport(data,fileName){
+  downloadVehicleReport(data, fileName) {
     let body = {
       data: data,
     };
     let url = this.host + '/downloadVehicleReport';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200)
           this.downloadFile(res, fileName)
 
@@ -2412,7 +2591,7 @@ getZoneWiseEfficiencyByDay(data){
     let dataType = body.type;
     let binaryData = [];
     binaryData.push(body);
-   
+
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
     downloadLink.setAttribute('download', fileName);
@@ -2420,14 +2599,14 @@ getZoneWiseEfficiencyByDay(data){
     downloadLink.click();
   }
 
-  downloadRegisteredCoins(data,  fileName) {
+  downloadRegisteredCoins(data, fileName) {
     // this.general.loadingFreez.next({status:true})
     let body = {
       data: data,
     };
     let url = this.host + '/downloadRegisteredCoins';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         console.log("res==", res)
         if (res.status == 200)
           this.downloadFile(res, fileName)
@@ -2448,7 +2627,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadRegisteredGateways';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         // console.log("res==", res)
         if (res.status == 200)
           this.downloadFile(res, fileName)
@@ -2468,7 +2647,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadRegisteredDeviceData';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
 
         if (res.status == 200)
           this.downloadFile(res, fileName)
@@ -2489,7 +2668,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOnlineCoin';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
 
         if (res.status == 200)
           this.downloadFile(res, fileName)
@@ -2510,9 +2689,9 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOfflineCoin';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200) this.downloadFile(res, fileName);
-        console.log("res==",res)
+        console.log("res==", res)
 
         resolve(true);
       },
@@ -2530,7 +2709,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOnlineGateways';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200) this.downloadFile(res, fileName);
         resolve(true);
       },
@@ -2548,9 +2727,9 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOfflineGateways';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200) this.downloadFile(res, fileName);
-        console.log("res==",res)
+        console.log("res==", res)
         resolve(true);
       },
         (err) => {
@@ -2567,7 +2746,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOnlineDeviceData';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200) this.downloadFile(res, fileName);
 
         resolve(true);
@@ -2586,7 +2765,7 @@ getZoneWiseEfficiencyByDay(data){
     };
     let url = this.host + '/downloadOfflineDeviceData';
     return new Promise((resolve, reject) => {
-      this.http.post(url,body,{ observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
+      this.http.post(url, body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(res => {
         if (res.status == 200) this.downloadFile(res, fileName);
 
         resolve(true);
@@ -2597,13 +2776,13 @@ getZoneWiseEfficiencyByDay(data){
       );
     });
   }
-  
+
   // ----------------------congestion---------------------
-  getCongestion(data){
+  getCongestion(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-  
+
     let url = this.host + '/getCongestion';
     let body = {
       data: data,
@@ -2619,11 +2798,11 @@ getZoneWiseEfficiencyByDay(data){
       );
     });
   }
-  getCongestionPerDay(data){
+  getCongestionPerDay(data) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-  
+
     let url = this.host + '/getCongestionPerDay';
     let body = {
       data: data,
@@ -2640,13 +2819,13 @@ getZoneWiseEfficiencyByDay(data){
     });
   }
 
-  getVehicleStatusData(data){
+  getVehicleStatusData(data) {
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json',"skip":"true" }),
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', "skip": "true" }),
     };
-  
+
     let url = this.host + '/getVehicleInfo';
- 
+
     return new Promise((resolve, reject) => {
       this.http.post(url, data, httpOptions).subscribe(
         (res: any) => {
@@ -2658,17 +2837,100 @@ getZoneWiseEfficiencyByDay(data){
       );
     });
   }
-  getZones(data){
+  getZones(data) {
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json',"skip":"true" }),
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', "skip": "true" }),
     };
-  
+
     let url = this.host + '/getZonesInfo';
- 
+
     return new Promise((resolve, reject) => {
       this.http.post(url, data, httpOptions).subscribe(
         (res: any) => {
           resolve(res);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  getZoneByZoneId(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+
+    let url = this.host + '/getZonesDetailsByZoneId';
+    let body = {
+      data: data
+    }
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  // ---------------------suggestion----------------------------------
+  vehicleAutoPopulate(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    let body = {
+      data: data
+    }
+    let url = this.host + '/vehicleAutoPopulate';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+  coinAutoPopulate(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    let body = {
+      data: data
+    }
+    let url = this.host + '/coinAutoPopulate';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  zoneAutoPopulate(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    let body = {
+      data: data
+    }
+    let url = this.host + '/zoneAutoPopulate';
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body, httpOptions).subscribe(
+        (res: any) => {
+          resolve(res.data);
         },
         (err) => {
           reject(err);

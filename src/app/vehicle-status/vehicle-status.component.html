@@ -1,7 +1,7 @@
 <!-- <div class="container-fluid"> --><br>
 <div class="d-flex justify-content-around">
     <div [ngStyle]="{'font-size':general.isDesktopDevice? 'xxx-large':'large'}">
-        <span><strong>{{vehicleData.vehicleName}}</strong></span>
+        <span><strong>{{vehicleData?.vehicleName}}</strong></span>
     </div>
 
 </div> <br> <br>
@@ -10,7 +10,7 @@
 <div class="d-flex justify-content-around">
     <div>
         <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small'}"> <span>Estimated Delivery Time
-            </span>: {{getEDT(vehicleData) | date : 'medium'}}</span>
+            </span>: {{vehicleData?.EDT | date : 'medium'}}</span>
     </div>
 </div> <br> <br>
 
@@ -18,11 +18,11 @@
 
     <div>
         <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small','margin-left':general.isDesktopDevice?'-5rem':'-4rem'}"><span>Service
-                Type :</span> {{vehicleData.serviceType}} </span>
+                Type :</span> {{vehicleData?.serviceType}} </span>
     </div>
     <div>
         <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small','margin-left':general.isDesktopDevice?'0rem':'-8rem'}"><span>Delayed
-                Time :</span> {{vehicleData.delayTime}} min </span>
+                Time :</span> {{vehicleData?.delayTime}} min </span>
     </div>
 </div>
 <br>

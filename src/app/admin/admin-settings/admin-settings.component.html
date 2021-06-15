@@ -1,6 +1,4 @@
 <div class="d-flex flex-wrap justify-content-around m-2">
-
-
     <mat-card class="text-center">
         <mat-card-title>
             Find Online Status
@@ -66,7 +64,7 @@
 
     <mat-card class="text-center">
         <mat-card-title>
-            Define transmission power
+            Define coin transmission power
         </mat-card-title>
         <mat-card-subtitle>
             Enter tx power
@@ -146,10 +144,150 @@
                         In-Out merging time value should be between 0-60.
                     </mat-error>
                 </mat-form-field>
-            </form><br><br><br><br><br><br><br>
+            </form><br>
             <button class="btn" mat-raised-button [disabled]="!inOutmergingTimeForm.valid" (click)="onSubmitInOutmergingTimeForm(inOutmergingTimeForm.value)" color="primary">Submit</button>
         </mat-card-content>
     </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Range</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="rangeForm">
+                <mat-form-field class="w-75">
+                    <mat-label>In feet</mat-label>
+                    <mat-select formControlName="range">
+                        <mat-option [value]=25>25</mat-option>
+                        <mat-option [value]=50>50</mat-option>
+                        <mat-option [value]=75>75</mat-option>
+                        <mat-option [value]=100>100</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select range.
+                    </mat-error>
+                </mat-form-field><br><br><br>
+            </form>
+            <button class="btn" mat-raised-button [disabled]="!rangeForm.valid" color="primary" (click)="onSubmitRangeForm(rangeForm.value)">submit</button>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Group name</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="groupRegister">
+                <mat-form-field class="w-75">
+                    <mat-label>Enter group name</mat-label>
+                    <input type="text" matInput formControlName="groupName" autocomplete="off" required>
+                    <mat-error *ngIf="groupRegister.get('groupName').value ==''">
+                        Service name is required
+                    </mat-error>
+                    <mat-error *ngIf="groupRegister.get('groupName').value !='' || general.mismatch">
+                        No special characters are allowed.
+                    </mat-error>
+                </mat-form-field> <br><br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!groupRegister.valid" color="primary" (click)="onSubmitGroup(groupRegister.value)">submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('groupName')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Group for Coins</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="groupCoinForm">
+                <mat-form-field class="w-75">
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected5 (click)="toggleAllSelectionCoin2(groupCoinForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId" [disabled]="coin.groupId != null">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75">
+                    <mat-label>Select group name</mat-label>
+                    <mat-select formControlName="groupId" required>
+                        <mat-option *ngFor="let group of groupData" [value]="group._id">{{group.groupName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select group.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!groupCoinForm.valid" color="primary" (click)="onSubmitGroupCoinForm(groupCoinForm.value)">submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('coinGrp')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Time Delay</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="timeDelay" id="time">
+                <mat-form-field class="w-75">
+                    <mat-label>Select Find</mat-label>
+                    <mat-select formControlName="deviceId" multiple>
+                        <mat-option #allSelected (click)="toggleAllSelectionDevice(timeDelay)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">{{find.deviceName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select Find(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75">
+                    <mat-label>Enter time delay</mat-label>
+                    <input type="number" matInput formControlName="timeDelay" autocomplete="off" required>
+                    <mat-error>
+                        Please enter valid time delay.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!timeDelay.valid" color="primary" (click)="onSubmitTimeDelay(timeDelay.value)">submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('timeDelay')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Set Maximum finds to be assigned</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="maxFindForm">
+                <mat-form-field class="w-75">
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected1 (click)="toggleAllSelectionCoins(maxFindForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId">{{coin.coinName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75">
+                    <mat-label>Set maximum number of finds to assign</mat-label>
+                    <input type="number" matInput formControlName="maxFindAsset" autocomplete="off" required>
+                    <mat-error>
+                        Please select maximum finds you want to assign.
+                    </mat-error>
+                </mat-form-field> <br> <br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!maxFindForm.valid" color="primary" (click)="onSubmitMaxFindForm(maxFindForm.value)">submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('max-find')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
 
     <mat-card class="text-center">
         <mat-card-title>
@@ -174,11 +312,10 @@
                     </mat-select>
                 </mat-form-field>
             </form><br><br><br><br>
-            <div class="d-flex justify-content-center">
-                <button class="btn" mat-raised-button [disabled]="!meshForm.valid" (click)="onSubmitMeshForm(meshForm.value)" color="primary">Submit</button> &nbsp;&nbsp;&nbsp;
-                <button type="button" mat-raised-button (click)="openAdminSettingInfo()" color="primary">Info</button>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!meshForm.valid" color="primary" (click)="onSubmitMeshForm(meshForm.value)">submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('mesh')" color="primary">Info</button>
             </div>
-
         </mat-card-content>
     </mat-card>
 
@@ -221,9 +358,9 @@
                     </mat-error>
                 </mat-form-field><br> <br>
             </form>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-around">
                 <button mat-raised-button [disabled]="!shiftForm.valid" color="primary" (click)="onSubmitShiftForm(shiftForm.value)">Submit</button> &nbsp;&nbsp;&nbsp;
-                <button type="button" mat-raised-button (click)="openDialog()" color="primary">Info</button>
+                <button at-raised-button mat-raised-button (click)="openDialog()" color="primary">Info</button>
             </div>
         </mat-card-content>
     </mat-card>

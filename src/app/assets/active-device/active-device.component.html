@@ -3,7 +3,7 @@
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                <span> Assets </span>
+                <span> Finds </span>
             </mat-panel-title>
 
         </mat-expansion-panel-header>
@@ -24,59 +24,18 @@
                         <td mat-cell *matCellDef="let find"> {{find.deviceId}} </td>
                     </ng-container>
                     <ng-container matColumnDef="deviceName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Name </th>
                         <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
                     </ng-container>
                     <ng-container matColumnDef="updatedAt">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Time </th>
-                        <td mat-cell *matCellDef="let find"> {{find?.updatedOnLoc | date : 'medium'}} </td>
+                        <td mat-cell *matCellDef="let find"> {{find?.updatedOnLoc?(find.updatedOnLoc | date : 'medium'):'-'}} </td>
                     </ng-container>
                 </div>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
             </table>
             <mat-paginator (page)="getUpdate($event,'devices')" [length]="currentPageLength1" [pageSize]="currentPageSize1" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-        </div>
-    </mat-expansion-panel>
-
-    <!-- --------------------------------gateway--------------------------------------- -->
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Gateways
-            </mat-panel-title>
-
-        </mat-expansion-panel-header>
-        <span class="float-right">
-            <button mat-flat-button color="primary" [disabled]="!this.activeGatewayData?.length"
-                (click)="download('gateway')">Download <mat-icon>download</mat-icon>
-            </button>
-        </span> <br> <br>
-        <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource1" matSort #sort2="matSort" class="table-md-responsive">
-                <div>
-                    <ng-container matColumnDef="i">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
-                        <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="gatewayName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Name </th>
-                        <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayName}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="gatewayId">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Id </th>
-                        <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayId}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="updatedAt">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
-                        <td mat-cell *matCellDef="let gateway"> {{gateway?.pingAlertTime | date : 'medium'}} </td>
-                    </ng-container>
-                </div>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-            </table>
-
-            <mat-paginator (page)="getUpdate($event,'gateway')" [length]="currentPageLength2" [pageSize]="currentPageSize2" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
     </mat-expansion-panel>
 
@@ -118,7 +77,9 @@
                     </ng-container>
                     <ng-container matColumnDef="updatedAt">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-                        <td mat-cell *matCellDef="let coin"> {{coin?.updatedOn | date : 'medium'}} </td>
+                        <td mat-cell *matCellDef="let coin">
+                            <span>{{coin?.updatedOn ? (coin.updatedOn | date : 'medium'):'-'}}</span>
+                        </td>
                     </ng-container>
 
                 </div>
@@ -128,4 +89,47 @@
             <mat-paginator (page)="getUpdate($event,'coin')" [length]="currentPageLength3" [pageSize]="currentPageSize3" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
     </mat-expansion-panel>
+
+    <!-- --------------------------------gateway--------------------------------------- -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Gateways
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <span class="float-right">
+            <button mat-flat-button color="primary" [disabled]="!this.activeGatewayData?.length"
+                (click)="download('gateway')">Download <mat-icon>download</mat-icon>
+            </button>
+        </span> <br> <br>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource1" matSort #sort2="matSort" class="table-md-responsive">
+                <div>
+                    <ng-container matColumnDef="i">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                        <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="gatewayName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Name </th>
+                        <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="gatewayId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Gateway Id </th>
+                        <td mat-cell *matCellDef="let gateway"> {{gateway.gatewayId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="updatedAt">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+                        <td mat-cell *matCellDef="let gateway"> {{gateway?.pingAlertTime ?(gateway.pingAlertTime | date : 'medium'):'-'}} </td>
+                    </ng-container>
+                </div>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+            </table>
+
+            <mat-paginator (page)="getUpdate($event,'gateway')" [length]="currentPageLength2" [pageSize]="currentPageSize2" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+    </mat-expansion-panel>
+
+
 </mat-accordion>

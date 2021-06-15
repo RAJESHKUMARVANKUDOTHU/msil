@@ -1,6 +1,6 @@
 <br>
 <!-- <div class="container-fluid"> -->
-<div class="container-fluid" *ngIf="general.isDesktopDevice">
+<!-- <div class="container-fluid" *ngIf="general.isDesktopDevice">
     <mat-card>
         <div class="row">
             <div class="col-md-12 col-sm-12">
@@ -10,7 +10,7 @@
                             <th class="pl-md-3">Vehicle for <br> service today</th>
                             <th class="pl-md-5">Vehicle under <br>service</th>
                             <th class="pl-md-5"> Serviced <br> vehicle</th>
-                            <th class="pl-md-5">OverAll efficiency <br> of the SC</th>
+                            <th class="pl-md-5">OverAll efficiency <br> of the service centre</th>
                             <th class="pl-md-5">Avg. servicing time</th>
                         </tr>
                     </thead>
@@ -41,19 +41,12 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="col-md-3 col-sm-5 text-center pt-5">
-                    <mat-card>
-                        <mat-card-content>Least Performing zone</mat-card-content>
-                    </mat-card> <br>
-                    <mat-card>
-                        <mat-card-content>High Congestion zone</mat-card-content>
-                    </mat-card>
-                </div> -->
+ 
         </div>
     </mat-card>
-</div>
+</div> -->
 
-<div class="container-fluid" *ngIf="!general.isDesktopDevice">
+<!-- <div class="container-fluid" *ngIf="!general.isDesktopDevice">
     <mat-card>
         <div class="row">
             <div class="col-md-9 mt-3">
@@ -72,11 +65,11 @@
                 <div class="row text-center">
                     <div class="col-md-6">
                         <h2>Serviced Vehicle</h2>
-                        <circle-progress class="circle" [percent]="this.servicedVehicleCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
+                        <circle-progress class="circle mt-4" [percent]="this.servicedVehicleCount" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60
                             [titleColor]="'#ffffff'" [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
                     </div>
                     <div class="col-md-6">
-                        <h2>OverAll Efficiency of the SC</h2>
+                        <h2>OverAll Efficiency of the service Centre</h2>
                         <circle-progress class="circle" [percent]="50" [maxPercent]="1000" [showUnits]="false" [showBackground]="true" [backgroundColor]="'#002060'" [outerStrokeColor]="'#ffffff'" [outerStrokeWidth]=6 [showInnerStroke]=false [radius]=60 [titleColor]="'#ffffff'"
                             [showSubtitle]=false [backgroundPadding]=5 [animation]="true" [animationDuration]="500" [startFromZero]="true" [responsive]="true"></circle-progress>
                     </div>
@@ -91,31 +84,55 @@
             </div>
         </div>
     </mat-card>
-</div>
+</div> -->
 
 <br>
 <mat-card class="ml-3 mr-3">
     <div>
         <div class="flex">
             <div>
-                <form>
-                    <mat-form-field class="search">
-                        <mat-label>Vehicle number</mat-label>
-                        <mat-icon matPrefix>search</mat-icon>
-                        <input matInput tabindex="1" type='search' (keyup)="searchVehicle($event.target.value)">
-                        <mat-hint class="align-items-start"><strong>Search using vehicle number</strong> </mat-hint>
-                    </mat-form-field>
-                </form>
-                <p class="error" *ngIf="errStatus.searchError">{{errStatus.searchMessage}}</p>
+                <mat-form-field>
+                    <mat-label>Layout</mat-label>
+                    <mat-select (selectionChange)="layoutSelect($event.value)">
+                        <ng-container *ngFor="let list of layoutList">
+                            <mat-option *ngIf='list.layoutName != null' [value]="list.layoutName">
+                                {{list.layoutName}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>
+                        Select the layout
+                    </mat-error>
+                </mat-form-field>
             </div>
-            <div>
-                <button *ngIf="!general.isMobile" mat-flat-button routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">Congestion</button>&nbsp;&nbsp;
-                <button *ngIf="general.isMobile" mat-mini-fab routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">
-                    <mat-icon>commute</mat-icon>
-                </button>&nbsp;&nbsp;
-                <button mat-mini-fab color="primary" class="cursor" (click)="getZones()" matTooltip="Refresh">
-                    <mat-icon>autorenew</mat-icon>
-                </button>
+            <div *ngIf="selectedLayout" class="layout-name">
+                <br>{{selectedLayout?.layoutName}}
+            </div>
+            <div *ngIf="!selectedLayout" class="layout-name">
+                <br>No layout
+            </div>
+            <div class="flex">
+                <div>
+                    <form>
+                        <mat-form-field>
+                            <mat-label>Find Name</mat-label>
+                            <input matInput tabindex="1" type='search' (keyup)="searchVehicle($event.target.value)">
+                            <mat-hint class="align-items-start"><strong>Search using Find name</strong> </mat-hint>
+                            <mat-icon matPrefix class="search">search</mat-icon>
+                        </mat-form-field>
+                    </form>
+                    <p class="error" *ngIf="errStatus.searchError">{{errStatus.searchMessage}}</p>
+                </div>&nbsp;&nbsp;
+                <div>
+                    <br>
+                    <button *ngIf="!general.isMobile" mat-flat-button routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">Congestion</button>
+                    <button *ngIf="general.isMobile" mat-mini-fab routerLink="/congestion" color="primary" matTooltip="Click here for congestion data">
+                        <mat-icon>commute</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="primary" class="cursor refresh" (click)="getZones(selectedLayout?.zones)" matTooltip="Refresh">
+                        <mat-icon>autorenew</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -139,12 +156,12 @@
                     <!-- <thead class="thead-dark font-weight-bold"> -->
                     <tr class="thead-dark font-weight-bold">
                         <th>Zone</th>
-                        <th>No. of Vehicles</th>
+                        <th>No. of Finds</th>
                         <th>Avg. Time</th>
                     </tr>
                     <!-- </thead> -->
                     <tbody>
-                        <tr class="cursor" *ngFor="let a of zoneList; let i = index" (click)="zoneClick(a)" [ngClass]='a.highlight ? "selected" : "not-selected"'>
+                        <tr class="cursor" *ngFor="let a of mainZoneList; let i = index" (click)="zoneClick(a,false)" [ngClass]='a.highlight ? "selected" : "not-selected"'>
                             <td>{{a.zoneName}}</td>
                             <td>{{a.vehicleCount}}</td>
                             <td [ngClass]="a.isDelay ? 'delay' : '' ">{{a.time}} minutes</td>
@@ -154,7 +171,7 @@
                 <table *ngIf="deviceGroupList.length && zoneClickStatus.status" class="table bordered table-striped text-center ">
                     <thead class="thead-dark font-weight-bold">
                         <tr>
-                            <th>Vehicle</th>
+                            <th>Find</th>
                             <th>Location</th>
                             <th>SDT</th>
                             <th>EDT</th>
@@ -168,8 +185,8 @@
 
                                 <td>{{a.deviceName}}</td>
                                 <td>{{a.coinName}}</td>
-                                <td>{{getSDT(a) | date : 'medium'}}</td>
-                                <td>{{getEDT(a) | date : 'medium'}}</td>
+                                <td>{{a.SDT | date : 'medium'}}</td>
+                                <td>{{a.EDT | date : 'medium'}}</td>
                                 <td *ngIf="a.isDelay">Delayed</td>
                                 <td *ngIf="!a.isDelay">On time</td>
                                 <td [ngClass]="a.isDelay ? 'delay' : 'not-delay' ">{{a.time}} minutes</td>
@@ -188,10 +205,10 @@
                         {{zoneClickStatus.zone}}
                     </mat-card-title>
                     <mat-card-content>
- 
-                       
+
+
                     </mat-card-content>
-                </mat-card> -->
+          </mat-card> -->
     </div>
     <div class="col-md-5">
         <mat-card class="w-100">

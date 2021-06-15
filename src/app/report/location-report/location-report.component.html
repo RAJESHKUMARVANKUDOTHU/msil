@@ -8,7 +8,7 @@
     <div class="text-center">
         <h1 class="color">REPORT</h1>
         <p mat-dialog-title>
-            Based on Location <br> Location Name - <b> {{locationReportData.coinId.coinName}} </b>
+            Based on Location <br> Location Name - <b> {{locationReportData.coinId[0].coinName}} </b>
             <br> From {{locationReportData.fromDate | date : 'dd-MM-yyyy'}} to {{locationReportData.toDate | date : 'dd-MM-yyyy'}}
         </p>
         <hr>
@@ -41,7 +41,7 @@
                     <td mat-cell *matCellDef="let location"> {{location.deviceId}} </td>
                 </ng-container>
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Name </th>
                     <td mat-cell *matCellDef="let location"> {{location.deviceName}} </td>
                 </ng-container>
 

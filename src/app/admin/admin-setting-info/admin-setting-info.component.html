@@ -2,42 +2,203 @@
 	<mat-icon>clear</mat-icon>
 </button>
 
-<h1 mat-dialog-title *ngIf="meshData?.length">Mesh</h1>
-<div mat-dialog-content *ngIf="meshData?.length" class="d-flex justify-content-around diagWrapper text-center">
-	<form [formGroup]="meshForm">
-		<table formArrayName="items" *ngIf="meshForm.get('items')['controls']?.length>0">
-			<tr *ngFor="let a of meshForm.get('items')['controls']; let i=index;">
-				<ng-container [formGroupName]="i">
-					<td>{{i+1}}.&nbsp;&nbsp;</td>
-					<td>
-						<mat-form-field>
-                            <input type="number" min="1" max="255" matInput  formControlName="meshId" required>
-                            <mat-error>
-                                MeshId should be between 0-255.
-                            </mat-error>
-						</mat-form-field>
-					</td>
-					<td>
-						<mat-form-field class="full-width-input">
-							<mat-select formControlName="gatewayId">
-                                <mat-option  [value]="a.get('gatewayId').value" >{{a.get('gatewayName').value}}</mat-option>
-                            </mat-select>
-							<mat-error>
-								Please select gateway.
-							</mat-error>
-						</mat-form-field>
+<div *ngIf="type=='mesh'">
+    <h1 mat-dialog-title *ngIf="meshData?.length">Mesh</h1>
+    <div mat-dialog-content *ngIf="meshData?.length" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="meshForm">
+            <table formArrayName="items" *ngIf="meshForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of meshForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td>{{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field>
+                                <input type="number" min="1" max="255" matInput formControlName="meshId" required>
+                                <mat-error>
+                                    MeshId should be between 0-255.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="full-width-input">
+                                <mat-select formControlName="gatewayId">
+                                    <mat-option [value]="a.get('gatewayId').value">{{a.get('gatewayName').value}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    Please select gateway.
+                                </mat-error>
+                            </mat-form-field>
 
-					</td>
-			
-					<td>
-						<button type="button" mat-raised-button color="primary"
-							(click)="submit(a.value)" [disabled]="!meshForm.valid">Submit</button>
-					</td>
-	
-				</ng-container>
-			</tr>
-		</table>
-	</form>
+                        </td>
+
+                        <td>
+                            <button type="button" mat-raised-button color="primary" (click)="submit(a.value)" [disabled]="!meshForm.valid">Submit</button>
+                        </td>
+
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 
+<div *ngIf="type=='timeDelay'">
+    <h1 mat-dialog-title *ngIf="deviceData?.length">Time Delay </h1>
+    <div mat-dialog-content *ngIf="deviceData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="findSettingForm">
+            <table formArrayName="items" *ngIf="findSettingForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of findSettingForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td>{{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field style="pointer-events: none;">
+                                <mat-label>Vehicle No.</mat-label>
+                                <input matInput type="text" formControlName="deviceName">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label>Time delay</mat-label>
+                                <input matInput type="number" formControlName="timeDelay" matInput required>
+                                <mat-error>
+                                    Please provide a valid time delay
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-icon matListIcon (click)="deleteTimeDelay(a.value)" class="cursor">delete_forever
+                            </mat-icon>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('timeDelay').value == 0" (click)="onSubmitTimeDelay(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
 
+</div>
+<div *ngIf="type=='max-find'">
+    <h1 mat-dialog-title *ngIf="coinData?.length">Maximum Find to assign for Coin</h1>
+    <div mat-dialog-content *ngIf="coinData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="coinSettingForm">
+            <table formArrayName="items" *ngIf="coinSettingForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of coinSettingForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td> {{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field style="pointer-events: none;">
+                                <mat-label>Coin Name</mat-label>
+                                <input matInput type="text" formControlName="coinName">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label> Maximun Find</mat-label>
+                                <input type="number" formControlName="maxFindAsset" matInput required>
+                                <mat-error>
+                                    Please provide a valid Find number
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-icon matListIcon (click)="deleteMaxFindForm(a.value)" class="cursor">delete_forever
+                            </mat-icon>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('maxFindAsset').value == 0" (click)="onSubmitMaxFindForm(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="type=='groupName'">
+    <h1 mat-dialog-title *ngIf="groupData?.length"> Available Group Names</h1>
+    <div mat-dialog-content *ngIf="groupData?.length;else nodata" class="d-flex justify-content-around diagWrapper">
+        <form [formGroup]="groupSettingForm">
+            <table formArrayName="items" *ngIf="groupSettingForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of groupSettingForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td> {{i+1}}.&nbsp;&nbsp;</td>
+                        <td><br>
+                            <mat-form-field>
+                                <mat-label>Group Name</mat-label>
+                                <input type="text" formControlName="groupName" matInput required>
+                                <mat-error *ngIf="a.get('groupName').value ==''">
+                                    Group Name is required
+                                </mat-error>
+                                <mat-error *ngIf="a.get('groupName').value !='' || general.mismatch">
+                                    No special characters are allowed.
+                                </mat-error>
+                            </mat-form-field> <br><br>
+                        </td>
+                        <td>
+                            <mat-icon matListIcon (click)="deleteGroup(a.value)" class="cursor">delete_forever
+                            </mat-icon>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" (click)="onSubmitGroup(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="type=='coinGrp'">
+    <h1 mat-dialog-title *ngIf="coinDataTemp?.length">Group coin setting</h1>
+    <div mat-dialog-content *ngIf="coinDataTemp?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="groupForm">
+            <table formArrayName="items" *ngIf="groupForm.get('items')['controls']?.length>0" class="table table-borderless">
+                <tr *ngFor="let a of groupForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td> {{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label>Coin Name</mat-label>
+                                <mat-select formControlName="coinId" [compareWith]="compareFn" multiple>
+                                    <mat-option *ngFor="let coin of coinData;let i= index" [disabled]="coin.groupId!=null?coin.groupId._id != a.get('groupId').value:false" [value]="coin">
+                                        {{coin.coinName}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    Please provide a valid coin name
+                                </mat-error>
+                                <nav></nav>
+                            </mat-form-field>
+                        </td>
+                        <td class="w-25">
+                            <span *ngFor="let b of  a.get('coinName')['controls'];let i=index;let last= last;">
+                                <span *ngIf="!last">
+                                    {{b.get('coinName').value}},
+                                </span>
+                            <span *ngIf="last">
+                                    {{b.get('coinName').value}}.
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label> Group Name</mat-label>
+                                <mat-select formControlName="groupId" required>
+                                    <mat-option *ngFor="let group of groupData" [value]="group._id">{{group.groupName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-icon matListIcon (click)="deleteGroupCoinForm(a.value)" class="cursor">delete_forever
+                            </mat-icon>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" (click)="onSubmitGroupCoinForm(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -12,13 +12,14 @@ import { GeneralService } from '../../services/general.service';
   styleUrls: ['./add-assets.component.css']
 })
 export class AddAssetsComponent implements OnInit {
-  addFind: FormGroup
-  addGateway: FormGroup
-  addCoin: FormGroup
-  assignAsset: FormGroup
-  deassignAsset: FormGroup
-  gateway: any
-  type: any
+  addFind: FormGroup;
+  addGateway: FormGroup;
+  addCoin: FormGroup;
+  assignAsset: FormGroup;
+  deassignAsset: FormGroup;
+  gateway: any;
+  type: any;
+  zoneData:any=[];
   constructor(
     public dialogRef: MatDialogRef<AddAssetsComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -33,30 +34,33 @@ export class AddAssetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.addFind = this.fb.group({
-      deviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+      deviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       deviceId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]]
     });
     this.addGateway = this.fb.group({
-      gatewayName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+      gatewayName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       gatewayId: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[a-zA-z0-9]{12}$')]],
     })
     this.addCoin = this.fb.group({
-      coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
+      coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       coinId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]],
-      gatewayId: ['', Validators.required]
+      gatewayId: ['', Validators.required],
+      zoneId:['',Validators.required]
     })
 
-    this.refreshGateway()
+    this.refreshGateway();
+    this.getZoneDetails();
   }
 
   findSubmit(data) {
+    var value={
+      deviceId:data.deviceId,
+      deviceName:data.deviceName
+    }
     try {
       if (this.addFind.valid) {
-
         console.log("data====", data);
-
-        this.api.deviceRegistration(data).then((res: any) => {
-
+        this.api.deviceRegistration(value).then((res: any) => {
           console.log("find submit====", res);
           if (res.status) {
             if(res.success=="Device registered successfully"){
@@ -82,11 +86,9 @@ export class AddAssetsComponent implements OnInit {
   gatewaySubmit(data) {
     try {
       if (this.addGateway.valid) {
-
-
+        data.gatewayName = data.gatewayName.trim().replace(/\s\s+/g, ' ');
         this.api.gatewayRegistration(data).then((res: any) => {
-
-          console.log("find submit====", res);
+          console.log("gateway submit====", res);
           if (res.status) {
             if(res.success=="Gateway registered successfully"){
               this.addGateway.reset()
@@ -115,12 +117,13 @@ export class AddAssetsComponent implements OnInit {
   }
 
   coinSubmit(data) {
+    console.log("coin data==",data)
     try {
       if (this.addCoin.valid) {
-
+        data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
         this.api.coinRegistration(data).then((res: any) => {
 
-          console.log("find submit====", res);
+          console.log("coin submit====", res);
           if (res.status) {
             if(res.success=="Coin registered successfully"){
               this.addCoin.reset()
@@ -156,6 +159,20 @@ export class AddAssetsComponent implements OnInit {
 
     }).catch((err: any) => {
       console.log("error===", err)
+    })
+  }
+
+  getZoneDetails() {
+    this.api.getZone().then((res: any) => {
+
+      console.log("zone details response==", res);
+      this.zoneData = [];
+      if (res.status) {
+        this.zoneData = res.success;
+      }
+      else {
+        this.zoneData = [];
+      }
     })
   }
 

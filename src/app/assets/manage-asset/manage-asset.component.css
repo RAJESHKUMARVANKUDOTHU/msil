@@ -3,6 +3,31 @@ button.mat-focus-indicator.mat-button.mat-button-base {
     font-weight: 500;
 }
 
+::ng-deep .mat-tab:default {
+    color: white;
+    font-weight: 500;
+    background: white;
+}
+
+
+/* ::ng-deep.mat-tab-label.mat-tab-label-active {
+    background: #dee2e6;
+    color: whitesmoke;
+} */
+
+::ng-deep.mat-tab-label .mat-tab-label-active.mat-tab-label-content {
+    background: transparent;
+    color: white;
+}
+
+::ng-deep.mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
+::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
+    background-color: #0f4f7ac2;
+    font-weight: 700;
+    color: black;
+    opacity: 1;
+}
+
 @media only screen and (max-width: 768px) {
     mat-expansion-panel.mat-expansion-panel {
         margin-top: 1rem;

@@ -17,13 +17,13 @@ export class ManageCoinComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   dataSource: any = [];
-  coinData: any = []
-  fileName: String = ''
-  role: any
-  limit:any=10
-  offset:any=0
-  currentPageLength:any=10
-  currentPageSize:any=10
+  coinData: any = [];
+  fileName: String = '';
+  role: any;
+  limit:any=10;
+  offset:any=0;
+  currentPageLength:any=10;
+  currentPageSize:any=10;
   displayedColumns = ['i', 'coinId', 'coinName','zoneName', 'gatewayId', 'coinBattery', 'updatedOn', 'edit', 'delete'];
   constructor(
     public dialog: MatDialog,
@@ -80,8 +80,9 @@ export class ManageCoinComponent implements OnInit {
               coinName: res.success[i].coinName,
               coinBattery: res.success[i].coinBattery,
               gatewayId: res.success[i].gatewayId,
-              updatedOn: res.success[i].updatedOn,
               zoneName: res.success[i].zoneId != null?res.success[i].zoneId.zoneName:'-',
+              zoneId: res.success[i].zoneId != null?res.success[i].zoneId._id:'-',
+              updatedOn: res.success[i].updatedOn,
               batteryRecvTime:res.success[i].batteryRecvTime,
               edit: 'edit',
               delete: 'delete_forever'

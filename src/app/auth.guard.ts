@@ -62,7 +62,7 @@ export class AuthGuard implements CanActivate {
         menu : false,
         other : false
       }
-      this.login.loginCheckData.next(a)
+      this.login.loginCheckData.next(a);
       this.router.navigate(['/login'])
     }
   }

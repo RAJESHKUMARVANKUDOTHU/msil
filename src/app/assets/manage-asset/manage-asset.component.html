@@ -22,7 +22,7 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <span>
-              <mat-icon style="vertical-align: bottom !important;">arrow_circle_up</mat-icon>&nbsp; Assign Asset
+              <mat-icon style="vertical-align: bottom !important;">arrow_circle_up</mat-icon>&nbsp; Assign Finds
             </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -31,17 +31,18 @@
                         <mat-label>Find Id</mat-label>
                         <mat-select formControlName="deviceId">
                             <mat-option *ngFor="let list of getAssetList" [value]="list.deviceId" (click)="getAssetInfo(list)">
-                                {{list.deviceId}}</mat-option>
+                                {{list.deviceId}}
+                            </mat-option>
                         </mat-select>
                         <mat-error>
                             Find Id is required
                         </mat-error>
                     </mat-form-field> <br>
                     <mat-form-field>
-                        <mat-label>Vehicle Name</mat-label>
+                        <mat-label>Find Name</mat-label>
                         <input type="text" matInput formControlName="deviceName" autocomplete="off" required>
                         <mat-error>
-                            Vehicle name is required
+                            Find Name is required
                         </mat-error>
                     </mat-form-field> <br>
                 </form>
@@ -51,7 +52,7 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <span>
-              <mat-icon style="vertical-align: bottom !important;">arrow_circle_down</mat-icon>&nbsp; Deassign Asset
+              <mat-icon style="vertical-align: bottom !important;">arrow_circle_down</mat-icon>&nbsp; Deassign Finds
             </span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -63,7 +64,8 @@
                             <mat-option #allSelected (click)="toggleAllSelectionDevice(deassignAssetForm)" [value]="0">All
                             </mat-option>
                             <mat-option *ngFor=" let list of getDeAssetList" [value]="list.deviceId" (click)="getAssetInfo(list)">
-                                {{list.deviceId}}</mat-option>
+                                {{list.deviceId}}
+                            </mat-option>
                         </mat-select>
                         <mat-error>
                             Find Id is required

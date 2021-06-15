@@ -1,5 +1,16 @@
-
-
-hr{
+hr {
     width: 10rem;
+}
+
+.icons {
+    position: absolute;
+    margin-top: -3px;
+}
+
+#greencolordot {
+    color: green;
+}
+
+#redcolordot {
+    color: red;
 }

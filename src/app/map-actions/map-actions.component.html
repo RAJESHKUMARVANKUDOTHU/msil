@@ -85,7 +85,7 @@
     <br>
 
 
-    <mat-card class="border-card" *ngIf="!gatewayList.length">
+    <mat-card class="border-card">
         <mat-card-title>
             <mat-icon style="vertical-align: bottom;">add</mat-icon>&nbsp;Add New Layout
         </mat-card-title> <br>
@@ -112,7 +112,7 @@
                         Location name is required
                     </mat-error>
                     <mat-error *ngIf="newLayoutForm.get('layoutName').value !='' || general.mismatch">
-                        No special characters are allowed. And layout name cannot start/end with space(s).
+                        No special characters are allowed.
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="example-form1">

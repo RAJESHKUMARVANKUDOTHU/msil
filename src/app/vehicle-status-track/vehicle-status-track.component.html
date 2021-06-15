@@ -10,7 +10,7 @@
 <div class="d-flex justify-content-around">
     <div>
         <span [ngStyle]="{'font-size':general.isDesktopDevice? 'x-large':'small'}"> <span>Estimated Delivery Time
-                </span>: {{getEDT(vehicleData) | date : 'medium'}}</span>
+        </span>: {{vehicleData?.EDT | date : 'medium'}}</span>
     </div>
 </div> <br> <br>
 

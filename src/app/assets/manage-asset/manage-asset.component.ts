@@ -21,13 +21,14 @@ export class ManageAssetComponent implements OnInit {
   getAssetList: any;
   getDeAssetList: any;
   id: any;
-  public doughnutChartLabels: string[] = ['Device', 'Gateways', 'Coin'];
+  public doughnutChartLabels: string[] = ['Finds', 'Gateways', 'Coins'];
   public doughnutChartData: any = [0, 0, 0];
   public doughnutChartData1: any = [0, 0, 0];
   public doughnutChartData2: any = [0, 0, 0];
   countActive: any = [];
   countOffline: any = [];
   countReg: any = [];
+  serviceData:any=[];
   chartOptions = {
     responsive: true,
   };
@@ -54,7 +55,7 @@ export class ManageAssetComponent implements OnInit {
     private general: GeneralService,
     private fb: FormBuilder,
     public dialog: MatDialog
-  ) { 
+  ) {
     this.general.deviceChanges.subscribe((res)=>{
       console.log(res)
       if(res){
@@ -79,6 +80,7 @@ export class ManageAssetComponent implements OnInit {
 
     this.devicesCount();
     // this.refreshDevice();
+    this.getServiceDetails();
     this.getAssignAssetList();
     this.getDeAssignAssetList();
     this.login.loginCheckData.subscribe(res=>{
@@ -206,7 +208,8 @@ export class ManageAssetComponent implements OnInit {
   }
 
   deassignAsset(data) {
-     console.log("data==",data)
+     console.log("data==",data);
+     data.deviceId=this.general.filterArray(data.deviceId);
     // data.userId=this.userId
     if (this.deassignAssetForm.valid) {
 
@@ -231,6 +234,37 @@ export class ManageAssetComponent implements OnInit {
           console.log('error===', err);
         });
     }
+  }
+
+  // onServiceSelection(value, a) {
+
+  //   var data = {
+  //     serviceId: a._id,
+  //     deviceId: value.deviceId
+  //   }
+  //   console.log("service select data==", data);
+  //   this.api.updateServiceId(data).then((res: any) => {
+  //     console.log("update Services===", res)
+  //     if (res.status) {
+  //       this.refreshDevice(this.limit, this.offset)
+  //       this.general.openSnackBar(res.success, '')
+  //     }
+  //     else {
+  //       this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+  //     }
+  //   })
+
+  // }
+
+  getServiceDetails() {
+    this.api.getServiceType().then((res: any) => {
+      console.log("servoce details response==", res)
+      this.serviceData = []
+      if (res.status) {
+        this.serviceData = res.success
+      }
+      else { }
+    })
   }
   toggleAllSelectionDevice(formData) {
 

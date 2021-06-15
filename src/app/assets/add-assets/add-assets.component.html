@@ -1,95 +1,104 @@
-<mat-card>
-    <button mat-button mat-dialog-close class="float-right">
-        <mat-icon>clear</mat-icon>
-    </button>
+<!-- <mat-card> -->
+<button mat-button mat-dialog-close class="float-right">
+  <mat-icon>clear</mat-icon>
+</button>
 
-    <div *ngIf="type=='find'">
-        <h1 mat-dialog-title class="text-center">Add Device</h1>
-        <div mat-dialog-content class="h-100 text-center">
-            <form [formGroup]="addFind">
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label> Vehicle Name</mat-label>
-                    <input type="text" matInput formControlName="deviceName" (change)="general.validate($event.target.value)" autocomplete="off" required>
-                    <mat-error *ngIf="addFind.get('deviceName').value ==''">
-                        Vehicle name is required.
-                    </mat-error>
-                    <mat-error *ngIf="general.mismatch">
-                        No special characters are allowed. And vehicle name cannot start/end with space(s).
-                    </mat-error> <br>
-                </mat-form-field> <br>
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label>Find Id</mat-label>
-                    <input type="number" min="1" max="65535" matInput formControlName="deviceId" autocomplete="off" required>
-                    <mat-error>
-                        Find Id should be between 1-65535.
-                    </mat-error>
-                </mat-form-field><br>
-            </form>
-            <button mat-raised-button [disabled]="!addFind.valid" (click)="findSubmit(addFind.value)" color="primary">Submit</button>
-        </div>
-
+<div *ngIf="type=='find'">
+    <h1 mat-dialog-title class="text-left">Add Finds</h1>
+    <div mat-dialog-content class="h-100 text-center mt-4"><br><br>
+        <form [formGroup]="addFind">
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Find Name</mat-label>
+                <input type="text" matInput formControlName="deviceName" (change)="general.validate($event.target.value)" autocomplete="off" required>
+                <mat-error *ngIf="addFind.get('deviceName').value ==''">
+                    Find name is required.
+                </mat-error>
+                <mat-error *ngIf="general.mismatch">
+                    No special characters are allowed.
+                </mat-error> <br>
+            </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label>Find Id</mat-label>
+                <input type="number" min="1" max="65535" matInput formControlName="deviceId" autocomplete="off" required>
+                <mat-error>
+                    Find Id should be between 1-65535.
+                </mat-error>
+            </mat-form-field><br>
+        </form>
+        <button mat-raised-button [disabled]="!addFind.valid" (click)="findSubmit(addFind.value)" color="primary">Submit</button>
     </div>
 
-    <div *ngIf="type=='gateway'">
-        <h1 mat-dialog-title class="text-center">Add Gateway</h1>
-        <div mat-dialog-content class="h-100 text-center">
-            <form [formGroup]="addGateway">
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label> Gateway Name</mat-label>
-                    <input type="text" matInput formControlName="gatewayName" autocomplete="off" (change)="general.validate($event.target.value)" required>
-                    <mat-error *ngIf="addGateway.get('gatewayName').value ==''">
-                        Gateway name is required.
-                    </mat-error>
-                    <mat-error *ngIf="general.mismatch">
-                        No special characters are allowed. And gateway name cannot start/end with space(s).
-                    </mat-error> <br>
-                </mat-form-field> <br>
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label> Gateway Id</mat-label>
-                    <input type="text" matInput formControlName="gatewayId" autocomplete="off" required>
-                    <mat-error>
-                        Gateway id should be of 12 Characters.
-                    </mat-error>
-                </mat-form-field> <br>
+</div>
 
-            </form>
-            <button mat-raised-button (click)="gatewaySubmit(addGateway.value)" [disabled]="!addGateway.valid" color="primary">Submit</button>
-        </div>
+<div *ngIf="type=='gateway'">
+    <h1 mat-dialog-title class="text-left">Add Gateways</h1><br>
+    <div mat-dialog-content class="h-100 text-center">
+        <form [formGroup]="addGateway">
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Name</mat-label>
+                <input type="text" matInput formControlName="gatewayName" autocomplete="off" (change)="general.validate($event.target.value)" required>
+                <mat-error *ngIf="addGateway.get('gatewayName').value ==''">
+                    Gateway name is required.
+                </mat-error>
+                <mat-error *ngIf="general.mismatch">
+                    No special characters are allowed.
+                </mat-error> <br>
+            </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Id</mat-label>
+                <input type="text" matInput formControlName="gatewayId" autocomplete="off" required>
+                <mat-error>
+                    Gateway id should be of 12 Characters.
+                </mat-error>
+            </mat-form-field> <br>
+
+        </form>
+        <button mat-raised-button (click)="gatewaySubmit(addGateway.value)" [disabled]="!addGateway.valid" color="primary">Submit</button>
     </div>
+</div>
 
-    <div *ngIf="type=='coin'">
-        <h1 mat-dialog-title class="text-center">Add Coin</h1>
-        <div mat-dialog-content class="h-100 text-center">
-            <form [formGroup]="addCoin">
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label>Coin Name</mat-label>
-                    <input type="text" matInput formControlName="coinName" (change)="general.validate($event.target.value)" autocomplete="off" required>
-                    <mat-error *ngIf="addCoin.get('coinName').value ==''">
-                        Coin Name is required.
-                    </mat-error>
-                    <mat-error *ngIf="general.mismatch">
-                        No special characters are allowed. And coin name cannot start/end with space(s).
-                    </mat-error> <br>
-                </mat-form-field> <br>
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label>Coin Id</mat-label>
-                    <input type="number" min='1' max="65535" matInput formControlName="coinId" autocomplete="off" required>
-                    <mat-error>
-                        Find Id should be between 1-65535.
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field class="w-75" appearance="fill">
-                    <mat-label>Select Gateway ID</mat-label>
-                    <mat-select formControlName="gatewayId" autocomplete="off">
-                        <mat-option *ngFor="let b of gateway" [(value)]="b.gatewayId">
-                            {{b.gatewayId}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error></mat-error>
-                </mat-form-field> <br>
+<div *ngIf="type=='coin'">
+    <h1 mat-dialog-title class="text-left">Add Coins</h1>
+    <div mat-dialog-content class="h-100 text-center">
+        <form [formGroup]="addCoin">
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label>Coin Name</mat-label>
+                <input type="text" matInput formControlName="coinName" (change)="general.validate($event.target.value)" autocomplete="off" required>
+                <mat-error *ngIf="addCoin.get('coinName').value ==''">
+                    Coin Name is required.
+                </mat-error>
+                <mat-error *ngIf="general.mismatch">
+                    No special characters are allowed.
+                </mat-error> <br>
+            </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label>Coin Id</mat-label>
+                <input type="number" min='1' max="65535" matInput formControlName="coinId" autocomplete="off" required>
+                <mat-error>
+                    Find Id should be between 1-65535.
+                </mat-error>
+            </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label>Select Gateway ID</mat-label>
+                <mat-select formControlName="gatewayId" autocomplete="off">
+                    <mat-option *ngFor="let b of gateway" [(value)]="b.gatewayId">
+                        {{b.gatewayId}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Field required.</mat-error>
+            </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label>Select Zone</mat-label>
+                <mat-select formControlName="zoneId" autocomplete="off">
+                    <mat-option *ngFor="let a of zoneData" [(value)]="a._id">
+                        {{a.zoneName}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Field required.</mat-error>
+            </mat-form-field> <br>
 
-            </form>
-            <button mat-raised-button [disabled]="!addCoin.valid" (click)="coinSubmit(addCoin.value)" color="primary">Submit</button>
-        </div>
+        </form>
+        <button mat-raised-button [disabled]="!addCoin.valid" (click)="coinSubmit(addCoin.value)" color="primary">Submit</button>
     </div>
-</mat-card>
+</div>
+<!-- </mat-card> -->

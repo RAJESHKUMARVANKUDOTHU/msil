@@ -20,6 +20,8 @@ export class CongestionComponent implements OnInit {
   zones: any = [];
   congestionData: any = [];
   marker: any = [];
+  layout: any = [];
+  selectedLayout: any;
   timeInterval: any;
   enable: any = {
     map: true,
@@ -41,7 +43,7 @@ export class CongestionComponent implements OnInit {
       fromTime: ['', Validators.required],
       toTime: ['', Validators.required]
     })
-    this.congestionTrendForm = this.fb.group({ 
+    this.congestionTrendForm = this.fb.group({
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       dayType: ['', Validators.required],
@@ -50,14 +52,14 @@ export class CongestionComponent implements OnInit {
       {
         validators: this.formValidate()
       });
-  setTimeout(()=>{
-    this.initiateMap();
-  },1);
+    setTimeout(() => {
+      this.initiateMap();
+    }, 1);
     this.getZones();
     if (this.enable.refreshCongestionData) {
       this.timeInterval = setInterval(() => {
         this.refreshCongestion(this.getData())
-      }, 1000 *60* 5);
+      }, 1000 * 60 * 5);
     };
   }
 
@@ -88,7 +90,7 @@ export class CongestionComponent implements OnInit {
       }
     }
   }
- 
+
   initiate() {
     this.timeInterval = setInterval(() => {
       if (this.enable.refreshCongestionData) {
@@ -147,18 +149,56 @@ export class CongestionComponent implements OnInit {
     this.api.getLayouts().then((res: any) => {
       console.log("res==", res)
       if (res.status) {
-        let layout = res.success
-        for (let i = 0; i < layout.length; i++) {
-          this.api.getLayoutImage(layout[i]._id).then((imgRes: any) => {
-            this.clearMap();
-            L.imageOverlay(imgRes, this.bounds).addTo(this.map);
-            this.map.on('load', this.refreshCongestion(this.getData()));
-          });
+        this.layout = res.success
+        for (let i = 0; i < this.layout.length; i++) {
+          if (this.layout[i].layoutName != null) {
+            this.layoutSelect(this.layout[i].layoutName);
+            break;
+          }
         }
       }
       else { }
     })
   }
+
+  layoutSelect(data) {
+    console.log('data layout===', data);
+    if (data) {
+
+      let layout = this.layout.filter(obj => {
+        return obj.layoutName == data
+      })[0]
+      this.selectedLayout = layout;
+      let zones = [];
+      let unique = new Set();
+      if (layout) {
+        layout.gateway.filter((obj) => {
+          obj.coinData.filter(coin => {
+            if (!(unique.has(coin?.zoneData?.mainZoneId))) {
+              if(coin?.zoneData?.mainZoneId){
+                unique.add(coin?.zoneData?.mainZoneId)
+                zones.push(coin?.zoneData?.mainZoneId)
+              }
+            }
+            return;
+          })
+        })
+        this.getLayoutImage(layout._id);
+      }
+      this.selectedLayout['zones'] = zones;
+    }
+  }
+
+  getLayoutImage(id) {
+    this.api.getLayoutImage(id).then((resImg: any) => {
+      this.clearMap();
+      var bounds = this.map.getBounds();
+      L.imageOverlay(resImg, bounds).addTo(this.map);
+      this.map.on('load', this.refreshCongestion(this.getData()));
+    });
+  }
+
+
 
   refreshCongestion(value) {
     value.date = value.date != '' ? moment(value.date).format('YYYY-MM-DD') : moment(Date.now()).format('YYYY-MM-DD')
@@ -172,16 +212,18 @@ export class CongestionComponent implements OnInit {
     this.api.getCongestion(data).then((res: any) => {
       console.log("congestion res===", res);
       this.congestionData = [];
+      let congestionDataTemp = [];
       if (res.status) {
+
         this.congestionData = res.success.map((obj) => {
-          obj.zoneBounds = true;
-          obj.boundColor = this.getFillColor(obj.congestion);
+          // obj.zoneBounds = true;
+          obj.boundColor = this.getFillColor(obj.congestion, obj.standardDeliveryTime);
           obj.bounds = this.getBound(obj.zoneId);
           return obj;
         })
         this.createZoneBounds();
       }
-      else {}
+      else { }
     }).catch((err: any) => {
       console.log("err===", err);
     })
@@ -196,32 +238,20 @@ export class CongestionComponent implements OnInit {
     this.refreshCongestion(data);
   }
 
-  clickOnZone(data) {
-    this.clearMap();
-    console.log("data=", data);
-    this.congestionData = this.congestionData.map((obj) => {
-      if (data.zoneId == obj.zoneId) {
-        obj.zoneBounds = true;
-      }
-      else {
-        obj.zoneBounds = false;
-      }
-      return obj;
-    })
-    this.createZoneBounds();
-  }
 
   getBound(data) {
     let arr = [];
     this.zones.filter((obj) => {
-      if (data == obj._id) {
+      if (data == obj?.mainZoneId?._id) {
         arr.push(obj.bounds);
       }
     })
     return arr;
   }
 
-  getFillColor(value) {
+  getFillColor(congestion, STD) {
+    let value;
+    value = congestion != null ? (congestion / (STD * 1000 * 60)) * 100 : 0;
     var color = '';
     if (value < 0) {
       return color = 'red';
@@ -261,25 +291,25 @@ export class CongestionComponent implements OnInit {
   }
 
   getPopUp(data) {
-    let content = 'Congestion : ' + data.congestion + ' min </br> STD : ' + data.standardDeliveryTime + ' min';
+    let congestion = data.congestion ? data.congestion : 0;
+    let content = 'Zone : ' + data?.zoneName + ' </br> Congestion : ' + congestion + ' min </br> STD : ' + data.standardDeliveryTime + ' min';
     return content;
-  }
+  } 
 
   createZoneBounds() {
     this.clearMap();
-       for (let i = 0; i < this.congestionData.length; i++) {
-      if (this.congestionData[i].zoneBounds && this.congestionData[i].bounds[0].length) {
-        new L.polygon(this.congestionData[i].bounds[0], {
-          color: this.congestionData[i].boundColor == 'transparent' ? this.getRandomColor() : this.congestionData[i].boundColor,
-          fillColor: this.congestionData[i].boundColor,
-          fillOpacity: 0.7
-        })
-          .bindPopup(this.getPopUp(this.congestionData[i]),
-            { autoClose: false })
-          .addTo(this.map).openPopup()
-          .on('click', () =>
-            this.clickOnZone(this.congestionData[i])
-          )
+    for (let i = 0; i < this.congestionData.length; i++) {
+      if (this.congestionData[i].bounds.length && this.congestionData[i].bounds[0].length) {
+        if(this.selectedLayout.zones.includes(this.congestionData[i].zoneId)){
+          new L.polygon(this.congestionData[i].bounds[0], {
+            color: this.congestionData[i].boundColor == 'transparent' ? this.getRandomColor() : this.congestionData[i].boundColor,
+            fillColor: this.congestionData[i].boundColor,
+            fillOpacity: 0.7
+          })
+            .bindPopup(this.getPopUp(this.congestionData[i]),
+              { autoClose: false })
+            .addTo(this.map).openPopup()
+        }
       }
     }
   }
@@ -334,7 +364,7 @@ export class CongestionComponent implements OnInit {
       type: data.dayType,
       day: data.dayType == 'week' ? data.weekDay : ''
     };
-    console.log("data to send==", data,diff)
+    console.log("data to send==", data, diff)
     if (diff >= 0 && diff <= 30) {
       this.enable.dayError = false
       this.api.getCongestionPerDay(data).then((res: any) => {
@@ -350,7 +380,7 @@ export class CongestionComponent implements OnInit {
             for (let j = 0; j < this.congestionData[i].data.length; j++) {
               dataPointZone.push({
                 x: new Date(this.congestionData[i].data[j].date),
-                y: this.congestionData[i].data[j].congestion
+                y: this.congestionData[i].data[j].congestion ? this.congestionData[i].data[j].congestion : 0
               })
             }
             this.dataPoints.push(
@@ -386,10 +416,11 @@ export class CongestionComponent implements OnInit {
       },
       axisX: {
         valueFormatString: "DD MMM,YY",
-        labelAutoFit: false,
+        labelAutoFit: true,
         intervalType: "day",
         interval: 1,
         labelAngle: 0,
+
       },
       axisY: {
         title: "Congestion(in min)",

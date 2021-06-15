@@ -84,34 +84,34 @@ export class HeatMapComponent implements OnInit {
 
   getZoneVehicleData() {
  
-    this.api.getZoneVehicleData().then((res: any) => {
-      console.log('zone vehicle response==', res);
-      if (res.status) {
-        this.vehicleData = res.success;
-        console.log(" this.vehicleData=", this.vehicleData);
+    // this.api.getZoneVehicleData().then((res: any) => {
+    //   console.log('zone vehicle response==', res);
+    //   if (res.status) {
+    //     this.vehicleData = res.success;
+    //     console.log(" this.vehicleData=", this.vehicleData);
         
-        let data = res.success;
-        data.map((obj, index) => {
-          let latlng = [{
-            lat: obj.deviceData.deviceBound.latitude,
-            lng: obj.deviceData.deviceBound.longitude
-          }]
-          this.vehicleData[index].latlng = latlng;
-        });
-        this.heatMap(this.vehicleData);
-        // for(let i=0;i<this.vehicleData.length;i++){
-        //   this.addCoinMarker(this.vehicleData[i].latlng[0])
-        // }
+    //     let data = res.success;
+    //     data.map((obj, index) => {
+    //       let latlng = [{
+    //         lat: obj.deviceData.deviceBound.latitude,
+    //         lng: obj.deviceData.deviceBound.longitude
+    //       }]
+    //       this.vehicleData[index].latlng = latlng;
+    //     });
+    //     this.heatMap(this.vehicleData);
+    //     // for(let i=0;i<this.vehicleData.length;i++){
+    //     //   this.addCoinMarker(this.vehicleData[i].latlng[0])
+    //     // }
 
 
-      } else {
-        this.vehicleData = [];
-      }
+    //   } else {
+    //     this.vehicleData = [];
+    //   }
       
-    }).catch((err)=>{
-      console.log("err==",err);
+    // }).catch((err)=>{
+    //   console.log("err==",err);
       
-    });
+    // });
   }
 
   addCoinMarker(data) {

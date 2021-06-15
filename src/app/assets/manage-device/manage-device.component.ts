@@ -25,7 +25,7 @@ export class ManageDeviceComponent implements OnInit {
   offset:any=0
   currentPageLength:any=10
   currentPageSize:any=10
-  displayedColumns = ['i', 'deviceId', 'deviceName', 'serviceCategoryId', 'deviceToggleStatus', 'updatedOn', 'delete']; //,'batteryStatus'
+  displayedColumns = ['i', 'deviceId', 'deviceName', 'deviceToggleStatus', 'updatedOn', 'delete']; //,'batteryStatus'
   constructor(
     public dialog: MatDialog,
     private login: LoginAuthService,
@@ -35,7 +35,7 @@ export class ManageDeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshDevice()
-    this.getServiceDetails()
+    // this.getServiceDetails()
     this.role=this.login.getLoginDetails().role
     console.log("this.role",this.role)
     this.general.deviceChanges.subscribe((res) => {
@@ -84,7 +84,6 @@ export class ManageDeviceComponent implements OnInit {
               deviceName: res.success[i].deviceName,
               deviceId: res.success[i].deviceId,
               updatedOn: res.success[i].updatedOnLoc,
-              serviceCategoryId: res.success[i].serviceCategoryId,
               deviceAssignedStatus: res.success[i].deviceAssignedStatus,
               deviceToggleStatus: res.success[i].deviceToggleStatus,
               edit: 'edit',
@@ -104,25 +103,25 @@ export class ManageDeviceComponent implements OnInit {
       console.log("error===", err)
     })
   }
-  onServiceSelection(value, a) {
+  // onServiceSelection(value, a) {
 
-    var data = {
-      serviceId: a._id,
-      deviceId: value.deviceId
-    }
-    console.log("service select data==", data);
-    this.api.updateServiceId(data).then((res: any) => {
-      console.log("update Services===", res)
-      if (res.status) {
-        this.refreshDevice(this.limit, this.offset)
-        this.general.openSnackBar(res.success, '')
-      }
-      else {
-        this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-      }
-    })
+  //   var data = {
+  //     serviceId: a._id,
+  //     deviceId: value.deviceId
+  //   }
+  //   console.log("service select data==", data);
+  //   this.api.updateServiceId(data).then((res: any) => {
+  //     console.log("update Services===", res)
+  //     if (res.status) {
+  //       this.refreshDevice(this.limit, this.offset)
+  //       this.general.openSnackBar(res.success, '')
+  //     }
+  //     else {
+  //       this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+  //     }
+  //   })
 
-  }
+  // }
 
   getBatteryStatus(data) {
     if (data == "H") {
@@ -209,7 +208,7 @@ export class ManageDeviceComponent implements OnInit {
           var msg = res.success
           this.general.openSnackBar(msg, '')
         }
-        else { 
+        else {
           this.refreshDevice(this.limit, this.offset)
           this.general.deviceChanges.next(false)
           this.general.openSnackBar(res.success == false ? res.message : res.success, '')
@@ -242,20 +241,20 @@ export class ManageDeviceComponent implements OnInit {
     })
   }
 
-  getServiceDetails() {
-    this.api.getServiceType().then((res: any) => {
-      console.log("servoce details response==", res)
-      this.serviceData = []
-      if (res.status) {
-        this.serviceData = res.success
-      }
-      else { }
-    })
-  }
+  // getServiceDetails() {
+  //   this.api.getServiceType().then((res: any) => {
+  //     console.log("servoce details response==", res)
+  //     this.serviceData = []
+  //     if (res.status) {
+  //       this.serviceData = res.success
+  //     }
+  //     else { }
+  //   })
+  // }
 
-  
+
   getUpdate(event) {
- 
+
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
     this.refreshDevice(this.limit, this.offset)

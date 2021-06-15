@@ -33,6 +33,19 @@ button {
     right: 0;
 }
 
+.refresh {
+    position: fixed;
+    bottom: 3rem;
+    z-index: 999;
+    right: 1.5rem;
+}
+
+.layout-name {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
 @media only screen and (max-width: 768px) {
     mat-card.mat-card.mat-focus-indicator {
         width: 100%;

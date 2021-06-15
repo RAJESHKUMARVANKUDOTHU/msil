@@ -20,7 +20,10 @@ import * as L from 'leaflet';
 export class ZoneConfigurationComponent implements OnInit {
   @ViewChild('mapElement') mapElement: ElementRef;
   selectZoneForm: FormGroup;
-  selectedLayout: any = '';
+  selectedLayout = {
+    id : null,
+    zones : []
+  };
   gatewayList: any = [];
   zoneList: any = [];
   bound: any = [];
@@ -28,13 +31,14 @@ export class ZoneConfigurationComponent implements OnInit {
   marker: any = [];
   mapDisable: boolean = true;
   map: any = null;
+  layoutName: string = null;
   constructor(
     private fb: FormBuilder,
     public mapService: MapService,
     private api: ApiService,
     private general: GeneralService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getLayout();
@@ -52,10 +56,32 @@ export class ZoneConfigurationComponent implements OnInit {
     this.layoutData = [];
   }
 
+  getLayout() {
+    this.api
+      .getLayouts()
+      .then((res: any) => {
+        console.log('get layout res===', res);
+        if (res.status) {
+          this.gatewayList = res.success;
+          if (!this.map) {
+            this.createMap();
+          }
+        } else {
+          this.gatewayList = [];
+          if (!this.map) {
+            this.createMap();
+          }
+        }
+      })
+      .catch((err: any) => {
+        console.log('error==', err);
+      });
+  }
+
   createMap() {
     this.mapDisable = true;
-    console.log("l==",L)
-    this.map =  L.map('map', {
+    console.log("l==", L)
+    this.map = L.map('map', {
       fullscreenControl: true,
       fullscreenControlOptions: {
         title: 'Show me the fullscreen !',
@@ -87,38 +113,60 @@ export class ZoneConfigurationComponent implements OnInit {
       }
       this.cd.detectChanges();
     });
-    if(this.gatewayList.length == 1){
+    if (this.gatewayList.length) {
       this.layoutSelect(this.gatewayList[0]._id);
     }
     this.cd.detectChanges();
   }
 
-  layoutSelect(data, status = 1) {
+  layoutSelect(data) {
     console.log('layoutchange===', data);
     this.mapDisable = false;
     let layout = this.gatewayList.filter((obj) => {
       return obj._id == data;
     });
-    console.log('layout===', layout);
 
-    this.selectedLayout = data;
+    this.layoutName = layout[0].layoutName;
+    this.selectedLayout['id'] = data;
     this.selectZoneForm.patchValue({
-      layout: this.selectedLayout,
+      layout: this.selectedLayout.id,
+      id: ''
     });
     if (layout) {
-      if(status = 1){
-        this.getLayoutImage(layout);
-      }
-      else{
-        this.getZoneDetails();
-      }
+      let zones = [];
+      let unique = new Set();
+      layout[0].gateway.filter((obj) => {
+        obj.coinData.filter(coin => {
+          if (!(unique.has(coin.zoneId))) {
+            unique.add(coin.zoneId)
+            zones.push(coin.zoneId)
+          }
+          return;
+        })
+      })
+      this.selectedLayout['zones']= zones;
+      this.getLayoutImage(layout);
     }
   }
 
-  getLayoutImage(data){
+  getLayoutImage(data) {
     this.api.getLayoutImage(data[0]._id).then((res: any) => {
       L.imageOverlay(res, this.bound).addTo(this.map);
       this.getZoneDetails();
+    });
+  }
+
+  getZoneDetails() {
+    this.api.getZone().then((res: any) => {
+      console.log('zone details response==', res, "zonesss==",this.selectedLayout.zones);
+      this.zoneList = [];
+      if (res.status) {
+        this.zoneList = res.success.filter(obj=> this.selectedLayout.zones.includes(obj._id));
+        this.createPolygon();
+      } else {
+        this.zoneList = [];
+        this.createPolygon();
+      }
     });
   }
 
@@ -128,34 +176,67 @@ export class ZoneConfigurationComponent implements OnInit {
       return obj._id == data;
     });
     console.log('zone===', zone);
-
     this.selectZoneForm.patchValue({
-      bounds: zone[0].bounds,
+      bounds: zone[0]?.bounds,
+      id: zone[0]?._id
     });
-    this.createPolygon(data);
+    this.createPolygon(zone);
   }
 
-  createPolygon(zoneId = 0) {
+  createPolygon(bounds = 1) {
     this.clearMap();
-    this.zoneList.forEach((obj) => {
-      if (zoneId == 0) {
-        L.polygon(obj.bounds).addTo(this.map);
-      } else {
-        if (obj._id == zoneId) {
-          L.polygon(obj.bounds).addTo(this.map);
+    if (bounds == 1) {
+      let layout = this.zoneList.filter((obj) => {
+        return( obj.layoutName && obj.layoutName == this.layoutName && this.selectedLayout.zones.includes(obj._id))
+      });
+      if (layout) {
+        for (let i = 0; i < layout.length; i++) {
+          L.polygon(layout[i].bounds).addTo(this.map);
         }
       }
-    });
+      else {
+        this.clearMap();
+        this.cd.detectChanges();
+      }
+    }
+    else if (bounds) {
+      if (bounds[0].bounds?.length) {
+        L.polygon(bounds[0].bounds).addTo(this.map);
+      }
+      else {
+        this.clearMap();
+        this.cd.detectChanges()
+      }
+    }
+
     this.cd.detectChanges();
     setTimeout(() => {
       this.mapElement.nativeElement.focus();
     }, 0);
   }
 
+  // createPolygon1(zoneId = 0) {
+  //   this.clearMap();
+  //   this.zoneList.forEach((obj) => {
+  //     if (zoneId == 0) {
+  //       L.polygon(obj.bounds).addTo(this.map);
+  //     } else {
+  //       if (obj._id == zoneId) {
+  //         L.polygon(obj.bounds).addTo(this.map);
+  //       }
+  //     }
+  //   });
+  //   this.cd.detectChanges();
+  //   setTimeout(() => {
+  //     this.mapElement.nativeElement.focus();
+  //   }, 0);
+  // }
+
   submitZone() {
     var data = {
       id: this.selectZoneForm.get('id').value,
       bounds: this.selectZoneForm.get('bounds').value,
+      layoutName: this.layoutName
     };
     console.log('zone submit===', data);
     this.api
@@ -167,7 +248,7 @@ export class ZoneConfigurationComponent implements OnInit {
           this.general.openSnackBar(res.message, '');
           this.getZoneDetails();
           this.selectZoneForm.patchValue({
-            layout: this.selectedLayout,
+            layout: this.selectedLayout.id,
           });
           this.cd.detectChanges();
         } else {
@@ -193,7 +274,7 @@ export class ZoneConfigurationComponent implements OnInit {
           this.general.openSnackBar(res.message, '');
           this.getZoneDetails();
           this.selectZoneForm.patchValue({
-            layout: this.selectedLayout,
+            layout: this.selectedLayout.id,
           });
           this.cd.detectChanges();
         } else {
@@ -204,42 +285,6 @@ export class ZoneConfigurationComponent implements OnInit {
       .catch((err) => {
         console.log('err==', err);
       });
-  }
-
-  getLayout() {
-    this.api
-      .getLayouts()
-      .then((res: any) => {
-        console.log('get layout res===', res);
-        if (res.status) {
-          this.gatewayList = res.success;
-          if (!this.map) {
-            this.createMap();
-          }
-        } else {
-          this.gatewayList = [];
-          if (!this.map) {
-            this.createMap();
-          }
-        }
-      })
-      .catch((err: any) => {
-        console.log('error==', err);
-      });
-  }
-
-  getZoneDetails() {
-    this.api.getZone().then((res: any) => {
-      console.log('zone details response==', res);
-      this.zoneList = [];
-      if (res.status) {
-        this.zoneList = res.success;
-        this.createPolygon();
-      } else {
-        this.zoneList = [];
-        this.createPolygon();
-      }
-    });
   }
 
   clearMap() {

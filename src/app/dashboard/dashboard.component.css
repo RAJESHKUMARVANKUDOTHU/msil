@@ -48,7 +48,6 @@
     display: flex;
     justify-content: space-between;
     margin: auto 1rem;
-    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -60,7 +59,7 @@ mat-card-title.mat-card-title {
 }
 
 .font {
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 th {
@@ -113,6 +112,25 @@ th {
     align-items: center;
     justify-content: space-between;
     width: 12rem;
+}
+
+.search {
+    position: absolute;
+    margin-left: 10rem;
+    top: -1rem;
+}
+
+.layout-name {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.refresh {
+    position: fixed;
+    bottom: 3rem;
+    z-index: 999;
+    right: 1.5rem;
 }
 
 @media only screen and (max-width: 768px) {

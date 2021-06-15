@@ -58,7 +58,7 @@ export class LocationReportComponent implements OnInit {
     this.locationReportData.type = type
     if (this.locationReportData.type == '1') {
       data = {
-        coinId: this.locationReportData.coinId.coinId,
+        coinId: this.locationReportData.coinId[0].coinId,
         fromDate: from,
         toDate: to,
         timeZoneOffset: this.general.getZone(),
@@ -149,7 +149,9 @@ export class LocationReportComponent implements OnInit {
         gridThickness: 0,
       },
       axisX: {
-        title: "Bay"
+        title: "Bay",
+        labelAutoFit: true,
+        labelAngle: 0,
       },
       dataPointWidth: 30,
       data: [{
@@ -195,7 +197,7 @@ export class LocationReportComponent implements OnInit {
 
     if (this.locationReportData.type == '1') {
       data = {
-        coinId: this.locationReportData.coinId.coinId,
+        coinId: this.locationReportData.coinId[0].coinId,
         fromDate: from,
         toDate: to,
         timeZoneOffset: this.general.getZone()

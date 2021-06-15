@@ -1,10 +1,11 @@
 <div class="container-fluid">
-    <button mat-fab color="primary" (click)="destroy()" class="float-right" matTooltip="Refresh">
+    <button mat-fab color="primary" (click)="destroy()" class="float-right refresh" matTooltip="Refresh">
         <mat-icon>autorenew</mat-icon>
     </button>
+
     <br><br>
 
-    <div class="d-md-flex flex-wrap justify-content-md-around">
+    <div class="d-md-flex flex-wrap justify-content-md-around  ml-3">
         <mat-card class="text-center">
             <mat-card-title>Congestion</mat-card-title> <br>
             <mat-card-content>
@@ -95,7 +96,31 @@
     </div> <br>
 
 
+
     <div *ngIf="enable.map">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field class="ml-5" style="width: 30% !important;">
+                    <mat-label>Layout</mat-label>
+                    <mat-select (selectionChange)="layoutSelect($event.value)">
+                        <ng-container *ngFor="let list of layout">
+                            <mat-option *ngIf='list.layoutName != null' [value]="list.layoutName">
+                                {{list.layoutName}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>
+                        Select the layout
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div *ngIf="selectedLayout" class="layout-name">
+                <br>{{selectedLayout?.layoutName}}
+            </div>
+            <div *ngIf="!selectedLayout" class="layout-name">
+                <br>No layout
+            </div>
+        </div>
         <div class="map-container">
             <div class="map-frame">
                 <div id="map"></div>

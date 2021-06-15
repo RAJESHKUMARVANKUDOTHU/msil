@@ -23,6 +23,7 @@ hr {
 
 .mat-cell {
     text-align: center;
+    vertical-align: baseline;
 }
 
 @media only screen and (max-width: 768px) {

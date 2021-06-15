@@ -40,7 +40,7 @@ export class GeofenceDashboardComponent implements OnInit {
       }
     });
     this.interval = setInterval(()=>{
-      this.refreshGeofence(this.limit,this.offset);
+      // this.refreshGeofence(this.limit,this.offset);
     },10000);
   }
 
@@ -58,7 +58,7 @@ export class GeofenceDashboardComponent implements OnInit {
         this.deviceData[index].geoFencestatus=true
       }
       else{
-        this.deviceData[index].geoFencestatus= false
+        this.deviceData[index].geofenceStatus=false
       }
     });
     
@@ -77,11 +77,11 @@ export class GeofenceDashboardComponent implements OnInit {
         //   res.success[i].totalTime=this.general.getTotTime(res.success[i].inTime,res.success[i].outTime)
         // }
         this.dataSource = new MatTableDataSource(this.deviceData);
-    
+
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           // this.dataSource.paginator = this.paginator
-    
+
         })
       }
       else{
@@ -89,7 +89,7 @@ export class GeofenceDashboardComponent implements OnInit {
       }
     })
   }
-  
+
   search(a) {
     this.dataSource = new MatTableDataSource(this.deviceData);
     setTimeout(() => {
@@ -99,13 +99,14 @@ export class GeofenceDashboardComponent implements OnInit {
     })
   }
   getUpdate(event) {
- 
+
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
     this.refreshGeofence(this.limit, this.offset)
   }
 
   openDailog(data) {
+    data.type="group";
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -117,8 +118,25 @@ export class GeofenceDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(GroupingComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      
+
     })
 
 }
+  openInfo(data) {
+    console.log("data==", data);
+    data.type="non-group";
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = '50vh';
+    dialogConfig.width = '30vw';
+    dialogConfig.data = {
+      data: data
+    }
+    const dialogRef = this.dialog.open(GroupingComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+    
+    });
+  }
 }
