@@ -18,6 +18,8 @@ import * as moment from 'moment';
 import { LoginAuthService } from '../services/login-auth.service';
 import { GeneralService } from '../services/general.service'
 import 'leaflet-moving-rotated-marker/leaflet.movingRotatedMarker';
+import * as R from 'leaflet-responsive-popup';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -425,24 +427,27 @@ export class DashboardComponent implements OnInit {
         return this.getDeviceDelayOperation(obj);
       }
     });
+    console.log("this.deviceGroupList==",this.deviceGroupList)
   }
 
 
   getDeviceDelayOperation(obj) {
     if (obj.outTime == null) {
       obj.time = Math.floor(obj.totalDelay / (1000 * 60));
-      if (obj.time < obj?.totalStandardTime) {
+      if (obj.time < 0) {
         obj.isDelay = false;
+        obj.time *= -1;
       } else {
         obj.isDelay = true;
       }
     }
     else {
       obj.time = Math.floor(obj.totalDelay / (1000 * 60));
-      if (obj.time > obj.standardDeliveryTime) {
-        obj.isDelay = true;
-      } else {
+      if (obj.time < 0) {
         obj.isDelay = false;
+        obj.time *= -1;
+      } else {
+        obj.isDelay = true;
       }
     }
     obj.EDT = this.getEDT(obj);
@@ -507,14 +512,15 @@ export class DashboardComponent implements OnInit {
             // m.slideTo([this.deviceList[j].latlng[0].lat, this.deviceList[j].latlng[0].lng], { path: latlngPath, duration: 300 });
             // this.cd.detectChanges();
 
-
+            let popup = R.responsivePopup().setContent(this.getPopUpForm(this.deviceList[j]));
             this.marker.push(
               new L.animatedMarker(latlng, { icon: icon, interval: 3000 })
-                .addTo(this.map)
-                .bindTooltip(this.getPopUpForm(this.deviceList[j]), {
-                  direction: this.getDirection(latlng),
-                  permanent: false
-                })
+                .addTo(this.map).bindPopup(popup)
+                // .bindTooltip(this.getPopUpForm(this.deviceList[j]), {
+                //   direction: this.getDirection(latlng),
+                //   permanent: false,
+                //   className: 'tootip-custom'
+                // })
             );
           }
         }
@@ -840,6 +846,3 @@ export class DashboardComponent implements OnInit {
   }
 
 }
-
-
-

@@ -34,6 +34,7 @@
     "leaflet-heatmap": "^1.0.0",
     "leaflet-moving-marker": "^0.3.0",
     "leaflet-moving-rotated-marker": "0.0.1",
+    "leaflet-responsive-popup": "^0.6.4",
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet.animatedmarker": "^1.0.0",
     "leaflet.heat": "^0.2.0",
