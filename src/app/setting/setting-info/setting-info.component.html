@@ -249,7 +249,7 @@
 </div>
 
 <div *ngIf="type=='sub-zone'">
-    <h1 mat-dialog-title *ngIf="zoneData?.length">Sub zone setting</h1>
+    <h1 mat-dialog-title *ngIf="zoneData?.length"> Edit Sub zone</h1>
     <div mat-dialog-content *ngIf="zoneData?.length" class="d-flex justify-content-around diagWrapper text-center">
         <form [formGroup]="zoneSettingForm">
             <table formArrayName="items" *ngIf="zoneSettingForm.get('items')['controls']?.length>0">
@@ -316,7 +316,7 @@
     </div>
 </div>
 <div *ngIf="type=='zone'">
-    <h1 mat-dialog-title *ngIf="zoneData?.length">Update Sub Zone</h1>
+    <h1 mat-dialog-title *ngIf="zoneData?.length">Edit Sub Zone</h1>
     <div mat-dialog-content *ngIf="zoneData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
         <form [formGroup]="zoneSettingForm">
             <table formArrayName="items" *ngIf="zoneSettingForm.get('items')['controls']?.length>0">
@@ -335,15 +335,6 @@
                                 </mat-error>
                             </mat-form-field><br><br>
                         </td><br>
-                        <td>
-                            <mat-form-field>
-                                <mat-label> Standard Time</mat-label>
-                                <input type="number" formControlName="standardTime" matInput required>
-                                <mat-error>
-                                    Please provide a valid standard time
-                                </mat-error>
-                            </mat-form-field>
-                        </td>
                         <td>
                             <mat-icon matListIcon (click)="deleteZoneForm(a.value)" class="cursor">delete_forever
                             </mat-icon>

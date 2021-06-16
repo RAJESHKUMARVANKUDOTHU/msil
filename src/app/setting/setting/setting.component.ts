@@ -109,7 +109,6 @@ export class SettingComponent implements OnInit {
     // });
     this.zoneForm = this.fb.group({
       zoneName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
-      standardTime: ['', Validators.required]
     });
     this.coinCategory = this.fb.group({
       coinId: ['', Validators.required],
@@ -420,6 +419,7 @@ export class SettingComponent implements OnInit {
     try {
       if (this.zoneForm.valid) {
         data.zoneName= data.zoneName.trim().replace(/\s\s+/g, ' ');
+        data.standardTime = 0 ;
         this.api.zoneSetting(data).then((res: any) => {
           console.log("zone setting res===", res);
           if (res.status) {
@@ -445,7 +445,7 @@ export class SettingComponent implements OnInit {
   onSubmitMainZoneForm(data) {
     try {
       if (this.mainZoneForm.valid) {
-        data.zoneName = data.zoneName.trim();
+        data.zoneName = data.zoneName.trim().replace(/\s\s+/g, ' ');;
         console.log("onSubmitMainZoneForm data==", data)
         this.api.createMainZone(data).then((res: any) => {
           console.log("zone setting res===", res);
@@ -517,7 +517,7 @@ export class SettingComponent implements OnInit {
         }
         else {
           this.subZoneForm.reset();
-          this.general.openSnackBar("Update unsuccessfull. There are no more zone left in the list", '');
+          this.general.openSnackBar("Update unsuccessfull. There is no more zone left in the list", '');
         }
       }
       else { }

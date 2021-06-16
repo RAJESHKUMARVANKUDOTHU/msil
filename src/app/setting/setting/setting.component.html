@@ -48,7 +48,131 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- <mat-card class="text-center">
+    <mat-card class="text-center">
+        <mat-card-title> Time Delay</mat-card-title><br><br><br><br><br>
+        <mat-card-content>
+            <button mat-raised-button (click)="openInfo('timeDelay')" color="primary">Info</button>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Create Main Zone </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="mainZoneForm">
+                <mat-form-field>
+                    <mat-label>Enter name of main zone</mat-label>
+                    <input matInput type="text" formControlName="zoneName" autocomplete="off" required>
+                    <mat-error *ngIf="mainZoneForm.get('zoneName').value ==''">
+                        Zone name is required.
+                    </mat-error>
+                    <mat-error *ngIf="mainZoneForm.get('zoneName').value !='' || general.mismatch">
+                        No special characters are allowed.
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Enter Standard time for the main zone</mat-label>
+                    <input type="number" matInput formControlName="standardTime" min="0" placeholder="in Minutes" autocomplete="off" required>
+                    <mat-error>
+                        Standard time is required.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!mainZoneForm.valid" color="primary" (click)="onSubmitMainZoneForm(mainZoneForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('main-zone')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>Create Sub Zone </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="zoneForm">
+                <mat-form-field>
+                    <mat-label>Enter name for Zone</mat-label>
+                    <input matInput type="text" formControlName="zoneName" autocomplete="off" required>
+                    <mat-error *ngIf="zoneForm.get('zoneName').hasError('required')">
+                        Zone name is required.
+                    </mat-error>
+                    <mat-error *ngIf="zoneForm.get('zoneName').value !='' || general.mismatch">
+                        No special characters are allowed.
+                    </mat-error>
+                </mat-form-field> <br><br><br><br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!zoneForm.valid" color="primary" (click)="onSubmitZoneForm(zoneForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('zone')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="text-center">
+        <mat-card-title>Assign Sub Zone</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="subZoneForm">
+                <mat-form-field>
+                    <mat-label>Select main zone</mat-label>
+                    <mat-select formControlName="mainZoneId" required>
+                        <mat-option *ngFor="let a of mainZone" [value]="a._id">{{a.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Field required.
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Select sub zone</mat-label>
+                    <mat-select formControlName="zoneName" required multiple>
+                        <mat-option #allSelected7 (click)="toggleAllSelectionZone1(subZoneForm)" [value]="0">All</mat-option>
+                        <mat-option *ngFor="let a of zoneData" [value]="a.zoneName" [disabled]="a.mainZoneId">{{a.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Field required.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!subZoneForm.valid" color="primary" (click)="onSubmitSubZoneForm(subZoneForm.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('sub-zone')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title> Set Zone for Coins</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="coinCategory">
+                <mat-form-field>
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected4 (click)="toggleAllSelectionCoin1(coinCategory)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId" [disabled]="coin.zoneId != null">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field>
+                    <mat-label>Select zone category</mat-label>
+                    <mat-select formControlName="zoneId">
+                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select zone.
+                    </mat-error>
+                </mat-form-field> <br><br>
+            </form>
+            <div class="d-flex justify-content-around">
+                <button mat-raised-button [disabled]="!coinCategory.valid" color="primary" (click)="onSumbitCoinCategory(coinCategory.value)">submit</button>
+                <button mat-raised-button (click)="openInfo('coin-cat')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<!-- <mat-card class="text-center">
         <mat-card-title> Set Range</mat-card-title>
         <mat-card-content>
             <form [formGroup]="distanceForm">
@@ -68,7 +192,7 @@
             <button class="btn" mat-raised-button [disabled]="!distanceForm.valid" color="primary" (click)="onSubmitDistanceForm(distanceForm.value)">submit</button>
         </mat-card-content>
     </mat-card> -->
-    <!-- <mat-card class="text-center">
+<!-- <mat-card class="text-center">
         <mat-card-title>Set Group name</mat-card-title>
         <mat-card-content>
             <form [formGroup]="groupRegister">
@@ -186,105 +310,10 @@
         </mat-card-content>
     </mat-card> -->
 
-    <mat-card class="text-center">
-        <mat-card-title> Time Delay</mat-card-title><br><br><br><br><br>
-        <mat-card-content>
-            <button mat-raised-button (click)="openInfo('timeDelay')" color="primary">Info</button>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card class="text-center">
-        <mat-card-title>Create Main Zone </mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="mainZoneForm">
-                <mat-form-field>
-                    <mat-label>Enter name of main zone</mat-label>
-                    <input matInput type="text" formControlName="zoneName" autocomplete="off" required>
-                    <mat-error *ngIf="mainZoneForm.get('zoneName').value ==''">
-                        Zone name is required.
-                    </mat-error>
-                    <mat-error *ngIf="mainZoneForm.get('zoneName').value !='' || general.mismatch">
-                        No special characters are allowed.
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field>
-                    <mat-label>Enter Standard time for the main zone</mat-label>
-                    <input type="number" matInput formControlName="standardTime" min="0" placeholder="in Minutes" autocomplete="off" required>
-                    <mat-error>
-                        Standard time is required.
-                    </mat-error>
-                </mat-form-field> <br><br>
-            </form>
-            <div class="d-flex justify-content-around">
-                <button mat-raised-button [disabled]="!mainZoneForm.valid" color="primary" (click)="onSubmitMainZoneForm(mainZoneForm.value)">submit</button>
-                <button mat-raised-button (click)="openInfo('main-zone')" color="primary">Info</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card class="text-center">
-        <mat-card-title>Create zone </mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="zoneForm">
-                <mat-form-field>
-                    <mat-label>Enter name for Zone</mat-label>
-                    <input matInput type="text" formControlName="zoneName" autocomplete="off" required>
-                    <mat-error *ngIf="zoneForm.get('zoneName').hasError('required')">
-                        Zone name is required.
-                    </mat-error>
-                    <mat-error *ngIf="zoneForm.get('zoneName').value !='' || general.mismatch">
-                        No special characters are allowed.
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field>
-                    <mat-label>Enter Standard time for the zone</mat-label>
-                    <input type="number" matInput formControlName="standardTime" placeholder="in Minutes" autocomplete="off" required>
-                    <mat-error>
-                        Standard time is required.
-                    </mat-error>
-                </mat-form-field> <br><br>
-            </form>
-            <div class="d-flex justify-content-around">
-                <button mat-raised-button [disabled]="!zoneForm.valid" color="primary" (click)="onSubmitZoneForm(zoneForm.value)">submit</button>
-                <button mat-raised-button (click)="openInfo('zone')" color="primary">Info</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
 
 
-    <mat-card class="text-center">
-        <mat-card-title>Assign Sub Zone</mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="subZoneForm">
-                <mat-form-field>
-                    <mat-label>Select main zone</mat-label>
-                    <mat-select formControlName="mainZoneId" required>
-                        <mat-option *ngFor="let a of mainZone" [value]="a._id">{{a.zoneName}}</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Field required.
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field>
-                    <mat-label>Select sub zone</mat-label>
-                    <mat-select formControlName="zoneName" required multiple>
-                        <mat-option #allSelected7 (click)="toggleAllSelectionZone1(subZoneForm)" [value]="0">All</mat-option>
-                        <mat-option *ngFor="let a of zoneData" [value]="a.zoneName" [disabled]="a.mainZoneId">{{a.zoneName}}</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Field required.
-                    </mat-error>
-                </mat-form-field> <br><br>
-            </form>
-            <div class="d-flex justify-content-around">
-                <button mat-raised-button [disabled]="!subZoneForm.valid" color="primary" (click)="onSubmitSubZoneForm(subZoneForm.value)">submit</button>
-                <button mat-raised-button (click)="openInfo('sub-zone')" color="primary">Info</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
 
-
-    <!-- <mat-card class="text-center">
+<!-- <mat-card class="text-center">
         <mat-card-title>Set Standard time for zone(s) </mat-card-title>
         <mat-card-content>
             <form [formGroup]="zoneSTDForm">
@@ -314,41 +343,8 @@
         </mat-card-content>
     </mat-card> -->
 
-    <mat-card class="text-center">
-        <mat-card-title> Set Zone for Coins</mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="coinCategory">
-                <mat-form-field>
-                    <mat-label>Select Coin</mat-label>
-                    <mat-select formControlName="coinId" multiple>
-                        <mat-option #allSelected4 (click)="toggleAllSelectionCoin1(coinCategory)" [value]="0">All
-                        </mat-option>
-                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId" [disabled]="coin.zoneId != null">
-                            {{coin.coinName}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Please select coin(s).
-                    </mat-error>
-                </mat-form-field> <br>
-                <mat-form-field>
-                    <mat-label>Select zone category</mat-label>
-                    <mat-select formControlName="zoneId">
-                        <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Please select zone.
-                    </mat-error>
-                </mat-form-field> <br><br>
-            </form>
-            <div class="d-flex justify-content-around">
-                <button mat-raised-button [disabled]="!coinCategory.valid" color="primary" (click)="onSumbitCoinCategory(coinCategory.value)">submit</button>
-                <button mat-raised-button (click)="openInfo('coin-cat')" color="primary">Info</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
 
-    <!-- <mat-card class="text-center">
+<!-- <mat-card class="text-center">
         <mat-card-title> Create Service Type</mat-card-title>
         <mat-card-content>
             <form [formGroup]="createServiceType">
@@ -383,7 +379,7 @@
     </mat-card> -->
 
 
-    <!-- <mat-card class="text-center">
+<!-- <mat-card class="text-center">
         <mat-card-title> Set Inactivity Time for Finds</mat-card-title> <br>
         <mat-card-content>
             <form [formGroup]="inactivityFind">
@@ -457,4 +453,3 @@
     </mat-card>
 <<<<<<< HEAD
 </div> -->
-</div>
