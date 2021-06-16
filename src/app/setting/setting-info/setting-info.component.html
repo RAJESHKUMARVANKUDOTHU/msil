@@ -206,7 +206,7 @@
 </div> -->
 
 <div *ngIf="type=='main-zone'">
-    <h1 mat-dialog-title *ngIf="mainZone?.length">Edit main zone</h1>
+    <h1 mat-dialog-title *ngIf="mainZone?.length">Edit Main Zone</h1>
     <div mat-dialog-content *ngIf="mainZone?.length" class="d-flex justify-content-around diagWrapper text-center">
         <form [formGroup]="mainZoneForm">
             <table formArrayName="items" *ngIf="mainZoneForm.get('items')['controls']?.length>0">
@@ -249,7 +249,7 @@
 </div>
 
 <div *ngIf="type=='sub-zone'">
-    <h1 mat-dialog-title *ngIf="zoneData?.length"> Edit Sub zone</h1>
+    <h1 mat-dialog-title *ngIf="zoneData?.length"> Reassign Sub Zone</h1>
     <div mat-dialog-content *ngIf="zoneData?.length" class="d-flex justify-content-around diagWrapper text-center">
         <form [formGroup]="zoneSettingForm">
             <table formArrayName="items" *ngIf="zoneSettingForm.get('items')['controls']?.length>0">
