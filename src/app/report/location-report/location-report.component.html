@@ -41,7 +41,7 @@
                     <td mat-cell *matCellDef="let location"> {{location.deviceId}} </td>
                 </ng-container>
                 <ng-container matColumnDef="deviceName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Find Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle No. </th>
                     <td mat-cell *matCellDef="let location"> {{location.deviceName}} </td>
                 </ng-container>
 
@@ -89,17 +89,17 @@
     </div>
     <div class="d-flex justify-content-between">
         <span>
-            <button *ngIf="!general.isMobile"  mat-raised-button (click)="download()" color="primary" [disabled]="!bayData?.length">
+            <button *ngIf="!general.isMobile"  mat-raised-button (click)="download()" color="primary" [disabled]="!locationData?.length">
                 <span> Download</span>&nbsp;&nbsp;
         <mat-icon>download </mat-icon>
         </button>
-        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!bayData?.length">
+        <button *ngIf="general.isMobile" mat-mini-fab (click)="download()" color="primary" [disabled]="!locationData?.length">
             <mat-icon>download</mat-icon>
             </button>
         </span>
 
         <mat-form-field>
-            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, bayData)">
+            <input matInput placeholder="Search" autocomplete="off" matInput (input)="search($event.target.value, locationData)">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
     </div>

@@ -11,7 +11,6 @@ import {
 import * as CanvasJS from '../../../assets/canvasjs-3.2.7/canvasjs.min';
 import { GeneralService } from '../../services/general.service';
 import { ApiService } from '../../services/api.service';
-import { conditionallyCreateMapObjectLiteral } from '@angular/compiler/src/render3/view/util';
 @Component({
   selector: 'app-location-report',
   templateUrl: './location-report.component.html',
@@ -20,17 +19,16 @@ import { conditionallyCreateMapObjectLiteral } from '@angular/compiler/src/rende
 export class LocationReportComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  locationReportData: any
-  locationData: any = []
-  bayData: any = []
-  bayDataTemp: any = []
+  locationReportData: any;
+  searchKey: any;
+  locationData: any = [];
   dataSource: any = [];
   dataPoints: any = []
-  minutes: any = []
-  limit: any = 10
-  offset: any = 0
-  currentPageLength: any = 10
-  currentPageSize: any = 10
+  minutes: any = [];
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
   displayedColumns1 = ['i', 'deviceId', 'deviceName', 'inTime', 'outTime', 'totTime'];
   displayedColumns2 = ['i', 'coinName', 'totalVehicle', 'avgTime',];
 
@@ -52,76 +50,82 @@ export class LocationReportComponent implements OnInit {
     }
   }
   getData(limit, offset, type) {
-    var data = {}
-    let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD")
-    let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD")
-    this.locationReportData.type = type
-    if (this.locationReportData.type == '1') {
-      data = {
-        coinId: this.locationReportData.coinId[0].coinId,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
-      }
-      console.log("data to send==", data)
-      this.api.getLocationReport(data).then((res: any) => {
-        this.currentPageLength = parseInt(res.totalLength)
+    return new Promise((resolve, reject) => {
+      var data = {}
+      let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD")
+      let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD")
+      this.locationReportData.type = type
+      if (this.locationReportData.type == '1') {
+        data = {
+          coinId: this.locationReportData.coinId[0].coinId,
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
+        }
+        console.log("data to send==", data)
+        this.api.getLocationReport(data).then((res: any) => {
+          this.currentPageLength = parseInt(res.totalLength)
 
-        this.locationData = []
-        console.log("res==", res)
-        if (res.status) {
-          this.locationData = res.success
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+          this.locationData = []
+          console.log("res==", res)
+          if (res.status) {
+            this.locationData = res.success
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+            }
+            this.dataSource = new MatTableDataSource(this.locationData);
+
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
+
+            })
+          }
+          resolve(res);
+        }).catch(err => {
+          console.log("err===", err);
+          reject(err);
+        })
+      }
+
+      if (this.locationReportData.type == '2') {
+        data = {
+          zoneId: this.locationReportData.zoneId._id,
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone()
+        }
+        console.log("data to send==", data)
+        this.api.getAverageTimeOfBays(data).then((res: any) => {
+          this.locationData = []
+          console.log("res 2==", res)
+          if (res.status) {
+            for (let i = 0; i < res.success.length; i++) {
+              this.locationData.push({
+                coinName: res.success[i].coinName,
+                avgTime: this.getTime(res.success[i].avgTime).time,
+                totalVehicle: res.success[i].totalVehicle,
+                minutes: this.getTime(res.success[i].avgTime).m
+              })
+            }
+            this.averageTimeOfBayGraph(this.locationData)
           }
           this.dataSource = new MatTableDataSource(this.locationData);
 
           setTimeout(() => {
             this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
+            this.dataSource.paginator = this.paginator
           })
-        }
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
+          resolve(res);
 
-    if (this.locationReportData.type == '2') {
-      data = {
-        zoneId: this.locationReportData.zoneId._id,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone()
-      }
-      console.log("data to send==", data)
-      this.api.getAverageTimeOfBays(data).then((res: any) => {
-        this.bayData = []
-        console.log("res 2==", res)
-        if (res.status) {
-          for (let i = 0; i < res.success.length; i++) {
-            this.bayData.push({
-              coinName: res.success[i].coinName,
-              avgTime: this.getTime(res.success[i].avgTime).time,
-              totalVehicle: res.success[i].totalVehicle,
-              minutes: this.getTime(res.success[i].avgTime).m
-            })
-          }
-          this.averageTimeOfBayGraph(this.bayData)
-        }
-        this.dataSource = new MatTableDataSource(this.bayData);
-
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator
+        }).catch(err => {
+          console.log("err===", err);
+          reject(err);
         })
-
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
+      }
+    })
   }
 
   averageTimeOfBayGraph(data) {
@@ -257,7 +261,9 @@ export class LocationReportComponent implements OnInit {
     }
     return a
   }
+
   search(a, data) {
+    this.searchKey = a;
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
@@ -269,7 +275,9 @@ export class LocationReportComponent implements OnInit {
 
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
-    this.getData(this.limit, this.offset, type)
+    this.getData(this.limit, this.offset, type).then(res=>{
+      this.search(this.searchKey,this.locationData)
+    })
   }
 
 }

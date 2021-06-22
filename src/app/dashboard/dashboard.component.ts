@@ -19,7 +19,7 @@ import { LoginAuthService } from '../services/login-auth.service';
 import { GeneralService } from '../services/general.service'
 import 'leaflet-moving-rotated-marker/leaflet.movingRotatedMarker';
 import * as R from 'leaflet-responsive-popup';
-
+import 'leaflet-geometryutil'
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -114,6 +114,7 @@ export class DashboardComponent implements OnInit {
     this.map = L.map('map', {
       attributionControl: false,
       minZoom: 1,
+      tap:false,
       maxZoom: 5,
       center: [0, 0],
       zoom: 0,
@@ -208,14 +209,14 @@ export class DashboardComponent implements OnInit {
       if (res.status) {
         this.getZoneVehicleData(zones);
         this.interval = setInterval((i) => {
-          console.log("i=====",i);
-          
+          console.log("i=====", i);
+
           if (!this.zoneClickStatus.status) {
-            console.log("this.selectedLayout===",this.selectedLayout);
-            
+            console.log("this.selectedLayout===", this.selectedLayout);
+
             this.getZoneVehicleData(this.selectedLayout?.zones);
           }
-        }, 10000)
+        }, 10*1000);
         let unique = new Set();
         this.zoneList = res.success.map((obj) => {
           obj.highlight = false;
@@ -258,8 +259,8 @@ export class DashboardComponent implements OnInit {
       status: false,
       zone: null
     };
-    console.log("vehicle para===",data);
-    
+    console.log("vehicle para===", data);
+
     this.api.getZoneVehicleData({ zoneId: data }).then((res: any) => {
       console.log('zone vehicle response==', res);
       if (res.status) {
@@ -427,7 +428,7 @@ export class DashboardComponent implements OnInit {
         return this.getDeviceDelayOperation(obj);
       }
     });
-    console.log("this.deviceGroupList==",this.deviceGroupList)
+    console.log("this.deviceGroupList==", this.deviceGroupList)
   }
 
 
@@ -469,7 +470,7 @@ export class DashboardComponent implements OnInit {
 
     for (let i = 0; i < this.zoneList.length; i++) {
       if (this.zoneList[i].selected) {
-        new L.polygon(this.zoneList[i].bounds, { color: this.zoneList[i].color })
+        let poly = new L.polygon(this.zoneList[i].bounds, { color: this.zoneList[i].color })
           .addTo(this.map)
           .on('click', () => {
             this.zoneClick(this.zoneList[i]);
@@ -511,22 +512,52 @@ export class DashboardComponent implements OnInit {
 
             // m.slideTo([this.deviceList[j].latlng[0].lat, this.deviceList[j].latlng[0].lng], { path: latlngPath, duration: 300 });
             // this.cd.detectChanges();
+            var m = new L.marker([this.deviceList[j].latlng[0].lat, this.deviceList[j].latlng[0].lng], {
+              icon: icon,
+            })
+            let intersect = this.isMarkerInsidePolygon(m, poly);
+            if(intersect){
+              latlng = [intersect];
+            }
+            console.log("device == ", this.deviceList[j].deviceName, "intersect==", intersect);
 
             let popup = R.responsivePopup().setContent(this.getPopUpForm(this.deviceList[j]));
             this.marker.push(
               new L.animatedMarker(latlng, { icon: icon, interval: 3000 })
                 .addTo(this.map).bindPopup(popup)
-                // .bindTooltip(this.getPopUpForm(this.deviceList[j]), {
-                //   direction: this.getDirection(latlng),
-                //   permanent: false,
-                //   className: 'tootip-custom'
-                // })
+              // .bindTooltip(this.getPopUpForm(this.deviceList[j]), {
+              //   direction: this.getDirection(latlng),
+              //   permanent: false,
+              //   className: 'tootip-custom'
+              // })
             );
           }
         }
       }
     }
   }
+
+  isMarkerInsidePolygon(marker, poly) {
+    var inside = false;
+
+    console.log("poly.getLatLngs()===",poly.getLatLngs());
+
+    let a = poly.getBounds().contains(marker.getLatLng());
+    console.log("a===",a);
+    if(!a){
+      let b = poly.getLatLngs()[0].map(obj=>[obj.lat,obj.lng]);
+      console.log("b===",b);
+      
+      let c = marker.getLatLng();
+      c = [c.lat,c.lng];
+      console.log("c==",c);
+      
+      let d = L.GeometryUtil.closest(this.map, b, c);
+      console.log("d====",d);
+      return [d.lat,d.lng];
+    }
+    return false
+  };
 
   // getAngle(cx, cy, ex, ey) {
   //   var dy = ey - cy;
@@ -846,3 +877,6 @@ export class DashboardComponent implements OnInit {
   }
 
 }
+
+
+

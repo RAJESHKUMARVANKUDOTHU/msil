@@ -87,6 +87,7 @@
             <button class="btn" mat-raised-button [disabled]="!txPowerForm.valid" (click)="onSubmitTxPower(txPowerForm.value)" color="primary">Submit</button>
         </mat-card-content>
     </mat-card>
+
     <mat-card class="text-center">
         <mat-card-title>
             Configure Merging Time
@@ -153,7 +154,7 @@
         <mat-card-title> Set Range</mat-card-title>
         <mat-card-content>
             <form [formGroup]="rangeForm">
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>In feet</mat-label>
                     <mat-select formControlName="range">
                         <mat-option [value]=25>25</mat-option>
@@ -171,14 +172,14 @@
     </mat-card>
 
     <mat-card class="text-center">
-        <mat-card-title>Set Group name</mat-card-title>
+        <mat-card-title>Create Group</mat-card-title>
         <mat-card-content>
             <form [formGroup]="groupRegister">
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Enter group name</mat-label>
                     <input type="text" matInput formControlName="groupName" autocomplete="off" required>
                     <mat-error *ngIf="groupRegister.get('groupName').value ==''">
-                        Service name is required
+                        Group name is required
                     </mat-error>
                     <mat-error *ngIf="groupRegister.get('groupName').value !='' || general.mismatch">
                         No special characters are allowed.
@@ -197,7 +198,7 @@
         <mat-card-subtitle></mat-card-subtitle>
         <mat-card-content>
             <form [formGroup]="groupCoinForm">
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Select Coin</mat-label>
                     <mat-select formControlName="coinId" multiple>
                         <mat-option #allSelected5 (click)="toggleAllSelectionCoin2(groupCoinForm)" [value]="0">All
@@ -210,7 +211,7 @@
                         Please select coin(s).
                     </mat-error>
                 </mat-form-field> <br>
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Select group name</mat-label>
                     <mat-select formControlName="groupId" required>
                         <mat-option *ngFor="let group of groupData" [value]="group._id">{{group.groupName}}</mat-option>
@@ -231,7 +232,7 @@
         <mat-card-title> Set Time Delay</mat-card-title>
         <mat-card-content>
             <form [formGroup]="timeDelay" id="time">
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Select Find</mat-label>
                     <mat-select formControlName="deviceId" multiple>
                         <mat-option #allSelected (click)="toggleAllSelectionDevice(timeDelay)" [value]="0">All
@@ -243,7 +244,7 @@
                         Please select Find(s).
                     </mat-error>
                 </mat-form-field> <br>
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Enter time delay</mat-label>
                     <input type="number" matInput formControlName="timeDelay" autocomplete="off" required>
                     <mat-error>
@@ -257,12 +258,11 @@
             </div>
         </mat-card-content>
     </mat-card>
-
     <mat-card class="text-center">
         <mat-card-title>Set Maximum finds to be assigned</mat-card-title>
         <mat-card-content>
             <form [formGroup]="maxFindForm">
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Select Coin</mat-label>
                     <mat-select formControlName="coinId" multiple>
                         <mat-option #allSelected1 (click)="toggleAllSelectionCoins(maxFindForm)" [value]="0">All
@@ -273,7 +273,7 @@
                         Please select coin(s).
                     </mat-error>
                 </mat-form-field> <br>
-                <mat-form-field class="w-75">
+                <mat-form-field>
                     <mat-label>Set maximum number of finds to assign</mat-label>
                     <input type="number" matInput formControlName="maxFindAsset" autocomplete="off" required>
                     <mat-error>
@@ -287,6 +287,96 @@
             </div>
         </mat-card-content>
     </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>
+            Define Find transmission power
+        </mat-card-title>
+        <mat-card-subtitle>
+            Enter tx power
+        </mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="findTxPowerForm">
+                <mat-form-field class="w-75">
+                    <mat-label>Select Device</mat-label>
+                    <mat-select formControlName="deviceId" multiple>
+                        <mat-option #allSelected2 (click)="toggleAllSelectionDevices(findTxPowerForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">
+                            {{find.deviceName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select find(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75">
+                    <!-- <mat-label> Choose tx power</mat-label>
+                    <mat-select formControlName="txPower" required>
+                        <mat-option value="4A">4A</mat-option>
+                        <mat-option value="4B">4B</mat-option>
+                        <mat-option value="4C">4C</mat-option>
+                        <mat-option value="4D">4D</mat-option>
+                    </mat-select> -->
+                    <mat-label> Enter tx power</mat-label>
+                    <input matInput type="number" min="0" formControlName="txPower" required>
+                    <mat-error>
+                        Choose valid transmission power.
+                    </mat-error>
+                </mat-form-field>
+            </form><br>
+            <div class="d-flex justify-content-around">
+                <button class="btn" mat-raised-button [disabled]="!findTxPowerForm.valid" (click)="onSubmitFindTxPower(findTxPowerForm.value)" color="primary">Submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('find-txPower')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="text-center">
+        <mat-card-title>
+            Set Coin Position
+        </mat-card-title>
+        <mat-card-subtitle>
+            Enter Coin Position
+        </mat-card-subtitle>
+        <mat-card-content>
+            <form [formGroup]="coinPlacementForm">
+                <mat-form-field class="w-75">
+                    <mat-label>Select Coin</mat-label>
+                    <mat-select formControlName="coinId" multiple>
+                        <mat-option #allSelected3 (click)="toggleAllSelectionCoin(coinPlacementForm)" [value]="0">All
+                        </mat-option>
+                        <mat-option *ngFor="let coin of coinData" [value]="coin.coinId">
+                            {{coin.coinName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please select coin(s).
+                    </mat-error>
+                </mat-form-field> <br>
+                <mat-form-field class="w-75">
+                    <mat-label> Choose coin position</mat-label>
+                    <mat-select formControlName="coinPlacement" required>
+                        <mat-option value="Front Facing">Front Facing</mat-option>
+                        <mat-option value="Back Facing">Back Facing</mat-option>
+                        <mat-option value="Top Facing">Top Facing</mat-option>
+                        <mat-option value="Right Facing">Right Facing</mat-option>
+                        <mat-option value="Bottom Facing">Bottom Facing</mat-option>
+                        <mat-option value="Left Facing">Left Facing</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Field required.
+                    </mat-error>
+                </mat-form-field>
+            </form><br>
+            <div class="d-flex justify-content-around">
+                <button class="btn" mat-raised-button [disabled]="!coinPlacementForm.valid" (click)="onSubmitCoinPlacement(coinPlacementForm.value)" color="primary">Submit</button>
+                <button mat-raised-button (click)="openAdminSettingInfo('coin-pos')" color="primary">Info</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
 
 
     <mat-card class="text-center">
@@ -311,7 +401,7 @@
                         <mat-option *ngFor="let data of  gateway" [value]="data.gatewayId">{{data.gatewayName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </form><br><br><br><br>
+            </form><br>
             <div class="d-flex justify-content-around">
                 <button mat-raised-button [disabled]="!meshForm.valid" color="primary" (click)="onSubmitMeshForm(meshForm.value)">submit</button>
                 <button mat-raised-button (click)="openAdminSettingInfo('mesh')" color="primary">Info</button>

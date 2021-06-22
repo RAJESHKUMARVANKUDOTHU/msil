@@ -31,6 +31,7 @@
     "heatmap.js": "^2.0.5",
     "intl-tel-input": "^17.0.8",
     "leaflet": "^1.7.1",
+    "leaflet-geometryutil": "^0.10.0",
     "leaflet-heatmap": "^1.0.0",
     "leaflet-moving-marker": "^0.3.0",
     "leaflet-moving-rotated-marker": "0.0.1",

@@ -65,8 +65,7 @@
         display: flex;
         justify-content: space-around;
     }
-
-  /*   .mat-tab-label-active{
+    /*   .mat-tab-label-active{
       background-color: transparent ;
       background:  #dee2e678;
       opacity: 1 !important;
@@ -117,7 +116,7 @@
             width: 95vh !important;
         }
         .mat-select-panel {
-            width: 15rem;
+            width: 12rem;
             /* margin-left: 1.3rem; */
             /* padding: 0 2rem 0 1rem; */
         }
@@ -126,7 +125,7 @@
             font-size: inherit;
             line-height: 3em;
             height: 3em;
-            margin-left: 1rem;
+            margin-left: 2.5rem;
             /* color: white !important; */
         }
         .mat-menu-item .mat-icon {
