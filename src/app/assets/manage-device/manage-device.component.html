@@ -22,7 +22,7 @@
                 <td mat-cell *matCellDef="let find"> {{find.deviceName}} </td>
             </ng-container>
             <ng-container matColumnDef="deviceToggleStatus">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> On/Off </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Off/On </th>
                 <td mat-cell *matCellDef="let live">
                     <span>
                         <mat-slide-toggle color="primary" [checked]="live.deviceToggleStatus" (change)="toggle(live)">
