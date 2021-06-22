@@ -267,15 +267,15 @@ export class DashboardComponent implements OnInit {
         let data = res.success;
         data.map((obj, index) => {
           let latlng = [{
-            lat: obj.deviceData?.deviceBound?.latitude,
-            lng: obj.deviceData?.deviceBound?.longitude
+            lat: obj.deviceData[0].deviceBound?.latitude,
+            lng: obj.deviceData[0].deviceBound?.longitude
           }]
           this.deviceList[index].latlng = latlng;
           let prevlatlng = [];
-          if (obj.deviceData?.prevCoinLatLng?.length) {
+          if (obj.deviceData[0].prevCoinLatLng?.length) {
             prevlatlng = [{
-              lat: obj.deviceData?.prevCoinLatLng[0],
-              lng: obj.deviceData?.prevCoinLatLng[1]
+              lat: obj.deviceData[0].prevCoinLatLng[0],
+              lng: obj.deviceData[0].prevCoinLatLng[1]
             }]
           }
           this.deviceList[index].prevlatlng = prevlatlng;

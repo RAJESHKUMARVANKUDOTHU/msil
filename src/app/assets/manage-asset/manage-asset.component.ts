@@ -80,7 +80,6 @@ export class ManageAssetComponent implements OnInit {
 
     this.devicesCount();
     // this.refreshDevice();
-    this.getServiceDetails();
     this.getAssignAssetList();
     this.getDeAssignAssetList();
     this.login.loginCheckData.subscribe(res=>{
@@ -255,17 +254,6 @@ export class ManageAssetComponent implements OnInit {
   //   })
 
   // }
-
-  getServiceDetails() {
-    this.api.getServiceType().then((res: any) => {
-      console.log("servoce details response==", res)
-      this.serviceData = []
-      if (res.status) {
-        this.serviceData = res.success
-      }
-      else { }
-    })
-  }
   toggleAllSelectionDevice(formData) {
 
     if (this.allSelected.selected) {
