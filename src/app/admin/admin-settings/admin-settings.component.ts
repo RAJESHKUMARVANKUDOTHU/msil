@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { GeneralService } from '../../services/general.service';
@@ -17,6 +17,8 @@ import * as moment from 'moment';
 export class AdminSettingsComponent implements OnInit {
   @ViewChild('allSelected') private allSelected: MatOption;
   @ViewChild('allSelected1') private allSelected1: MatOption;
+  @ViewChild('allSelected2') private allSelected2: MatOption;
+  @ViewChild('allSelected3') private allSelected3: MatOption;
   @ViewChild('allSelected5') private allSelected5: MatOption;
 
   onlineStatus: FormGroup;
@@ -33,13 +35,15 @@ export class AdminSettingsComponent implements OnInit {
   groupRegister: FormGroup;
   groupCoinForm: FormGroup;
   maxFindForm: FormGroup;
+  findTxPowerForm: FormGroup;
+  coinPlacementForm: FormGroup;
   loginData: any;
   multipleShift: boolean = false;
   timeExceed: boolean = false;
   gateway: any = [];
-  coinData :any=[];
-  deviceData:any=[];
-  groupData:any=[];
+  coinData: any = [];
+  deviceData: any = [];
+  groupData: any = [];
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
@@ -70,7 +74,15 @@ export class AdminSettingsComponent implements OnInit {
       rssi: ['', [Validators.required, Validators.min(0), Validators.max(255)]]
     });
     this.txPowerForm = this.fb.group({
-      txPower: ['', Validators.required]
+      txPower: ['',  Validators.required]
+    });
+    this.findTxPowerForm = this.fb.group({
+      deviceId: ['', Validators.required],
+      txPower:['',[Validators.required, Validators.min(0)]]
+    });
+    this.coinPlacementForm= this.fb.group({
+      coinId:['',Validators.required],
+      coinPlacement:['',Validators.required]
     });
     this.rangeForm = this.fb.group({
       range: ['', Validators.required]
@@ -382,7 +394,7 @@ export class AdminSettingsComponent implements OnInit {
 
   onSubmitTimeDelay(data) {
     data.deviceId = this.general.filterArray(data.deviceId);
-    data.userId=this.loginData.userData;
+    data.userId = this.loginData.userData;
 
     console.log("onSubmitTimeDelay data==", data);
     try {
@@ -412,7 +424,7 @@ export class AdminSettingsComponent implements OnInit {
 
   onSubmitMaxFindForm(data) {
     data.coinId = this.general.filterArray(data.coinId);
-    data.userId=this.loginData.userData;
+    data.userId = this.loginData.userData;
 
     console.log("onSubmitMaxFindForm data==", data);
 
@@ -441,10 +453,10 @@ export class AdminSettingsComponent implements OnInit {
   }
 
   onSubmitGroup(data) {
-    data.userId=this.loginData.userData;
+    data.userId = this.loginData.userData;
     try {
       if (this.groupRegister.valid) {
-        data.groupName=data.groupName.trim().replace(/\s\s+/g, ' ');
+        data.groupName = data.groupName.trim().replace(/\s\s+/g, ' ');
         console.log("onSubmitGroup data==", data);
         this.api.groupRegister(data).then((res: any) => {
           console.log("Group register res===", res)
@@ -470,34 +482,86 @@ export class AdminSettingsComponent implements OnInit {
   onSubmitGroupCoinForm(data) {
     data.groupName = this.groupData.filter(obj => obj._id == data.groupId)[0].groupName;
     data.coinId = this.general.filterArray(data.coinId);
-    data.userId=this.loginData.userData;
-
+    data.userId = this.loginData.userData;
     console.log("onSubmitGroupCoinForm data==", data);
     try {
       if (this.groupCoinForm.valid) {
-          if(data.coinId.length>0){
-            this.api.updateGroup(data).then((res: any) => {
-              console.log("Group coin res===", res);
-              if (res.status) {
-                this.groupCoinForm.reset();
-                this.refreshCoin();
-                this.getGroups();
-                this.general.openSnackBar(res.success, '');
-              }
-              else {
-                this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-    
-              }
-            }).catch((err) => {
-              console.log("err=", err);
-            })
-          }
-          else{
-            this.groupCoinForm.reset();
-            this.general.openSnackBar("Update unsuccessfull. There are no more coin left in the list.",'')
-          }
+        if (data.coinId.length > 0) {
+          this.api.updateGroup(data).then((res: any) => {
+
+            console.log("Group coin res===", res);
+            if (res.status) {
+              this.groupCoinForm.reset();
+              this.refreshCoin();
+              this.getGroups();
+              this.general.openSnackBar(res.success, '');
+            }
+            else {
+              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+
+            }
+          }).catch((err) => {
+            console.log("err=", err);
+          })
+        }
+        else {
+          this.groupCoinForm.reset();
+          this.general.openSnackBar("Update unsuccessfull, There are no more coin left in the list.", '')
+        }
       }
       else { }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+
+  onSubmitFindTxPower(data){
+    data.deviceId = this.general.filterArray(data.deviceId);
+    data.userId = this.loginData.userData;
+    console.log("onSubmitFindTxPower data==", data);
+    try {
+      if (this.findTxPowerForm.valid) {
+          this.api.updateDeviceTxPower(data).then((res: any) => {
+
+            console.log("onSubmitFindTxPower res===", res);
+            if (res.status) {
+              this.findTxPowerForm.reset();
+              this.refreshDevice();
+              this.general.openSnackBar(res.success, '');
+            }
+            else {
+              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            }
+          }).catch((err) => {
+            console.log("err=", err);
+          })
+      }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+  onSubmitCoinPlacement(data){
+    data.coinId = this.general.filterArray(data.coinId);
+    data.userId = this.loginData.userData;
+    console.log("onSubmitCoinPlacement data==", data);
+    try {
+      if (this.coinPlacementForm.valid) {
+          this.api.updateCoinPlacement(data).then((res: any) => {
+            console.log("onSubmitCoinPlacement res===", res);
+            if (res.status) {
+              this.coinPlacementForm.reset();
+              this.refreshCoin();
+              this.general.openSnackBar(res.success, '');
+            }
+            else {
+              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            }
+          }).catch((err) => {
+            console.log("err=", err);
+          })
+      }
     }
     catch (error) {
       console.log("error==", error);
@@ -519,6 +583,7 @@ export class AdminSettingsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
   openAdminSettingInfo(data): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -534,14 +599,14 @@ export class AdminSettingsComponent implements OnInit {
       if (data == 'timeDelay') {
         this.refreshDevice();
       }
-      else if(data == 'max-find') {
+      else if (data == 'max-find') {
         this.refreshCoin();
       }
       else if (data == 'groupName' || data == 'coinGrp') {
         this.refreshCoin();
         this.getGroups();
       }
-      else{
+      else {
         this.refreshGateway();
       }
     });
@@ -555,7 +620,7 @@ export class AdminSettingsComponent implements OnInit {
       console.log("coin submit====", res);
       this.coinData = [];
       if (res.status) {
-        this.coinData=res.success;
+        this.coinData = res.success;
       }
       else {
         this.coinData = [];
@@ -609,7 +674,7 @@ export class AdminSettingsComponent implements OnInit {
     var data = {
       userId: this.loginData.userData
     }
-    
+
     this.api.getGroup(data).then((res: any) => {
 
       console.log("group details response==", res);
@@ -622,6 +687,7 @@ export class AdminSettingsComponent implements OnInit {
       }
     })
   }
+
   toggleAllSelectionDevice(formData) {
     if (this.allSelected.selected) {
       formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
@@ -629,19 +695,36 @@ export class AdminSettingsComponent implements OnInit {
     else {
       formData.controls.deviceId.patchValue([]);
     }
-  
-}
+  }
 
-toggleAllSelectionCoins(formData) {
-     if (this.allSelected1.selected) {
+  toggleAllSelectionDevices(formData) {
+    if (this.allSelected2.selected) {
+      formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
+    }
+    else {
+      formData.controls.deviceId.patchValue([]);
+    }
+  }
+
+  toggleAllSelectionCoin(formData) {
+    if (this.allSelected3.selected) {
       formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
     }
     else {
       formData.controls.coinId.patchValue([]);
     }
-}
+  }
 
-toggleAllSelectionCoin2(formData) {
+  toggleAllSelectionCoins(formData) {
+    if (this.allSelected1.selected) {
+      formData.controls.coinId.patchValue([...this.coinData.map(obj => obj.coinId), 0]);
+    }
+    else {
+      formData.controls.coinId.patchValue([]);
+    }
+  }
+
+  toggleAllSelectionCoin2(formData) {
     if (this.allSelected5.selected) {
       formData.controls.coinId.patchValue([...this.coinData.map(obj => {
         if (!(obj.groupId)) {
@@ -652,5 +735,5 @@ toggleAllSelectionCoin2(formData) {
     else {
       formData.controls.coinId.patchValue([]);
     }
-}
+  }
 }

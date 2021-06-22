@@ -242,7 +242,7 @@ export class CongestionComponent implements OnInit {
   getBound(data) {
     let arr = [];
     this.zones.filter((obj) => {
-      if (data == obj?.mainZoneId?._id) {
+      if (data == obj?.mainZoneId?._id && obj.layoutName == this.selectedLayout.layoutName) {
         arr.push(obj.bounds);
       }
     })
@@ -298,6 +298,8 @@ export class CongestionComponent implements OnInit {
 
   createZoneBounds() {
     this.clearMap();
+    console.log("this.selectedLayout===",this.selectedLayout);
+    
     for (let i = 0; i < this.congestionData.length; i++) {
       if (this.congestionData[i].bounds.length && this.congestionData[i].bounds[0].length) {
         if(this.selectedLayout.zones.includes(this.congestionData[i].zoneId)){

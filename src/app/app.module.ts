@@ -46,8 +46,8 @@ import { ZoneDashboardComponent } from './zone-dashboard/zone-dashboard.componen
 
 import { MapActionsComponent } from './map-actions/map-actions.component';
 import { ZoneConfigurationComponent } from './zone-configuration/zone-configuration.component';
-import { ReportComponent } from './report/report/report.component';
 
+import { ReportComponent } from './report/report/report.component';
 import { LocationReportComponent } from './report/location-report/location-report.component';
 import { ZoneReportComponent } from './report/zone-report/zone-report.component';
 import { VehiclewisereportComponent } from './report/vehiclewisereport/vehiclewisereport.component';

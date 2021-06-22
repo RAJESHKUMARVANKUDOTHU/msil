@@ -23,12 +23,12 @@
                     <mat-select formControlName="type">
                         <mat-option value="1">Generic report </mat-option>
                         <!-- <mat-option value="2">Device ID wise report </mat-option> -->
-                        <!-- <mat-option value="8">Service time for vehicle</mat-option> -->
                         <!-- <mat-option value="3">Vehicle Name wise report </mat-option> -->
                         <mat-option value="4">Number of vehicles serviced </mat-option>
                         <mat-option value="3">Vehicle wise report based on location </mat-option>
                         <mat-option value="6">Vehicle wise report based on zone </mat-option>
                         <mat-option value="7">Vehicle and Job card wise report</mat-option>
+                        <!-- <mat-option value="8">Service time for vehicle</mat-option> -->
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field *ngIf="vehicleReport.get('type').value == '2'">
@@ -41,6 +41,7 @@
                 </mat-form-field>
                 <mat-form-field *ngIf="vehicleReport.get('type').value == '3' || vehicleReport.get('type').value == '6'">
                     <mat-label> Vehicle No.</mat-label>
+
                     <input type='text' matInput formControlName="deviceName" [matAutocomplete]="auto" (keyup)="vehicleNames($event)" required>
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let find of deviceData" [value]="find.deviceName">
@@ -200,7 +201,7 @@
                     <mat-radio-button class="example-radio-button" value="day">Day</mat-radio-button>
                     <mat-radio-button class="example-radio-button" value="week">Week</mat-radio-button>
                 </mat-radio-group>
-                <mat-form-field *ngIf="zoneReport.get('dayType').value == 'week'">
+                <mat-form-field *ngIf="zoneReport.get('dayType').value == 'week' && (zoneReport.get('type').value == '3'  || zoneReport.get('type').value == '5')">
                     <mat-label>Select Day</mat-label>
                     <mat-select formControlName="weekDay">
                         <mat-option value='SUN'>Sunday</mat-option>

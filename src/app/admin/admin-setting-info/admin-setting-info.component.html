@@ -114,6 +114,77 @@
         </form>
     </div>
 </div>
+<div *ngIf="type=='find-txPower'">
+    <h1 mat-dialog-title *ngIf="deviceData?.length">Find Tx Power</h1>
+    <div mat-dialog-content *ngIf="deviceData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="findSettingForm">
+            <table formArrayName="items" *ngIf="findSettingForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of findSettingForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td> {{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field style="pointer-events: none;">
+                                <mat-label>Device Name</mat-label>
+                                <input matInput type="text" formControlName="deviceName">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label> Tx Power</mat-label>
+                                <input type="number" min='0' formControlName="txPower" matInput required>
+                                <mat-error>
+                                    Filed required.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitFindTxPower(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<div *ngIf="type=='coin-pos'">
+    <h1 mat-dialog-title *ngIf="coinData?.length">Coin Placement</h1>
+    <div mat-dialog-content *ngIf="coinData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
+        <form [formGroup]="coinSettingForm">
+            <table formArrayName="items" *ngIf="coinSettingForm.get('items')['controls']?.length>0">
+                <tr *ngFor="let a of coinSettingForm.get('items')['controls']; let i=index;">
+                    <ng-container [formGroupName]="i">
+                        <td> {{i+1}}.&nbsp;&nbsp;</td>
+                        <td>
+                            <mat-form-field style="pointer-events: none;">
+                                <mat-label>Coin Name</mat-label>
+                                <input matInput type="text" formControlName="coinName">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-label> Coin Placement</mat-label>
+                                <mat-select formControlName="coinPlacement" required>
+                                    <mat-option value="Front Facing">Front Facing</mat-option>
+                                    <mat-option value="Back Facing">Back Facing</mat-option>
+                                    <mat-option value="Top Facing">Top Facing</mat-option>
+                                    <mat-option value="Right Facing">Right Facing</mat-option>
+                                    <mat-option value="Bottom Facing">Bottom Facing</mat-option>
+                                    <mat-option value="Left Facing">Left Facing</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    Field required.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitCoinPlacement(a.value)">Submit</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
 
 <div *ngIf="type=='groupName'">
     <h1 mat-dialog-title *ngIf="groupData?.length"> Available Group Names</h1>

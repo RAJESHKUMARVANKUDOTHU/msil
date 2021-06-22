@@ -32,7 +32,7 @@ export class VehiclewisereportComponent implements OnInit {
   displayedColumns4 = ['i', 'deviceName', 'totTime'];
   displayedColumns6 = ['i', 'deviceId', 'zoneName', 'inTime', 'outTime', 'totalTime'];
   displayedColumns7 = [];
-
+  searhKey: string = '';
   limit: any = 10
   offset: any = 0
   currentPageLength: any = 10
@@ -52,209 +52,223 @@ export class VehiclewisereportComponent implements OnInit {
     this.getData(10, 0, this.vehicleReportData.type)
   }
   getData(limit, offset, type) {
-    var data = {};
-    this.vehicleReportData.type = type;
-    let from = moment(this.vehicleReportData.fromDate).format("YYYY-MM-DD")
-    let to = moment(this.vehicleReportData.toDate).format("YYYY-MM-DD")
-    console.log(from, to);
+    return new Promise((resolve, reject) => {
+      var data = {};
+      this.vehicleReportData.type = type;
+      let from = moment(this.vehicleReportData.fromDate).format("YYYY-MM-DD")
+      let to = moment(this.vehicleReportData.toDate).format("YYYY-MM-DD")
+      console.log(from, to);
 
-    if (this.vehicleReportData.type == '1') {
-      data = {
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
-      }
-      console.log("data to send==", data)
-
-      this.api.genericReport(data).then((res: any) => {
-        this.vehicleName = []
-        console.log("res 0==", res)
-        if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength)
-          this.vehicleName = res.success
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
-          }
-          this.dataSource = new MatTableDataSource(this.vehicleName);
-
-          setTimeout(() => {
-            this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
-          })
+      if (this.vehicleReportData.type == '1') {
+        data = {
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
         }
+        console.log("data to send==", data)
 
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
+        this.api.genericReport(data).then((res: any) => {
+          this.vehicleName = []
+          console.log("res 0==", res)
+          if (res.status) {
+            this.currentPageLength = parseInt(res.totalLength)
+            this.vehicleName = res.success
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+            }
+            this.dataSource = new MatTableDataSource(this.vehicleName);
 
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
 
-    if (this.vehicleReportData.type == '2') {
-      data = {
-        deviceId: this.vehicleReportData.deviceId,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
-      }
-      console.log("data to send==", data)
-      this.api.deviceIdReport(data).then((res: any) => {
-        this.deviceId = []
-        console.log("res 2==", res)
-        if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength)
-          this.deviceId = res.success
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+            })
           }
-          this.dataSource = new MatTableDataSource(this.deviceId);
+          resolve(res);
 
-          setTimeout(() => {
-            this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
-          })
-        }
-
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
-    if (this.vehicleReportData.type == '3') {
-      data = {
-        deviceName: this.vehicleReportData.deviceName,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
       }
-      console.log("data to send==", data)
 
-      this.api.vehicleNameReport(data).then((res: any) => {
-        this.vehicleName = []
-        console.log("res 3==", res)
-        if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength)
-          this.vehicleName = res.success
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
-          }
-          this.dataSource = new MatTableDataSource(this.vehicleName);
 
-          setTimeout(() => {
-            this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
-          })
+      if (this.vehicleReportData.type == '2') {
+        data = {
+          deviceId: this.vehicleReportData.deviceId,
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
         }
+        console.log("data to send==", data)
+        this.api.deviceIdReport(data).then((res: any) => {
+          this.vehicleName = []
+          console.log("res 2==", res)
+          if (res.status) {
+            this.currentPageLength = parseInt(res.totalLength)
+            this.vehicleName = res.success
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+            }
+            this.dataSource = new MatTableDataSource(this.vehicleName);
 
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
 
-    if (this.vehicleReportData.type == '4') {
-      data = {
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
+            })
+          }
+          resolve(res);
+
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
       }
-      console.log("data to send==", data)
-      this.api.getvehicleServicedReport(data).then((res: any) => {
-        this.servicedVehicleData = []
-        console.log("res 4==", res)
-        if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength)
-          this.servicedVehicleData = res.success
-          this.vehicleTotLen = parseInt(res.totalLength)
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totTime = this.general.getTotTime(res.success[i].gateInTime, res.success[i].deRegTime)
-          }
-          this.dataSource = new MatTableDataSource(this.servicedVehicleData);
-
-          setTimeout(() => {
-            this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
-          })
+      if (this.vehicleReportData.type == '3') {
+        data = {
+          deviceName: this.vehicleReportData.deviceName,
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
         }
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
-    if (this.vehicleReportData.type == '6') {
-      data = {
-        deviceName: this.vehicleReportData.deviceName,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-        limit: limit,
-        offset: offset
+        console.log("data to send==", data)
+
+        this.api.vehicleNameReport(data).then((res: any) => {
+          this.vehicleName = []
+          console.log("res 3==", res)
+          if (res.status) {
+            this.currentPageLength = parseInt(res.totalLength)
+            this.vehicleName = res.success
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+            }
+            this.dataSource = new MatTableDataSource(this.vehicleName);
+
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
+
+            })
+          }
+          resolve(res);
+
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
       }
-      console.log("data to send==", data)
-      this.api.getVehicleZoneWiseReport(data).then((res: any) => {
-        this.vehicleZoneData = []
-        console.log("res 6==", res)
-        if (res.status) {
-          this.currentPageLength = parseInt(res.totalLength);
-          this.vehicleZoneData = res.success;
-          for (let i = 0; i < res.success.length; i++) {
-            res.success[i].totalTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
 
-          }
-          this.dataSource = new MatTableDataSource(this.vehicleZoneData);
-
-          setTimeout(() => {
-            this.dataSource.sort = this.sort;
-            // this.dataSource.paginator = this.paginator
-
-          })
+      if (this.vehicleReportData.type == '4') {
+        data = {
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
         }
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
-    else if (this.vehicleReportData.type == '7') {
-      data = {
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
+        console.log("data to send==", data)
+        this.api.getvehicleServicedReport(data).then((res: any) => {
+          this.vehicleName = []
+          console.log("res 4==", res)
+          if (res.status) {
+            this.currentPageLength = parseInt(res.totalLength)
+            this.vehicleName = res.success
+            this.vehicleTotLen = parseInt(res.totalLength)
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totTime = this.general.getTotTime(res.success[i].gateInTime, res.success[i].deRegTime)
+            }
+            this.dataSource = new MatTableDataSource(this.vehicleName);
+
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
+
+            })
+          }
+          resolve(res);
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
       }
-      console.log("data to send==", data)
-      this.api.getJcSummaryData(data).then((res: any) => {
-        console.log("res 7 from api==", res)
-        this.jcSummaryData = {}
-        if (res.status) {
-          this.jcSummaryData.data = res.success;
-          this.jcSummaryData.head = ['Sl no.', 'Date', 'Vehicle no.', 'Tag no.'];
-
-          if (this.jcSummaryData.data[0].hasOwnProperty('zoneJC')) {
-            res.success[0].zoneJC.forEach(obj => {
-              let suffix = {
-                tripCount: 'trip count',
-                inTime: 'first in time',
-                outTime: 'last out time',
-                std: 'Standard time',
-                deviation: 'Deviation'
-              }
-              let a = [obj.zoneName + ' ' + suffix.tripCount, obj.zoneName + ' ' + suffix.inTime, obj.zoneName + ' ' + suffix.outTime, suffix.std, suffix.deviation]
-              this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
-            });
-          }
-                console.log("res 7==", this.jcSummaryData)
+      if (this.vehicleReportData.type == '6') {
+        data = {
+          deviceName: this.vehicleReportData.deviceName,
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+          limit: limit,
+          offset: offset
         }
+        console.log("data to send==", data)
+        this.api.getVehicleZoneWiseReport(data).then((res: any) => {
+          this.vehicleName = []
+          console.log("res 6==", res)
+          if (res.status) {
+            this.currentPageLength = parseInt(res.totalLength);
+            this.vehicleName = res.success;
+            for (let i = 0; i < res.success.length; i++) {
+              res.success[i].totalTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
 
-      }).catch(err => {
-        console.log("err===", err)
-      })
-    }
+            }
+            this.dataSource = new MatTableDataSource(this.vehicleName);
+
+            setTimeout(() => {
+              this.dataSource.sort = this.sort;
+              // this.dataSource.paginator = this.paginator
+
+            })
+          }
+          resolve(res);
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
+      }
+      else if (this.vehicleReportData.type == '7') {
+        data = {
+          fromDate: from,
+          toDate: to,
+          timeZoneOffset: this.general.getZone(),
+        }
+        console.log("data to send==", data)
+        this.api.getJcSummaryData(data).then((res: any) => {
+          console.log("res 7 from api==", res)
+          this.jcSummaryData = {}
+          if (res.status) {
+            this.jcSummaryData.data = res.success;
+            this.jcSummaryData.head = ['Sl no.', 'Date', 'Vehicle no.', 'Find Id.'];
+
+            if (this.jcSummaryData.data[0].hasOwnProperty('zoneJC')) {
+              res.success[0].zoneJC.forEach(obj => {
+                let suffix = {
+                  tripCount: 'trip count',
+                  inTime: 'first in time',
+                  outTime: 'last out time',
+                  std: 'Standard time',
+                  deviation: 'Deviation'
+                }
+                let a = [obj.zoneName + ' ' + suffix.tripCount, obj.zoneName + ' ' + suffix.inTime, obj.zoneName + ' ' + suffix.outTime, suffix.std, suffix.deviation]
+                this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
+              });
+            }
+            console.log("res 7==", this.jcSummaryData)
+          }
+          resolve(res);
+
+        }).catch(err => {
+          console.log("err===", err)
+          reject(err);
+        })
+      }
+    })
   }
 
   download() {
@@ -376,13 +390,22 @@ export class VehiclewisereportComponent implements OnInit {
     }
   }
 
-  getUpdate(event, type) {
+  async getUpdate(event, type) {
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
-    this.getData(this.limit, this.offset, type)
+    this.getData(this.limit, this.offset, type).then(() => {
+      console.log("searhkey==", this.searhKey);
+      this.search(this.searhKey.toString(), this.vehicleName)
+    }).catch(err => {
+      console.log("errr===", err);
+
+    });
   }
 
   search(a, data) {
+    console.log("searhkey==", this.searhKey, data);
+
+    this.searhKey = a;
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
@@ -405,8 +428,8 @@ export class VehiclewisereportComponent implements OnInit {
         );
       });
     }
-    else{
-      this.getData(this.limit, this.offset,'7');
+    else {
+      this.getData(this.limit, this.offset, '7');
     }
   }
 }

@@ -34,26 +34,6 @@ export class ReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    // this.genericReport = this.fb.group({
-    //   type: ['', Validators.required],
-    //   days: [''],
-    //   deviceId: [''],
-    //   deviceName: [''],
-    //   zoneId: [''],
-    //   coinId: [''],
-    //   fromDate: ['', Validators.required],
-    //   toDate: ['', Validators.required]
-    // },
-    //   {
-    //     validators: this.formValidate()
-    //   })
-    // this.customReport = this.fb.group({
-    //   type: ['', Validators.required],
-    //   days: [''],
-    //   fromDate: ['', Validators.required],
-    //   toDate: ['', Validators.required]
-    // })
     this.vehicleReport = this.fb.group({
       type: ['', Validators.required],
       days: [''],
@@ -64,7 +44,8 @@ export class ReportComponent implements OnInit {
     },
       {
         validators: this.formValidate()
-      })
+      });
+
     this.locationReport = this.fb.group({
       type: ['', Validators.required],
       days: [''],
@@ -75,7 +56,8 @@ export class ReportComponent implements OnInit {
     },
       {
         validators: this.formValidate1()
-      })
+      });
+
     this.zoneReport = this.fb.group({
       type: ['', Validators.required],
       days: [''],
@@ -88,32 +70,28 @@ export class ReportComponent implements OnInit {
     },
       {
         validators: this.formValidate2()
-      })
+      });
 
     this.patchLocationDate();
     this.patchVehicleDate();
     this.patchZoneDate();
-
-    // this.refreshCoin()
-    // this.refreshDevice()
     this.getZoneDetails();
   }
 
   patchVehicleDate() {
-
     this.vehicleReport.get('days').valueChanges.subscribe((value) => {
-      var date = new Date()
+      var date = new Date();
       date.setDate(date.getDate() - parseInt(value));
       this.vehicleReport.controls['fromDate'].patchValue((date));
     });
     this.vehicleReport.get('days').valueChanges.subscribe(() => {
-      var date = new Date()
+      var date = new Date();
       date.setDate(date.getDate());
       this.vehicleReport.controls['toDate'].patchValue((date));
     });
   }
-  patchLocationDate() {
 
+  patchLocationDate() {
     this.locationReport.get('days').valueChanges.subscribe((value) => {
       var date = new Date()
       date.setDate(date.getDate() - parseInt(value));
@@ -125,94 +103,71 @@ export class ReportComponent implements OnInit {
       this.locationReport.controls['toDate'].patchValue((date));
     });
   }
-  patchZoneDate() {
 
+  patchZoneDate() {
     this.zoneReport.get('days').valueChanges.subscribe((value) => {
-      var date = new Date()
+      var date = new Date();
       date.setDate(date.getDate() - parseInt(value));
       this.zoneReport.controls['fromDate'].patchValue((date));
     });
     this.zoneReport.get('days').valueChanges.subscribe(() => {
-      var date = new Date()
+      var date = new Date();
       date.setDate(date.getDate());
       this.zoneReport.controls['toDate'].patchValue((date));
     });
   }
 
-
   refreshCoin() {
-    var data = ''
+    var data = '';
     this.api.getCoinData(data).then((res: any) => {
-
       console.log("coin submit====", res);
-      this.coinData = []
+      this.coinData = [];
       if (res.status) {
-        this.coinData = res.success
+        this.coinData = res.success;
       }
       else {
-        this.coinData = []
+        this.coinData = [];
       }
-
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
 
   refreshDevice() {
-    var data = ''
+    var data = '';
     this.api.getDeviceData(data).then((res: any) => {
-
-      this.deviceData = []
+      this.deviceData = [];
       console.log("find submit====", res);
       if (res.status) {
-        this.deviceData = res.success
+        this.deviceData = res.success;
       }
       else {
-        this.deviceData = []
+        this.deviceData = [];
       }
-
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
-
 
   getZoneDetails() {
     this.api.getZone().then((res: any) => {
-
       console.log("zone details response==", res)
-      this.zoneData = []
+      this.zoneData = [];
       if (res.status) {
-        this.zoneData = res.success
+        this.zoneData = res.success;
       }
       else {
-        this.zoneData = []
+        this.zoneData = [];
       }
     })
   }
-  formValidate() {
 
+  formValidate() {
     return (formGroup: FormGroup) => {
       const type = formGroup.get('type');
       if (formGroup.get('type').value != '') {
-        // if (type.value == "2") {
-        //   if (formGroup.get('deviceId').value != '') {
-        //     // formGroup.get('coinId').setErrors(null)
-        //     formGroup.get('deviceName').setErrors(null)
-        //     // formGroup.get('zoneId').setErrors(null)
-        //     formGroup.get('deviceId').setErrors(null)
-        //     return
-        //   }
-        //   else {
-        //     formGroup.get('deviceId').setErrors(
-        //       {
-        //         required: true
-        //       })
-        //     return
-        //   }
-        // }
         if (type.value == "3" || type.value == "6") {
-          let value = formGroup.get('deviceName').value?.toString().replace(/\s/g, '');
+          let value = formGroup.get('deviceName').value?.toString().replace(/\s\s+/g, '');
           if (value != '' && value != undefined) {
             formGroup.get('deviceId').setErrors(null)
             formGroup.get('deviceName').setErrors(null)
@@ -223,7 +178,6 @@ export class ReportComponent implements OnInit {
               {
                 required: true
               })
-
             return
           }
         }
@@ -232,9 +186,7 @@ export class ReportComponent implements OnInit {
           formGroup.get('deviceName').setErrors(null)
           return
         }
-
       }
-
     }
   }
 
@@ -243,8 +195,8 @@ export class ReportComponent implements OnInit {
       const type = formGroup.get('type');
       if (formGroup.get('type').value != '') {
         if (type.value == "1") {
-          let value = formGroup.get('coinId').value.toString().replace(/\s/g, '');
-          if (value != '') {
+          let value = formGroup.get('coinId').value?.toString().replace(/\s\s+/g, '');
+          if (value != '' && value != undefined) {
             formGroup.get('coinId').setErrors(null)
             formGroup.get('zoneId').setErrors(null)
             return
@@ -258,8 +210,9 @@ export class ReportComponent implements OnInit {
           }
         }
         if (type.value == "2") {
-          let value = formGroup.get('zoneId').value.toString().replace(/\s/g, '');
-          if (value != '') {
+          let value = formGroup.get('zoneId').value?.toString().replace(/\s\s+/g, '');
+          console.log("valuee ===",value);
+          if (value != '' && value != undefined) {
             formGroup.get('coinId').setErrors(null)
             formGroup.get('zoneId').setErrors(null)
             return
@@ -281,8 +234,9 @@ export class ReportComponent implements OnInit {
       const type = formGroup.get('type');
       if (formGroup.get('type').value != '') {
         if (type.value == "1") {
-          let value = formGroup.get('zoneId').value.toString().replace(/\s/g, '');
-          if (value != '') {
+          let value = formGroup.get('zoneId').value?.toString().replace(/\s\s+/g, '');
+          if (value != '' && value != undefined) {
+            console.log("valuee ===",value);
             formGroup.get('coinId').setErrors(null)
             formGroup.get('zoneId').setErrors(null)
             formGroup.get('dayType').setErrors(null)
@@ -305,7 +259,6 @@ export class ReportComponent implements OnInit {
           return
         }
         if (type.value == "3" || type.value == "5") {
-          console.log("true")
           if (formGroup.get('dayType').value != '' && formGroup.get('dayType').value != null) {
             if (formGroup.get('dayType').value == 'day') {
               formGroup.get('coinId').setErrors(null)
@@ -315,6 +268,8 @@ export class ReportComponent implements OnInit {
               return
             }
             else if (formGroup.get('dayType').value == 'week') {
+              console.log("weekday==",formGroup.get('weekDay').value);
+
               if (formGroup.get('weekDay').value != '') {
                 formGroup.get('coinId').setErrors(null)
                 formGroup.get('zoneId').setErrors(null)
@@ -339,7 +294,6 @@ export class ReportComponent implements OnInit {
             return
           }
         }
-
       }
     }
   }
@@ -348,7 +302,7 @@ export class ReportComponent implements OnInit {
     var date1 = moment(data.fromDate, 'DD-MM-YYYY');
     var date2 = moment(data.toDate, 'DD-MM-YYYY');
     var diff = date2.diff(date1, 'days');
-    console.log("vehicle data==", data)
+    console.log("vehicle data==", data);
     if (diff >= 0 && diff <= 30) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
@@ -359,30 +313,28 @@ export class ReportComponent implements OnInit {
         data: data
       }
       const dialogRef = this.dialog.open(VehiclewisereportComponent, dialogConfig);
-
       dialogRef.afterClosed().subscribe(result => {
-        this.vehicleReport.reset()
+        this.vehicleReport.reset();
       })
     }
     else {
-      this.dayError = true
+      this.dayError = true;
     }
   }
 
   onsubmitLocationReport(data) {
-
     data.coinId = this.coinData.filter((obj) => {
       if (data.coinId == obj.coinName) {
         return obj;
       }
-    })
-    console.log("datataaa==", data)
+    });
+    console.log("datataaa==", data);
     var date1 = moment(data.fromDate, 'DD-MM-YYYY');
     var date2 = moment(data.toDate, 'DD-MM-YYYY');
     var diff = date2.diff(date1, 'days');
     console.log("location data==", data, diff)
     if (diff >= 0 && diff <= 30) {
-      this.dayError1 = false
+      this.dayError1 = false;
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -392,13 +344,12 @@ export class ReportComponent implements OnInit {
         data: data
       }
       const dialogRef = this.dialog.open(LocationReportComponent, dialogConfig);
-
       dialogRef.afterClosed().subscribe(result => {
-        this.locationReport.reset()
+        this.locationReport.reset();
       })
     }
     else {
-      this.dayError1 = true
+      this.dayError1 = true;
     }
   }
 
@@ -408,7 +359,7 @@ export class ReportComponent implements OnInit {
     var date2 = moment(data.toDate, 'DD-MM-YYYY');
     var diff = date2.diff(date1, 'days');
     if (diff >= 0 && diff <= 30) {
-      this.dayError2 = false
+      this.dayError2 = false;
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -418,13 +369,12 @@ export class ReportComponent implements OnInit {
         data: data
       }
       const dialogRef = this.dialog.open(ZoneReportComponent, dialogConfig);
-
       dialogRef.afterClosed().subscribe(result => {
-        this.zoneReport.reset()
+        this.zoneReport.reset();
       })
     }
     else {
-      this.dayError2 = true
+      this.dayError2 = true;
     }
   }
 
@@ -440,6 +390,7 @@ export class ReportComponent implements OnInit {
       }
     })
   }
+
   coinNames(event) {
     var data = {
       hint: event.target.value.toString(),
@@ -452,6 +403,7 @@ export class ReportComponent implements OnInit {
       }
     })
   }
+
   // zoneNames(event){
   //   var data={
   //     hint: event.target.value.toString(),

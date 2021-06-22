@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { GeneralService } from '../../services/general.service';
-import { LoginAuthService } from '../../services/login-auth.service';
+import { LoginAuthService } from 'src/app/services/login-auth.service';
 @Component({
   selector: 'app-admin-setting-info',
   templateUrl: './admin-setting-info.component.html',
@@ -60,7 +60,7 @@ export class AdminSettingInfoComponent implements OnInit {
   }
 
   loadData() {
-    if (this.type == 'timeDelay') {
+    if (this.type == 'timeDelay' || this.type == 'find-txPower') {
       this.refreshDevice();
     }
 
@@ -159,6 +159,7 @@ export class AdminSettingInfoComponent implements OnInit {
                 gatewayId: [this.coinData[i].gatewayId],
                 groupId: [this.coinData[i].groupId != null ? this.coinData[i].groupId._id : '-'],
                 maxFindAsset: [this.coinData[i].maxFindAsset],
+                coinPlacement:[this.coinData[i].coinPlacement],
                 zoneName: [this.coinData[i].zoneId != null ? this.coinData[i].zoneId : '-'],
                 inActivityTime: [this.coinData[i].inActivityTime],
                 inactivityAlert: [this.coinData[i].inactivityAlert.sms == true ? 'sms' : this.coinData[i].inactivityAlert.email == true ? 'email' : ''],
@@ -189,7 +190,7 @@ export class AdminSettingInfoComponent implements OnInit {
         control.controls = [];
         console.log('find submit====', res);
         if (res.status) {
-          this.deviceData = res.success
+          this.deviceData = res.success;
           for (let i = 0; i < this.deviceData.length; i++) {
             control.push(this.fb.group(
               {
@@ -197,6 +198,7 @@ export class AdminSettingInfoComponent implements OnInit {
                 deviceId: [this.deviceData[i].deviceId],
                 deviceName: [this.deviceData[i].deviceName],
                 distance: [this.deviceData[i].distance],
+                txPower:[this.deviceData[i].txPower,Validators.min(0)],
                 sms: [this.deviceData[i].sms == false ? 'N' : 'Y'],
                 email: [this.deviceData[i].email == false ? 'N' : 'Y'],
                 inActivityTime: [this.deviceData[i].inActivityTime],
@@ -311,11 +313,14 @@ export class AdminSettingInfoComponent implements OnInit {
       console.log("error==", error);
     }
   }
+  onSubmitGroup(value) {
+    console.log("onSubmitGroup data==", value)
+    var data = {
+      _id: value._id,
+      groupName: value.groupName.trim().replace(/\s\s+/g, ' '),
+      userId:this.loginData.userData
 
-  onSubmitGroup(data) {
-    console.log("onSubmitGroup data==", data)
-    data.groupName= data.groupName.trim().replace(/\s\s+/g, ' ');
-    data.userId=this.loginData.userData;
+    }
     console.log("onSubmitZoneForm data==", data)
 
     try {
@@ -377,6 +382,59 @@ export class AdminSettingInfoComponent implements OnInit {
       console.log("error==", error)
     }
   }
+
+  onSubmitFindTxPower(data){
+    data.deviceId = [data.deviceId];
+    data.userId = this.loginData.userData;
+    console.log("onSubmitFindTxPower data==", data);
+    try {
+      if (this.findSettingForm.valid) {
+          this.api.updateDeviceTxPower(data).then((res: any) => {
+
+            console.log("onSubmitFindTxPower res===", res);
+            if (res.status) {
+              this.findSettingForm.reset();
+              this.refreshDevice();
+              this.general.openSnackBar(res.success, '');
+            }
+            else {
+              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            }
+          }).catch((err) => {
+            console.log("err=", err);
+          })
+      }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+  onSubmitCoinPlacement(data){
+    data.coinId = [data.coinId];
+    data.userId = this.loginData.userData;
+    console.log("onSubmitCoinPlacement data==", data);
+    try {
+      if (this.coinSettingForm.valid) {
+          this.api.updateCoinPlacement(data).then((res: any) => {
+            console.log("onSubmitCoinPlacement res===", res);
+            if (res.status) {
+              this.coinSettingForm.reset();
+              this.refreshCoin();
+              this.general.openSnackBar(res.success, '');
+            }
+            else {
+              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            }
+          }).catch((err) => {
+            console.log("err=", err);
+          })
+      }
+    }
+    catch (error) {
+      console.log("error==", error);
+    }
+  }
+
   deleteTimeDelay(value) {
     var data = {
       _id: value._id,
