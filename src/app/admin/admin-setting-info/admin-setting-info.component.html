@@ -138,7 +138,7 @@
                             </mat-form-field>
                         </td>
                         <td>
-                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitFindTxPower(a.value)">Submit</button>
+                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('txPower').value=='0'" (click)="onSubmitFindTxPower(a.value)">Submit</button>
                         </td>
                     </ng-container>
                 </tr>
@@ -146,6 +146,7 @@
         </form>
     </div>
 </div>
+
 <div *ngIf="type=='coin-pos'">
     <h1 mat-dialog-title *ngIf="coinData?.length">Coin Placement</h1>
     <div mat-dialog-content *ngIf="coinData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
@@ -164,12 +165,12 @@
                             <mat-form-field>
                                 <mat-label> Coin Placement</mat-label>
                                 <mat-select formControlName="coinPlacement" required>
-                                    <mat-option value="Front Facing">Front Facing</mat-option>
-                                    <mat-option value="Back Facing">Back Facing</mat-option>
-                                    <mat-option value="Top Facing">Top Facing</mat-option>
-                                    <mat-option value="Right Facing">Right Facing</mat-option>
-                                    <mat-option value="Bottom Facing">Bottom Facing</mat-option>
-                                    <mat-option value="Left Facing">Left Facing</mat-option>
+                                    <mat-option value="front">Front Facing</mat-option>
+                                    <mat-option value="back">Back Facing</mat-option>
+                                    <mat-option value="top">Top Facing</mat-option>
+                                    <mat-option value="bottom">Bottom Facing</mat-option>
+                                    <mat-option value="left">Left Facing</mat-option>
+                                    <mat-option value="right">Right Facing</mat-option>
                                 </mat-select>
                                 <mat-error>
                                     Field required.
@@ -177,7 +178,7 @@
                             </mat-form-field>
                         </td>
                         <td>
-                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitCoinPlacement(a.value)">Submit</button>
+                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('coinPlacement').value == ''" (click)="onSubmitCoinPlacement(a.value)">Submit</button>
                         </td>
                     </ng-container>
                 </tr>
