@@ -59,11 +59,11 @@ export class VehicleStatusTrackComponent implements OnInit {
               if(obj.delayTime != 0){
                 zoneObj.time = Math.floor(obj.delayTime / (1000 * 60))
                 this.vehicleData.delayTime +=  Math.floor(obj.delayTime / (1000 * 60))
-                if((obj.standardTime * 1000 * 60) > obj.delayTime){
-                  zoneObj.delayed = false;
+                if(obj.delayTime > 0){
+                  zoneObj.delayed = true;
                 }
                 else{
-                  zoneObj.delayed = true;
+                  zoneObj.delayed = false;
                 }
                 this.vehicleData.totalStandardTime += obj.standardTime
               }

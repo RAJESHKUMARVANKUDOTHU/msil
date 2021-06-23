@@ -49,13 +49,6 @@ export class DashboardComponent implements OnInit {
     searchError: false,
     searchMessage: 'Vehicle not found',
   };
-  serviceCount: any = {
-    servicedVehicleCount: 0,
-    vehicleForServiceTodayCount: 0,
-    vehicleUnderServiceCount: 0,
-    overAllEfficiency: 0,
-    avgServiceTime: 0
-  };
   id: any;
 
   constructor(
@@ -72,13 +65,9 @@ export class DashboardComponent implements OnInit {
     console.log("this.loginDetails", this.loginDetails);
     this.id = this.loginDetails._id;
     this.refreshCongestion();
-    this.getVehicleServiceCount()
     setTimeout(() => {
       this.createMap();
     }, 1);
-    this.timeInterval = setInterval(() => {
-      this.getVehicleServiceCount()
-    }, 10000);
     this.login.loginCheckData.subscribe(res => {
       if (!res.other) {
         this.clearTimeInterval()
@@ -102,7 +91,6 @@ export class DashboardComponent implements OnInit {
   initiate() {
     this.timeInterval = setInterval(() => {
       this.refreshCongestion()
-      this.getVehicleServiceCount()
     }, 10000);
   }
   clearTimeInterval() {
@@ -322,7 +310,7 @@ export class DashboardComponent implements OnInit {
           this.mainZoneList.forEach(obj => {
             if (obj._id == zone?.mainZoneId?._id) {
               obj.time += zone.time;
-              obj.vehicleCount = element.data.length;
+              obj.vehicleCount += element.data.length;
               if (obj.time < obj.standardTime) {
                 obj.isDelay = false;
               }
@@ -469,7 +457,7 @@ export class DashboardComponent implements OnInit {
     });
 
     for (let i = 0; i < this.zoneList.length; i++) {
-      if (this.zoneList[i].selected) {
+      if (this.zoneList[i].selected && this.zoneList[i].bounds?.length) {
         let poly = new L.polygon(this.zoneList[i].bounds, { color: this.zoneList[i].color })
           .addTo(this.map)
           .on('click', () => {
@@ -721,7 +709,6 @@ export class DashboardComponent implements OnInit {
     let a = '<table class="popup">';
     a += '<tr><td><b>Vehicle name</b></td><td>' + data.deviceName + '</td></tr>';
     a += '<tr><td><b>Location name</b></td><td>' + data.coinName + '</td></tr>';
-    a += '<tr><td><b>Service type</b></td><td>' + data.serviceCategory?.serviceName + '</td></tr>';
     a += '<tr><td><b>Zone name</b></td><td>' + data.zoneName + '</td></tr>';
     a += '<tr><td><b>Zone standard time</b></td><td>' + data.standardDeliveryTime + ' minutes</td></tr>';
     a += '<tr><td><b>Total standard time</b></td><td>' + data?.totalStandardTime + ' minutes</td></tr>';
@@ -793,23 +780,6 @@ export class DashboardComponent implements OnInit {
   //   this.router.navigate(['/vehicle-status'], { queryParams: { record: JSON.stringify(data) } });
   // }
 
-  getVehicleServiceCount() {
-    let currentDate = moment().format("YYYY-MM-DD")
-    var data = {
-      currentDate: currentDate,
-      timeZoneOffset: this.general.getZone()
-    }
-    this.api.getVehicleServiceCount(data).then((res: any) => {
-      // console.log("res 0f vehicle service count==", res)
-      if (res.status) {
-        this.serviceCount.servicedVehicleCount = res.success.servicedVehicleCount;
-        this.serviceCount.vehicleForServiceTodayCount = res.success.vehicleForServiceTodayCount;
-        this.serviceCount.vehicleUnderServiceCount = res.success.vehicleUnderServiceCount;
-        this.serviceCount.overAllEfficiency = Math.floor(res.success.overAllEfficiency);
-        this.serviceCount.avgServiceTime = this.general.getTime(res.success.avgTime);
-      }
-    })
-  }
 
   refreshCongestion() {
     var now = new Date()
