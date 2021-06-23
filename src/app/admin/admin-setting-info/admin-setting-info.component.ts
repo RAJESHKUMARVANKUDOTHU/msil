@@ -11,7 +11,7 @@ import { LoginAuthService } from 'src/app/services/login-auth.service';
 })
 export class AdminSettingInfoComponent implements OnInit {
   userId: any;
-  meshForm: FormGroup;
+  meshForm: any;
   meshData: any = [];
   gatewayData: any = [];
   type: any;
@@ -71,8 +71,8 @@ export class AdminSettingInfoComponent implements OnInit {
     else{
       this.refreshCoin();
     }
-  
   }
+
   getMeshData() {
     var data = {
       userId: this.loginData.userData
@@ -116,6 +116,7 @@ export class AdminSettingInfoComponent implements OnInit {
       console.log("error===", err);
     })
   }
+
   refreshCoin() {
     this.coinData = [];
     this.coinDataTemp = [];
@@ -169,13 +170,9 @@ export class AdminSettingInfoComponent implements OnInit {
           }
         }
       }
-
-      else { }
-
     }).catch((err: any) => {
       console.log("error===", err)
     })
-
   }
 
   refreshDevice() {
@@ -209,9 +206,8 @@ export class AdminSettingInfoComponent implements OnInit {
             ));
           }
         }
-        else { }
       }).catch((err: any) => {
-        console.log("error===", err)
+        console.log("error===", err);
       });
   }
 
@@ -220,10 +216,10 @@ export class AdminSettingInfoComponent implements OnInit {
       userId: this.loginData.userData
     }
     this.api.getGroup(data).then((res: any) => {
-      console.log("group details response==", res)
+      console.log("group details response==", res);
       this.groupData = [];
       if (res.status) {
-        this.groupData = res.success
+        this.groupData = res.success;
         const control = <FormArray>this.groupSettingForm.controls.items;
         control.controls = [];
         for (let i = 0; i < this.groupData.length; i++) {
@@ -254,43 +250,43 @@ export class AdminSettingInfoComponent implements OnInit {
   }
 
   onSubmitTimeDelay(value) {
-    console.log("onSubmitTimeDelay data==", value)
+    console.log("onSubmitTimeDelay data==", value);
     var data = {
       deviceId: value.deviceId,
       timeDelay: value.timeDelay,
       userId:this.loginData.userData
 
     }
-    console.log("onSubmitTimeDelay data==", data)
+    console.log("onSubmitTimeDelay data==", data);
     try {
       if (this.findSettingForm.valid) {
         this.api.timeDelay(data).then((res: any) => {
-          console.log("timeDelay res===", res)
+          console.log("timeDelay res===", res);
           if (res.status) {
             this.refreshDevice()
-            this.general.openSnackBar(res.success, '')
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
         }).catch((err) => {
-          console.log("err=", err)
+          console.log("err=", err);
         })
       }
-      else { }
     }
     catch (error) {
-      console.log("error==", error)
+      console.log("error==", error);
     }
   }
+
   onSubmitMaxFindForm(value) {
-    console.log("onSubmitMaxFindForm data==", value)
+    console.log("onSubmitMaxFindForm data==", value);
     var data = {
       coinId: [value.coinId],
       maxFindAsset: value.maxFindAsset,
       userId:this.loginData.userData
     }
-    console.log("onSubmitMaxFindForm data==", data)
+    console.log("onSubmitMaxFindForm data==", data);
     try {
       if (this.coinSettingForm.valid) {
         this.api.updateMaxFind(data).then((res: any) => {
@@ -307,43 +303,42 @@ export class AdminSettingInfoComponent implements OnInit {
           console.log("err=", err);
         })
       }
-      else { }
     }
     catch (error) {
       console.log("error==", error);
     }
   }
+
   onSubmitGroup(value) {
-    console.log("onSubmitGroup data==", value)
+    console.log("onSubmitGroup data==", value);
     var data = {
       _id: value._id,
       groupName: value.groupName.trim().replace(/\s\s+/g, ' '),
       userId:this.loginData.userData
 
     }
-    console.log("onSubmitZoneForm data==", data)
+    console.log("onSubmitZoneForm data==", data);
 
     try {
       if (this.groupSettingForm.valid) {
         this.api.updateGroupName(data).then((res: any) => {
 
-          console.log("Group register res===", res)
+          console.log("Group register res===", res);
           if (res.status) {
-            this.getGroups()
-            this.general.openSnackBar(res.success, '')
+            this.getGroups();
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
 
           }
         }).catch((err) => {
-          console.log("err=", err)
+          console.log("err=", err);
         })
       }
-      else { }
     }
     catch (error) {
-      console.log("error==", error)
+      console.log("error==", error);
     }
   }
 
@@ -358,28 +353,27 @@ export class AdminSettingInfoComponent implements OnInit {
       groupName: value.groupName,
       userId:this.loginData.userData
     }
-    console.log("onSubmitGroupCoinForm data==", data)
+    console.log("onSubmitGroupCoinForm data==", data);
     try {
       if (this.groupForm.valid) {
         this.api.updateGroup(data).then((res: any) => {
-          console.log("Group coin res===", res)
+          console.log("Group coin res===", res);
           if (res.status) {
-            this.refreshCoin()
-            this.getGroups()
-            this.general.openSnackBar(res.success, '')
+            this.refreshCoin();
+            this.getGroups();
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
 
           }
         }).catch((err) => {
-          console.log("err=", err)
+          console.log("err=", err);
         })
       }
-      else { }
     }
     catch (error) {
-      console.log("error==", error)
+      console.log("error==", error);
     }
   }
 
@@ -454,14 +448,13 @@ export class AdminSettingInfoComponent implements OnInit {
 
   deleteMaxFindForm(data) {
     data.userId=this.loginData.userData;
-    console.log("delete max find data==", data)
+    console.log("delete max find data==", data);
     this.api.deleteMaxFindAsset(data).then((res: any) => {
       if (res.status) {
-        this.general.openSnackBar(res.success, '')
-        this.refreshCoin()
+        this.general.openSnackBar(res.success, '');
+        this.refreshCoin();
       }
-      this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-
+      this.general.openSnackBar(res.success == false ? res.message : res.success, '');
     })
   }
 
@@ -470,36 +463,34 @@ export class AdminSettingInfoComponent implements OnInit {
       _id: value._id,
       userId:this.loginData.userData
     }
-    console.log("delete  group data==", data)
+    console.log("delete  group data==", data);
     this.api.deleteGroupDetails(data).then((res: any) => {
       if (res.status) {
-        this.general.openSnackBar(res.success, '')
-        this.refreshCoin()
-        this.getGroups()
+        this.general.openSnackBar(res.success, '');
+        this.refreshCoin();
+        this.getGroups();
       }
-      this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-
+      this.general.openSnackBar(res.success == false ? res.message : res.success, '');
     })
   }
 
   deleteGroupCoinForm(data) {
     data.coinId = this.general.filterIds(data.coinId);
     data.userId=this.loginData.userData;
-    console.log("delete GroupCoinForm data==", data)
+    console.log("delete GroupCoinForm data==", data);
     this.api.deleteCoinGroupDetails(data).then((res: any) => {
-      console.log("delte group coin==", res)
+      console.log("delte group coin==", res);
       if (res.status) {
-        this.general.openSnackBar(res.success, '')
-        this.refreshCoin()
-        this.getGroups()
+        this.general.openSnackBar(res.success, '');
+        this.refreshCoin();
+        this.getGroups();
       }
-      this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-
+      this.general.openSnackBar(res.success == false ? res.message : res.success, '');
     })
   }
 
   setCoin(data) {
-    let arr1 = []
+    let arr1 = [];
     data.forEach(obj => {
       arr1.push({
         coinId: obj.coinId,
@@ -514,7 +505,7 @@ export class AdminSettingInfoComponent implements OnInit {
 
 
   setData(data) {
-    let arr = new FormArray([])
+    let arr = new FormArray([]);
     data.forEach(obj => {
       arr.push(this.fb.group({
         coinId: [obj.coinId],
@@ -530,35 +521,20 @@ export class AdminSettingInfoComponent implements OnInit {
   dataDateReduce(data, type) {
     if (type == 'group') {
       data = data.filter((obj) => {
-        return obj.groupId != null
+        return obj.groupId != null;
       })
-      console.log("data==", data)
+      console.log("data==", data);
       return data.reduce((group, obj) => {
         const name = obj.groupId._id
         if (!group[name]) {
-          group[name] = []
+          group[name] = [];
         }
         group[name].push(obj)
-        return group
+        return group;
       }, {})
     }
-    // else if (type == 'zone') {
-    //   data = data.filter((obj) => {
-    //     return obj.zoneId != null
-    //   })
-
-    //   return data.reduce((zone, obj) => {
-    //     const name = obj.zoneId._id
-    //     if (!zone[name]) {
-    //       zone[name] = []
-    //     }
-    //     zone[name].push(obj)
-    //     return zone
-    //   }, {})
-    // }
-    else {
-    }
   }
+  
   compareFn(o1, o2): boolean {
     return o1.coinId == o2.coinId;
   }
