@@ -64,6 +64,7 @@ export class VehicleStatusTrackComponent implements OnInit {
                 }
                 else{
                   zoneObj.delayed = false;
+                  zoneObj.time *= -1;
                 }
                 this.vehicleData.totalStandardTime += obj.standardTime
               }

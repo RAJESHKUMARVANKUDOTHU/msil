@@ -180,7 +180,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let a of deviceGroupList; let i = index" [routerLink]="['/vehicle-status']" [queryParams]="{deviceId:a.deviceId,deviceName:a.deviceName,userId:id}" class="cursor">
+                        <!-- <tr *ngFor="let a of deviceGroupList; let i = index" [routerLink]="['/vehicle-status']" [queryParams]="{deviceId:a.deviceId,deviceName:a.deviceName,userId:id}" class="cursor"> -->
+                        <tr *ngFor="let a of deviceGroupList; let i = index">
                             <ng-container>
 
                                 <td>{{a.deviceName}}</td>
