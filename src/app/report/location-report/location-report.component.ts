@@ -22,6 +22,7 @@ export class LocationReportComponent implements OnInit {
   locationReportData: any;
   searchKey: any;
   locationData: any = [];
+  bayData: any = [];
   dataSource: any = [];
   dataPoints: any = []
   minutes: any = [];
@@ -99,24 +100,24 @@ export class LocationReportComponent implements OnInit {
         }
         console.log("data to send==", data)
         this.api.getAverageTimeOfBays(data).then((res: any) => {
-          this.locationData = []
+          this.bayData = [];
           console.log("res 2==", res)
           if (res.status) {
             for (let i = 0; i < res.success.length; i++) {
-              this.locationData.push({
+              this.bayData.push({
                 coinName: res.success[i].coinName,
                 avgTime: this.getTime(res.success[i].avgTime).time,
                 totalVehicle: res.success[i].totalVehicle,
                 minutes: this.getTime(res.success[i].avgTime).m
               })
             }
-            this.averageTimeOfBayGraph(this.locationData)
+            this.averageTimeOfBayGraph(this.bayData)
           }
-          this.dataSource = new MatTableDataSource(this.locationData);
+          this.dataSource = new MatTableDataSource(this.bayData);
 
           setTimeout(() => {
             this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator
+            this.dataSource.paginator = this.paginator;
           })
           resolve(res);
 
@@ -132,7 +133,6 @@ export class LocationReportComponent implements OnInit {
     var chart = null
     this.dataPoints = []
     for (let i = 0; i < data.length; i++) {
-
       this.dataPoints.push(
         {
           label: data[i].coinName,
@@ -262,17 +262,26 @@ export class LocationReportComponent implements OnInit {
     return a
   }
 
-  search(a, data) {
+  search(a,data) {
     this.searchKey = a;
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
-      this.dataSource.filter = a.trim().toLowerCase()
+      this.dataSource.filter = a.trim().toLowerCase();
     })
   }
-  getUpdate(event, type) {
+  
+  searchBay(a,data) {
+    this.dataSource = new MatTableDataSource(data);
+    setTimeout(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.filter = a.trim().toLowerCase();
+    })
+  }
 
+  getUpdate(event, type) {
     this.limit = event.pageSize
     this.offset = event.pageIndex * event.pageSize
     this.getData(this.limit, this.offset, type).then(res=>{
