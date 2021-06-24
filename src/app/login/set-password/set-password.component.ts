@@ -22,8 +22,8 @@ export class SetPasswordComponent implements OnInit {
   verified: boolean
   @ViewChild('captchaRef') public captchaRef: ReCaptcha2Component;
   siteKey:string;
-  theme:string='Normal';
-  size:string="Normal";
+  theme:string;
+  size:string;
 
   constructor(
     private fb: FormBuilder,
