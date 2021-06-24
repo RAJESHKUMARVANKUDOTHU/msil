@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,6 +8,7 @@ import {
 import { GeneralService } from '../../services/general.service';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import {ReCaptchaV3Service, ReCaptcha2Component} from 'ngx-captcha';
 
 @Component({
   selector: 'app-set-password',
@@ -19,12 +20,17 @@ export class SetPasswordComponent implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'visibility_off';
   verified: boolean
+  @ViewChild('captchaRef') public captchaRef: ReCaptcha2Component;
+  siteKey:string;
+  theme:string='Normal';
+  size:string="Normal";
+
   constructor(
     private fb: FormBuilder,
     private general: GeneralService,
     private api: ApiService,
     private router: Router,
-
+    private reCaptchaV3Service: ReCaptchaV3Service,
   ) {
 
   }
@@ -34,6 +40,7 @@ export class SetPasswordComponent implements OnInit {
       {
         userName: ['', [Validators.email, Validators.required]],
         password: ['', Validators.required],
+        recaptcha:['',Validators.required],
         otp1: ['', Validators.required],
         otp2: ['', Validators.required],
         otp3: ['', Validators.required],
@@ -42,7 +49,7 @@ export class SetPasswordComponent implements OnInit {
         otp6: ['', Validators.required],
       },
     );
-    
+this.captchavalidation()
   }
   getCodeBoxElement(index) {
     return document.getElementById('codeBox' + index);
@@ -62,23 +69,28 @@ export class SetPasswordComponent implements OnInit {
     }
   }
 
-  verifyUser(email) {
-    console.log("verifyUser data==", email.toString())
-    var data = {
-      userName: email.toString()
+  verifyUser(email,a) {
+    // console.log("verifyUser data==", email.toString())
+      var data = {
+        userName:email.toString()
+      }
+      if(a !=''){
+        this.api.forgetPassword(data).then((res: any) => {
+          console.log("forgetPassword res==", res)
+          if (res.status) {
+            this.general.openSnackBar(res.success, '')
+            this.verified = true
+          }
+          else {
+            this.general.openSnackBar(res.success, '')
+            this.verified = false
+          }
+        })
+      }else{
+        this.verified=false;
+      }
+
     }
-    this.api.forgetPassword(data).then((res: any) => {
-      console.log("forgetPassword res==", res)
-      if (res.status) {
-        this.general.openSnackBar(res.success, '')
-        this.verified = true
-      }
-      else {
-        this.general.openSnackBar(res.success, '')
-        this.verified = false
-      }
-    })
-  }
   submit(value) {
     console.log('value=', value);
     var data = {
@@ -106,5 +118,18 @@ export class SetPasswordComponent implements OnInit {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon =
       this.passwordIcon === 'visibility_off' ? 'visibility' : 'visibility_off';
+  }
+  captchavalidation(){
+    this.siteKey="6LdTWk8bAAAAAHH9GbQjQAx9jjWumB_8Eqt1mTs2"
+    this.theme= 'normal '
+    this.size='normal'
+    /*   this.reCaptchaV3Service.execute(this.siteKey, 'submit', (token) => {
+      console.log(toke)
+    }, {
+        useGlobalDomain: false
+    }); */
+  }
+  handleReset(){
+  this.captchaRef.resetCaptcha()
   }
 }

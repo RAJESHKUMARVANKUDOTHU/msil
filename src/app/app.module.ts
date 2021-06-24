@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {NgxCaptchaModule} from 'ngx-captcha';
 
 import {NgxLeafletFullscreenModule} from '@runette/ngx-leaflet-fullscreen';
 import { NgCircleProgressModule } from 'ng-circle-progress';
@@ -108,6 +109,7 @@ import { VehicleStatusTrackComponent } from './vehicle-status-track/vehicle-stat
     HttpClientModule,
     BrowserAnimationsModule,
     ChartsModule,
+    NgxCaptchaModule,
     NgxIntlTelInputModule,
     NgxLeafletFullscreenModule,
     NgCircleProgressModule.forRoot({}),
