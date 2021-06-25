@@ -20,7 +20,7 @@ export class AdminSettingsComponent implements OnInit {
   @ViewChild('allSelected2') private allSelected2: MatOption;
   @ViewChild('allSelected3') private allSelected3: MatOption;
   @ViewChild('allSelected5') private allSelected5: MatOption;
-
+  setUserFeatureForm: FormGroup;
   onlineStatus: FormGroup;
   offlineStatus: FormGroup;
   rssiForm: FormGroup;
@@ -56,14 +56,19 @@ export class AdminSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.loginData = this.login.getLoginDetails();
     this.createForm();
+    this.refreshSettings(this.loginData.userData);
     this.refreshCoin();
     this.refreshDevice();
     this.refreshGateway();
     this.getGroups();
-    this.refreshSettings(this.loginData.userData);
   }
 
   createForm() {
+    this.setUserFeatureForm = this.fb.group({
+      enableMap: ['false'],
+      enableZone: ['false'],
+      enableZoneStandardTime: ['false']
+    });
     this.onlineStatus = this.fb.group({
       onlineStatus: ['', [Validators.required, Validators.min(5), Validators.max(1275), Validators.pattern(/^\d*[05]$/)]]
     });
@@ -74,15 +79,15 @@ export class AdminSettingsComponent implements OnInit {
       rssi: ['', [Validators.required, Validators.min(0), Validators.max(255)]]
     });
     this.txPowerForm = this.fb.group({
-      txPower: ['',  Validators.required]
+      txPower: ['', Validators.required]
     });
     this.findTxPowerForm = this.fb.group({
       deviceId: ['', Validators.required],
-      txPower:['',[Validators.required, Validators.min(0)]]
+      txPower: ['', [Validators.required, Validators.min(0)]]
     });
-    this.coinPlacementForm= this.fb.group({
-      coinId:['',Validators.required],
-      coinPlacement:['',Validators.required]
+    this.coinPlacementForm = this.fb.group({
+      coinId: ['', Validators.required],
+      coinPlacement: ['', Validators.required]
     });
     this.rangeForm = this.fb.group({
       range: ['', Validators.required]
@@ -124,7 +129,7 @@ export class AdminSettingsComponent implements OnInit {
     });
   }
 
-    refreshCoin() {
+  refreshCoin() {
     var data = {
       userId: this.loginData.userData
     }
@@ -197,6 +202,11 @@ export class AdminSettingsComponent implements OnInit {
     this.api.getUserSettings(data).then((res: any) => {
       console.log("user settings ===", res)
       if (res.status) {
+        this.setUserFeatureForm.patchValue({
+          enableMap: res.success.enableMap,
+          enableZone: res.success.enableZone,
+          enableZoneStandardTime: res.success.enableZone == false ? false : res.success.enableZoneStandardTime
+        });
         this.onlineStatus.patchValue({
           onlineStatus: res.success.onlineStatus
         });
@@ -224,7 +234,7 @@ export class AdminSettingsComponent implements OnInit {
         this.deletionTimeForm.patchValue({
           deletionTime: res.success.deletionTime
         });
-        
+
         this.inOutmergingTimeForm.patchValue({
           inOutMergeTime: res.success.inOutMergeTime
         });
@@ -234,6 +244,36 @@ export class AdminSettingsComponent implements OnInit {
         });
       }
     })
+  }
+
+  onFeatureChange(event) {
+    console.log("event==", event);
+    this.setUserFeatureForm.patchValue({
+      enableZoneStandardTime: event.checked == false ? false : false
+    });
+  }
+  onSubmitUserFeature(data) {
+    try {
+      if (this.setUserFeatureForm.valid) {
+        data.userId = this.loginData.userData;
+        data.enableMap = data.enableMap == null ? false : data.enableMap;
+        data.enableZone = data.enableZone == null ? false : data.enableZone;
+        data.enableZoneStandardTime = data.enableZone == false ? false : data.enableZoneStandardTime;
+        console.log("onSubmit setUserFeatureForm data==", data);
+        this.api.userFeature(data).then((res: any) => {
+          console.log("setUserFeatureFormres==", res);
+          if (res.status) {
+            this.general.openSnackBar(res.success, '');
+            this.refreshSettings(data.userId);
+          }
+        }).catch((err: any) => {
+          console.log("err==", err);
+        })
+      }
+    }
+    catch (err) {
+      console.log("error==", err)
+    }
   }
 
   onSubmitOnlineStatus(data) {
@@ -358,7 +398,7 @@ export class AdminSettingsComponent implements OnInit {
             }
           })
         } catch (err) {
-          console.log("error===",err)
+          console.log("error===", err)
         }
       }
     }
@@ -583,51 +623,51 @@ export class AdminSettingsComponent implements OnInit {
     }
   }
 
-  onSubmitFindTxPower(data){
+  onSubmitFindTxPower(data) {
     data.deviceId = this.general.filterArray(data.deviceId);
     data.userId = this.loginData.userData;
     console.log("onSubmitFindTxPower data==", data);
     try {
       if (this.findTxPowerForm.valid) {
-          this.api.updateDeviceTxPower(data).then((res: any) => {
+        this.api.updateDeviceTxPower(data).then((res: any) => {
 
-            console.log("onSubmitFindTxPower res===", res);
-            if (res.status) {
-              this.findTxPowerForm.reset();
-              this.refreshDevice();
-              this.general.openSnackBar(res.success, '');
-            }
-            else {
-              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-            }
-          }).catch((err) => {
-            console.log("err=", err);
-          })
+          console.log("onSubmitFindTxPower res===", res);
+          if (res.status) {
+            this.findTxPowerForm.reset();
+            this.refreshDevice();
+            this.general.openSnackBar(res.success, '');
+          }
+          else {
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+          }
+        }).catch((err) => {
+          console.log("err=", err);
+        })
       }
     }
     catch (error) {
       console.log("error==", error);
     }
   }
-  onSubmitCoinPlacement(data){
+  onSubmitCoinPlacement(data) {
     data.coinId = this.general.filterArray(data.coinId);
     data.userId = this.loginData.userData;
     console.log("onSubmitCoinPlacement data==", data);
     try {
       if (this.coinPlacementForm.valid) {
-          this.api.updateCoinPlacement(data).then((res: any) => {
-            console.log("onSubmitCoinPlacement res===", res);
-            if (res.status) {
-              this.coinPlacementForm.reset();
-              this.refreshCoin();
-              this.general.openSnackBar(res.success, '');
-            }
-            else {
-              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-            }
-          }).catch((err) => {
-            console.log("err=", err);
-          })
+        this.api.updateCoinPlacement(data).then((res: any) => {
+          console.log("onSubmitCoinPlacement res===", res);
+          if (res.status) {
+            this.coinPlacementForm.reset();
+            this.refreshCoin();
+            this.general.openSnackBar(res.success, '');
+          }
+          else {
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+          }
+        }).catch((err) => {
+          console.log("err=", err);
+        })
       }
     }
     catch (error) {

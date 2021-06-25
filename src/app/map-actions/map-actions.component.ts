@@ -36,8 +36,8 @@ export class MapActionsComponent implements OnInit {
   selectedLayout: any = '';
   coinData: any = [];
   gatewayList: any = [];
-  gateway: any = []
-  heat: any
+  gateway: any = [];
+  heat: any;
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +68,6 @@ export class MapActionsComponent implements OnInit {
 
   createMap() {
     console.log("create map");
-
     this.mapDisable = true;
     this.map = L.map('map', {
       attributionControl: false,
@@ -113,7 +112,7 @@ export class MapActionsComponent implements OnInit {
   createForm() {
     this.newLayoutForm = this.fb.group({
       gatewayId: ['', Validators.required],
-      layoutName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
+      layoutName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
       fileData: ['', Validators.required],
       height: ['', Validators.required],
       width: ['', Validators.required]
@@ -140,18 +139,18 @@ export class MapActionsComponent implements OnInit {
         layout: this.selectedLayout
       })
       let layout = this.gatewayList.filter(obj => {
-        return obj.layoutName == data
+        return obj.layoutName == data;
       })
 
       if (layout.length > 0) {
         layout[0].gateway.filter((obj) => {
-          return this.gateway.push(obj)
+          return this.gateway.push(obj);
         })
         if (status = 1) {
           this.getLayoutImage(layout);
         } else {
           this.layoutData = layout[0];
-          this.configCoinForm.reset()
+          this.configCoinForm.reset();
           this.updateSelected();
           this.createMarker();
         }
@@ -164,8 +163,7 @@ export class MapActionsComponent implements OnInit {
       // console.log("image layout==", res);
       this.layoutData = data[0];
       console.log("this.layoutData==", this.layoutData);
-
-      this.configCoinForm.reset()
+      this.configCoinForm.reset();
       this.updateSelected();
       this.clearMapImage();
       L.imageOverlay(res, this.bound).addTo(this.map);
@@ -232,9 +230,7 @@ export class MapActionsComponent implements OnInit {
 
   createMarker() {
     this.clearMap();
-    // this.heatMap(this.gateway)
-
-    let coin = this.configCoinForm.get('coinBounds').value;
+     let coin = this.configCoinForm.get('coinBounds').value;
     console.log("coin===", coin);
 
     if (coin != null) {
@@ -324,9 +320,7 @@ export class MapActionsComponent implements OnInit {
         this.createMarker();
       });
     this.marker.push(marker);
-
   }
-
 
   getPopUpForm(data) {
     let zone = data.zoneName == undefined ? 'Not assigned' : data.zoneName;
@@ -400,7 +394,6 @@ export class MapActionsComponent implements OnInit {
     // data.length = data.width;
     // data.breadth = data.height;
     data.gatewayObjectId = this.general.filterArray(data.gatewayId);
-    data.layoutName = data.layoutName.trim().replace(/\s\s+/g, ' ');
     console.log("data.gatewayObjectId==",data.gatewayObjectId);
     
     if (data.gatewayObjectId.length > 0) {
@@ -425,7 +418,7 @@ export class MapActionsComponent implements OnInit {
             if (res.status) {
               this.general.loadingFreez.next({ status: false, msg: '' })
               this.getLayout()
-              this.newLayoutForm.reset();
+              this.newLayoutForm.reset()
               this.clearFile()
               this.general.openSnackBar(res.success, '');
             } else {
@@ -438,14 +431,12 @@ export class MapActionsComponent implements OnInit {
       } else { }
     }
     else {
-      this.newLayoutForm.reset();
       this.general.openSnackBar("Sorry!! No more gateways in the list", '')
     }
   }
 
   updateCoinBound(data) {
     console.log('submit coin===', data);
-
     this.api
       .updateLatLng(data)
       .then((res: any) => {
@@ -465,7 +456,6 @@ export class MapActionsComponent implements OnInit {
 
   deleteCoinBound(data) {
     console.log('submit coin===', data);
-
     if (this.configCoinForm.valid) {
       try {
         this.api
@@ -520,7 +510,7 @@ export class MapActionsComponent implements OnInit {
   }
 
   getLayout() {
-    this.gatewayList = []
+    this.gatewayList = [];
     this.api
       .getLayouts()
       .then((res: any) => {
@@ -556,7 +546,7 @@ export class MapActionsComponent implements OnInit {
   }
 
   refreshGateway() {
-    var data = ''
+    var data = '';
     this.api
       .getGatewayData(data)
       .then((res: any) => {
@@ -594,7 +584,7 @@ export class MapActionsComponent implements OnInit {
           this.refreshGateway();
         }
         else {
-          this.general.openSnackBar(!res.success ? res.message : res.success, '')
+          this.general.openSnackBar(!res.success ? res.message : res.success, '');
         }
       }).catch(err => {
         console.log("err==", err);
@@ -603,7 +593,7 @@ export class MapActionsComponent implements OnInit {
   }
 
   heatMap(latlng: any) {
-    console.log("heatmap", latlng)
+    console.log("heatmap", latlng);
     let arr = [];
     const conf = {
       radius: 20,
@@ -625,12 +615,13 @@ export class MapActionsComponent implements OnInit {
               lng: ele.coinBounds[1],
               intensity: 1.0
             })
-          } else { }
+          } 
         })
       }
     })
-    console.log("data==", arr)
-    var heat = new L.heatLayer(arr, conf).addTo(this.map)
-    console.log("heatmap==", this.map)
+    console.log("data==", arr);
+    var heat = new L.heatLayer(arr, conf).addTo(this.map);
+    console.log("heatmap==", this.map);
   }
 }
+

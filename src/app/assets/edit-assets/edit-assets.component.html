@@ -82,7 +82,7 @@
                     Please select gateway Id.
                 </mat-error>
             </mat-form-field> <br>
-            <mat-form-field class="w-75" appearance="fill">
+            <mat-form-field class="w-75" appearance="fill" *ngIf="loginData.enableZone" [required]="loginData.enableZone">
                 <mat-label>Select Zone</mat-label>
                 <mat-select formControlName="zoneId" autocomplete="off">
                     <mat-option *ngFor="let a of zoneData" [(value)]="a._id">

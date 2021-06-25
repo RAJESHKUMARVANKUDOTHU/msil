@@ -26,7 +26,7 @@
                 <img *ngIf="loginDetails.status && loginDetails.logo == null" src="./assets/logo.png" alt="Sensegiz" class="image">
             </div>
             <mat-list class="text-white">
-                <mat-list-item routerLink="/dashboard">
+                <mat-list-item routerLink="/dashboard" [hidden]="!loginDetails.enableMap">
                     <span mat-line> Home</span>
                     <mat-icon mat-list-icon>home</mat-icon>
                 </mat-list-item>
@@ -41,7 +41,7 @@
                     <mat-icon mat-list-icon>vpn_lock</mat-icon>
                 </mat-list-item>
 
-                <mat-list-item routerLink="/map-actions" [hidden]="loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole'">
+                <mat-list-item routerLink="/map-actions" *ngIf="loginDetails.enableMap" [hidden]="(loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole')">
                     <span mat-line> Map Center</span>
                     <mat-icon mat-list-icon>map</mat-icon>
                 </mat-list-item>
@@ -50,8 +50,6 @@
                     <span mat-line> Report</span>
                     <mat-icon mat-list-icon>rate_review</mat-icon>
                 </mat-list-item>
-
-
 
                 <mat-list-item routerLink="/profile" [hidden]="loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole'">
                     <mat-icon mat-list-icon>perm_identity</mat-icon>
@@ -116,7 +114,7 @@
                     <div class="bg-white w-100">
                         <img src="../assets/logo.png" alt="" class="image">
                     </div>
-                    <button mat-menu-item routerLink="/dashboard">
+                    <button mat-menu-item routerLink="/dashboard" [hidden]="!loginDetails.enableMap">
                         <mat-icon mat-list-icon>home</mat-icon>
                         <span mat-line>Home</span>
                     </button>
@@ -128,7 +126,7 @@
                         <mat-icon mat-list-icon>vpn_lock</mat-icon>
                         <span mat-line>Geofence Dashboard</span>
                     </button>
-                    <button mat-menu-item routerLink="/map-actions" [hidden]="loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole'">
+                    <button mat-menu-item routerLink="/map-actions" *ngIf="!loginDetails.enableMap" [hidden]="(loginDetails.role == 'subAdminRole' || loginDetails.role == 'userRole')">
                         <mat-icon mat-list-icon>map</mat-icon>
                         <span mat-line>Map center</span>
                     </button>

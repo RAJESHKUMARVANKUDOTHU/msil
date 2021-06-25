@@ -45,17 +45,14 @@ export class LocationReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData(10, 0, this.locationReportData.type)
-    if (this.locationReportData.type == '2') {
-
-
-    }
   }
+
   getData(limit, offset, type) {
     return new Promise((resolve, reject) => {
-      var data = {}
-      let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD")
-      let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD")
-      this.locationReportData.type = type
+      var data = {};
+      let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD");
+      let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD");
+      this.locationReportData.type = type;
       if (this.locationReportData.type == '1') {
         data = {
           coinId: this.locationReportData.coinId[0].coinId,
@@ -65,23 +62,20 @@ export class LocationReportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getLocationReport(data).then((res: any) => {
-          this.currentPageLength = parseInt(res.totalLength)
-
-          this.locationData = []
-          console.log("res==", res)
+          this.currentPageLength = parseInt(res.totalLength);
+          this.locationData = [];
+          console.log("res==", res);
           if (res.status) {
-            this.locationData = res.success
+            this.locationData = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
             }
             this.dataSource = new MatTableDataSource(this.locationData);
 
             setTimeout(() => {
               this.dataSource.sort = this.sort;
-              // this.dataSource.paginator = this.paginator
-
             })
           }
           resolve(res);
@@ -97,11 +91,11 @@ export class LocationReportComponent implements OnInit {
           fromDate: from,
           toDate: to,
           timeZoneOffset: this.general.getZone()
-        }
-        console.log("data to send==", data)
+        };
+        console.log("data to send==", data);
         this.api.getAverageTimeOfBays(data).then((res: any) => {
           this.bayData = [];
-          console.log("res 2==", res)
+          console.log("res 2==", res);
           if (res.status) {
             for (let i = 0; i < res.success.length; i++) {
               this.bayData.push({
@@ -111,7 +105,7 @@ export class LocationReportComponent implements OnInit {
                 minutes: this.getTime(res.success[i].avgTime).m
               })
             }
-            this.averageTimeOfBayGraph(this.bayData)
+            this.averageTimeOfBayGraph(this.bayData);
           }
           this.dataSource = new MatTableDataSource(this.bayData);
 
@@ -194,10 +188,10 @@ export class LocationReportComponent implements OnInit {
 
 
   download() {
-    var data = {}
-    var fileName = ''
-    let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD")
-    let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD")
+    var data = {};
+    var fileName = '';
+    let from = moment(this.locationReportData.fromDate).format("YYYY-MM-DD");
+    let to = moment(this.locationReportData.toDate).format("YYYY-MM-DD");
 
     if (this.locationReportData.type == '1') {
       data = {
@@ -206,15 +200,14 @@ export class LocationReportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      fileName = "Report of location - " + this.locationReportData.coinId.coinName
+      fileName = "Location wise report - " + this.locationReportData.coinId.coinName;
       this.api.downloadLocationReport(data, fileName).then((res: any) => {
-        console.log("res==", res)
+        console.log("res==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
 
@@ -225,41 +218,40 @@ export class LocationReportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      fileName = "Report of Bay - " + this.locationReportData.zoneId.zoneName
+      fileName = "bay wise report - " + this.locationReportData.zoneId.zoneName;
       this.api.downloadAverageTimeOfBays(data, fileName).then((res: any) => {
-        console.log("res==", res)
+        console.log("res==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
   }
 
 
   getTime(data) {
-    data = Math.abs(data)
-    let min = Math.floor((data / 1000 / 60) << 0)
+    data = Math.abs(data);
+    let min = Math.floor((data / 1000 / 60) << 0);
     let ms = data % 1000;
     data = (data - ms) / 1000;
     let s = data % 60;
     data = (data - s) / 60;
     let m = data % 60;
     data = (data - m) / 60;
-    let h = data
+    let h = data;
 
     let ss = s <= 9 && s >= 0 ? "0" + s : s;
     let mm = m <= 9 && m >= 0 ? "0" + m : m;
     let hh = h <= 9 && h >= 0 ? "0" + h : h;
 
-    var time = hh + ':' + mm + ':' + ss
+    var time = hh + ':' + mm + ':' + ss;
     var a = {
       m: min,
       time: this.general.convertTime(time)
     }
-    return a
+    return a;
   }
 
   search(a,data) {
@@ -267,7 +259,6 @@ export class LocationReportComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
       this.dataSource.filter = a.trim().toLowerCase();
     })
   }
@@ -282,10 +273,10 @@ export class LocationReportComponent implements OnInit {
   }
 
   getUpdate(event, type) {
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
     this.getData(this.limit, this.offset, type).then(res=>{
-      this.search(this.searchKey,this.locationData)
+      this.search(this.searchKey,this.locationData);
     })
   }
 

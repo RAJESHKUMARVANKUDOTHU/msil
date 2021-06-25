@@ -19,6 +19,7 @@ export class AddAssetsComponent implements OnInit {
   deassignAsset: FormGroup;
   gateway: any;
   type: any;
+  loginData:any;
   zoneData:any=[];
   constructor(
     public dialogRef: MatDialogRef<AddAssetsComponent>,
@@ -33,6 +34,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.addFind = this.fb.group({
       deviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       deviceId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]]
@@ -45,7 +47,7 @@ export class AddAssetsComponent implements OnInit {
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       coinId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]],
       gatewayId: ['', Validators.required],
-      zoneId:['',Validators.required]
+      zoneId:['']
     })
 
     this.refreshGateway();
@@ -64,22 +66,22 @@ export class AddAssetsComponent implements OnInit {
           console.log("find submit====", res);
           if (res.status) {
             if(res.success=="Device registered successfully"){
-              this.addFind.reset()
+              this.addFind.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log('error==', err)
+      console.log('error==', err);
     }
   }
 
@@ -91,80 +93,71 @@ export class AddAssetsComponent implements OnInit {
           console.log("gateway submit====", res);
           if (res.status) {
             if(res.success=="Gateway registered successfully"){
-              this.addGateway.reset()
+              this.addGateway.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-          // else if((res.status || !res.status) && res.success.toLowerCase()!="gateway registered successfully"){
-          //   var msg = 'Gateway Name Already exists, try different Name'
-          //   this.general.openSnackBar(msg,'')
-          // }
-
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log("error==", err)
+      console.log("error==", err);
     }
   }
 
   coinSubmit(data) {
-    console.log("coin data==",data)
+    console.log("coin data==",data);
+    data.zoneId= data.zoneId ? data.zoneId : null;
     try {
       if (this.addCoin.valid) {
         data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
         this.api.coinRegistration(data).then((res: any) => {
-
           console.log("coin submit====", res);
           if (res.status) {
             if(res.success=="Coin registered successfully"){
-              this.addCoin.reset()
+              this.addCoin.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log("error==", err)
+      console.log("error==", err);
 
     }
   }
 
   refreshGateway() {
-    var data=''
+    var data='';
     this.api.getGatewayData(data).then((res: any) => {
-
       console.log("gatway submit====", res);
-      this.gateway = []
+      this.gateway = [];
       if (res.status) {
-        this.gateway = res.success
+        this.gateway = res.success;
       }
 
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
 
   getZoneDetails() {
     this.api.getZone().then((res: any) => {
-
       console.log("zone details response==", res);
       this.zoneData = [];
       if (res.status) {

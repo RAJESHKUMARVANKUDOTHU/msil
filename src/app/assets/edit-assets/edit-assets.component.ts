@@ -19,6 +19,7 @@ export class EditAssetsComponent implements OnInit {
   type: any;
   patchData: any;
   zoneData:any=[];
+  loginData:any;
   constructor(
     public dialogRef: MatDialogRef<EditAssetsComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -34,6 +35,7 @@ export class EditAssetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.editFind = this.fb.group({
       deviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       deviceId: [{ value: '', disabled: true }],
@@ -49,7 +51,6 @@ export class EditAssetsComponent implements OnInit {
       zoneId:['',Validators.required]
     })
 
-    //function call
     this.patchValue();
     this.refreshGateway();
     this.getZoneDetails();

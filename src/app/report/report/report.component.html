@@ -39,16 +39,15 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+
                 <mat-form-field *ngIf="vehicleReport.get('type').value == '3' || vehicleReport.get('type').value == '6'">
                     <mat-label> Vehicle No.</mat-label>
-
                     <input type='text' matInput formControlName="deviceName" [matAutocomplete]="auto" (keyup)="vehicleNames($event)" required>
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let find of deviceData" [value]="find.deviceName">
                             {{find.deviceName}}
                         </mat-option>
                     </mat-autocomplete>
-
                 </mat-form-field> <br>
 
                 <mat-form-field>

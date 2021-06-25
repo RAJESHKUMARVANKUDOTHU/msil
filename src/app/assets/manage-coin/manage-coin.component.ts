@@ -16,10 +16,10 @@ import { MatSort } from '@angular/material/sort';
 export class ManageCoinComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  loginData:any;
   dataSource: any = [];
   coinData: any = [];
   fileName: String = '';
-  role: any;
   limit:any=10;
   offset:any=0;
   currentPageLength:any=10;
@@ -33,8 +33,8 @@ export class ManageCoinComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.refreshCoin()
-    this.role = this.login.getLoginDetails().role
+    this.refreshCoin();
+    this.loginData = this.login.getLoginDetails();
     this.general.deviceChanges.subscribe((res) => {
       if (res) {
         this.refreshCoin(this.limit, this.offset)

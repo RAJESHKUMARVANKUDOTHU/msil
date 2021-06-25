@@ -18,16 +18,17 @@ export class GeofenceComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('allSelected') private allSelected: MatOption
   @ViewChild('allSelected1') private allSelected1: MatOption
-  geofenceForm: FormGroup
-  geoFenceData: any = []
-  coinData: any
-  deviceData: any
-  dataSource: any = []
-  displayedColumns = ['i', 'deviceId', 'deviceName', 'location', 'sms', 'email','delete']
-  limit: any = 10
-  offset: any = 0
-  currentPageLength: any = 10
-  currentPageSize: any = 10
+  geofenceForm: FormGroup;
+  geoFenceData: any = [];
+  searhKey: string = '';
+  coinData: any;
+  deviceData: any;
+  dataSource: any = [];
+  displayedColumns = ['i', 'deviceId', 'deviceName', 'location', 'sms', 'email', 'delete'];
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
   constructor(
     private login: LoginAuthService,
     private api: ApiService,
@@ -42,55 +43,52 @@ export class GeofenceComponent implements OnInit {
       coin: ['', Validators.required]
     })
 
-    this.refreshDevice()
-    this.refreshCoin()
-    this.getGeofence()
+    this.refreshDevice();
+    this.refreshCoin();
+    this.getGeofence();
   }
 
   refreshCoin() {
-    var data = ''
+    var data = '';
     this.api.getCoinData(data).then((res: any) => {
-      this.coinData = []
+      this.coinData = [];
       if (res.status) {
-        this.coinData = res.success
+        this.coinData = res.success;
         console.log("this.coinData====", this.coinData);
-
       }
-      else { }
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
 
   refreshDevice() {
-    var data = ''
+    var data = '';
     this.api.getDeviceData(data).then((res: any) => {
-      this.deviceData = []
+      this.deviceData = [];
       console.log("find submit====", res);
       if (res.status) {
-        this.deviceData = res.success
+        this.deviceData = res.success;
       }
-      else { }
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
-  
+
   toggleAllSelectionDevice(formData) {
     if (this.allSelected.selected) {
-      formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0])
+      formData.controls.deviceId.patchValue([...this.deviceData.map(obj => obj.deviceId), 0]);
     }
     else {
-      formData.controls.deviceId.patchValue([])
+      formData.controls.deviceId.patchValue([]);
     }
   }
 
   toggleAllSelectionCoin(formData) {
     if (this.allSelected1.selected) {
-      formData.controls.coin.patchValue([...this.coinData.map(obj => obj._id), 0])
+      formData.controls.coin.patchValue([...this.coinData.map(obj => obj._id), 0]);
     }
     else {
-      formData.controls.coin.patchValue([])
+      formData.controls.coin.patchValue([]);
     }
   }
 
@@ -100,82 +98,82 @@ export class GeofenceComponent implements OnInit {
       email: value.alert == 'email' ? true : false,
       deviceId: this.general.filterArray(value.deviceId),
       coin: this.general.filterArray(value.coin)
-    }
-    console.log("geofence Data==", data)
+    };
+    console.log("geofence Data==", data);
     this.api.geofenceSetting(data).then((res: any) => {
       if (res.status) {
         console.log("geofence setting res==", res);
-        this.general.openSnackBar(res.message, '')
-        this.geofenceForm.reset()
+        this.general.openSnackBar(res.message, '');
+        this.geofenceForm.reset();
         this.getGeofence(this.limit, this.offset);
       }
       else {
-        this.general.openSnackBar(res.message, '')
+        this.general.openSnackBar(res.message, '');
       }
     }).catch((err: any) => {
-      console.log("err", err)
+      console.log("err", err);
     })
   }
 
   getGeofence(limit = 10, offset = 0) {
-    var data = {
-      limit: limit,
-      offset: offset
-    }
-    console.log("data==",data)
-    this.api.getGeofenceSetting(data).then((res: any) => {
-      this.geoFenceData = []
-      if (res.status) {
-        this.currentPageLength = parseInt(res.totalLength)
-
-        console.log("geofence setting res==", res)
-        this.geoFenceData = res.success
-        this.dataSource = new MatTableDataSource(this.geoFenceData);
-
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-          // this.dataSource.paginator = this.paginator
-        })
+    return new Promise((resolve, reject) => {
+      var data = {
+        limit: limit,
+        offset: offset
       }
-      else { }
-
-
-    }).catch(err => {
-      console.log("error===", err);
-
+      console.log("data==", data);
+      this.api.getGeofenceSetting(data).then((res: any) => {
+        this.geoFenceData = [];
+        if (res.status) {
+          this.currentPageLength = parseInt(res.totalLength);
+          console.log("geofence setting res==", res);
+          this.geoFenceData = res.success;
+          this.dataSource = new MatTableDataSource(this.geoFenceData);
+          setTimeout(() => {
+            this.dataSource.sort = this.sort;
+          })
+        }
+        resolve(res);
+      }).catch(err => {
+        console.log("error===", err);
+        reject(err);
+      })
     })
   }
-  delete(data){
-    if(confirm("Are you sure that you want to perform this operation ?")){
-      this.api.deleteGoefenceSetting(data).then((res:any)=>{
-        console.log("delete  geofence setting res",res)
-        if(res.status){
-          this.general.openSnackBar(res.success, '')
-          this.getGeofence(this.limit,this.offset)
+
+  delete(data) {
+    if (confirm("Are you sure that you want to perform this operation ?")) {
+      this.api.deleteGoefenceSetting(data).then((res: any) => {
+        console.log("delete  geofence setting res", res);
+        if (res.status) {
+          this.general.openSnackBar(res.success, '');
+          this.getGeofence(this.limit, this.offset);
         }
-        else{ }
-      }).catch(err=>{
-        console.log("err==",err)
+        else { }
+      }).catch(err => {
+        console.log("err==", err);
       })
     }
-    else{
-      this.getGeofence(this.limit,this.offset)
+    else {
+      this.getGeofence(this.limit, this.offset);
     }
   }
 
   search(a) {
-    console.log(a)
+    this.searhKey = a;
     this.dataSource = new MatTableDataSource(this.geoFenceData);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
-      this.dataSource.filter = a.trim().toLowerCase()
+      this.dataSource.filter = a.trim().toLowerCase();
     })
   }
-  getUpdate(event) {
 
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
-    this.getGeofence(this.limit, this.offset)
+  getUpdate(event) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.getGeofence(this.limit, this.offset).then(res=>{
+      this.search(this.searhKey);
+    })
   }
 }

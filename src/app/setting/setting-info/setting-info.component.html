@@ -113,98 +113,6 @@
     </div>
 </div> -->
 
-
-<!-- <div *ngIf="type=='zoneSTD'">
-    <h1 mat-dialog-title *ngIf="zoneData?.length">Standard time of zones.</h1>
-    <div mat-dialog-content *ngIf="zoneData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
-        <form [formGroup]="zoneSettingForm">
-            <table formArrayName="items" *ngIf="zoneSettingForm.get('items')['controls']?.length>0">
-                <tr *ngFor="let a of zoneSettingForm.get('items')['controls']; let i=index;">
-                    <ng-container [formGroupName]="i">
-                        <td> {{i+1}}.&nbsp;&nbsp;</td>
-                        <td> <br>
-                            <mat-form-field style="pointer-events: none;">
-                                <mat-label>Zone Name</mat-label>
-                                <input matInput type="text" formControlName="zoneName">
-                            </mat-form-field><br><br>
-                        </td><br>
-                        <td>
-                            <mat-form-field>
-                                <mat-label> Standard Time</mat-label>
-                                <input type="number" min="0" formControlName="standardTime" matInput required>
-                                <mat-error>
-                                    Please provide a valid standard time
-                                </mat-error>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-icon matListIcon (click)="deleteZoneForm(a.value)" class="cursor">delete_forever
-                            </mat-icon>
-                        </td>
-                        <td>
-                            <button type="button" mat-raised-button color="primary" [disabled]="!a.valid" (click)="onSubmitZoneSTDForm(a.value)">Submit</button>
-                        </td>
-                    </ng-container>
-                </tr>
-            </table>
-        </form>
-    </div>
-</div> -->
-
-
-<!-- <div *ngIf="type=='serviceType'">
-    <h1 mat-dialog-title *ngIf="serviceData?.length">Service Type setting</h1>
-    <div mat-dialog-content *ngIf="serviceData?.length;else nodata" class="d-flex justify-content-around diagWrapper text-center">
-        <form [formGroup]="serviceSettingForm">
-            <table formArrayName="items" *ngIf="serviceSettingForm.get('items')['controls']?.length>0">
-                <tr *ngFor="let a of serviceSettingForm.get('items')['controls']; let i=index;">
-                    <ng-container [formGroupName]="i">
-                        <td> {{i+1}}.&nbsp;&nbsp;</td>
-                        <td><br>
-                            <mat-form-field>
-                                <mat-label>Service Name</mat-label>
-                                <input type="text" matInput formControlName="serviceName" required>
-                                <mat-error *ngIf="a.get('serviceName').value ==''">
-                                    Service Name is required
-                                </mat-error>
-                                <mat-error *ngIf="a.get('serviceName').value !='' || general.mismatch">
-                                    No special characters are allowed. And service name cannot start/end with space(s).
-                                </mat-error>
-                            </mat-form-field> <br><br>
-                        </td>
-                        <td class="w-25">
-                            <span *ngFor="let b of  a.get('zoneName')['controls'];let i=index;let last= last;">
-                                <span *ngIf="!last">{{b.get('zoneName').value}},</span>
-                            <span *ngIf="last">{{b.get('zoneName').value}}.</span>
-                            </span>
-
-                        </td>
-                        <td>
-                            <mat-form-field>
-                                <mat-label> Zone Name</mat-label>
-                                <mat-select formControlName="zoneId" required multiple [compareWith]="compareFn1">
-                                    <mat-option *ngFor="let zone of zoneData" [value]="zone._id">{{zone.zoneName}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>
-                                    Please provide a valid zone name
-                                </mat-error>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-icon matListIcon (click)="deleteServiceType(a.value)" class="cursor">delete_forever
-                            </mat-icon>
-                        </td>
-                        <td>
-                            <button type="button" mat-raised-button color="primary" (click)="onSubmitServiceType(a.value)">Submit</button>
-                        </td>
-                    </ng-container>
-                </tr>
-            </table>
-        </form>
-    </div>
-</div> -->
-
 <div *ngIf="type=='main-zone'">
     <h1 mat-dialog-title *ngIf="mainZone?.length">Edit Main Zone</h1>
     <div mat-dialog-content *ngIf="mainZone?.length" class="d-flex justify-content-around diagWrapper text-center">
@@ -226,9 +134,9 @@
                             </mat-form-field><br><br>
                         </td><br>
                         <td>
-                            <mat-form-field>
+                            <mat-form-field *ngIf="loginData.enableZoneStandardTime">
                                 <mat-label> Standard Time</mat-label>
-                                <input type="number" min="0" formControlName="standardTime" matInput required>
+                                <input type="number" min="0" formControlName="standardTime" matInput [required]="loginData.enableZoneStandardTime">
                                 <mat-error>
                                     Please provide a valid standard time
                                 </mat-error>
@@ -239,7 +147,7 @@
                             </mat-icon>
                         </td>
                         <td>
-                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('standardTime').value == 0 || a.get('zoneName').value == ''" (click)="onSubmitMainZoneForm(a.value)">Submit</button>
+                            <button type="button" mat-raised-button color="primary" [disabled]="a.get('zoneName').value == ''" (click)="onSubmitMainZoneForm(a.value)">Submit</button>
                         </td>
                     </ng-container>
                 </tr>

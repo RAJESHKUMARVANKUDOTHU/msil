@@ -48,10 +48,10 @@ export class ZoneReportComponent implements OnInit {
   }
   getData(limit, offset, type) {
     return new Promise((resolve, reject) => {
-      var data = {}
-      let from = moment(this.zoneReportData.fromDate).format("YYYY-MM-DD")
-      let to = moment(this.zoneReportData.toDate).format("YYYY-MM-DD")
-      this.zoneReportData.type = type
+      var data = {};
+      let from = moment(this.zoneReportData.fromDate).format("YYYY-MM-DD");
+      let to = moment(this.zoneReportData.toDate).format("YYYY-MM-DD");
+      this.zoneReportData.type = type;
       if (this.zoneReportData.type == '1') {
         data = {
           zoneId: this.zoneReportData.zoneId._id,
@@ -61,23 +61,20 @@ export class ZoneReportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getZoneWiseReport(data).then((res: any) => {
-          this.zoneData = []
-          console.log("res==", res)
+          this.zoneData = [];
+          console.log("res==", res);
           if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength)
-
-            this.zoneData = res.success
+            this.currentPageLength = parseInt(res.totalLength);
+            this.zoneData = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
             }
             this.dataSource = new MatTableDataSource(this.zoneData);
-
             setTimeout(() => {
               this.dataSource.sort = this.sort;
               // this.dataSource.paginator = this.paginator
-
             })
           }
           resolve(res);
@@ -92,14 +89,13 @@ export class ZoneReportComponent implements OnInit {
           fromDate: from,
           toDate: to,
           timeZoneOffset: this.general.getZone(),
-
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getZonePerformance(data).then((res: any) => {
-          this.zoneData = []
-          console.log("res 2==", res)
+          this.zoneData = [];
+          console.log("res 2==", res);
           if (res.status) {
-            this.zoneData = res.success
+            this.zoneData = res.success;
             this.avgTime = [];
             this.sdtTime = [];
             for (let i = 0; i < this.zoneData.length; i++) {
@@ -108,14 +104,14 @@ export class ZoneReportComponent implements OnInit {
                   label: this.zoneData[i].zoneName,
                   y: this.zoneData[i].totalAverageTime,
                 }
-              )
+              );
               this.sdtTime.push(
                 {
                   label: this.zoneData[i].zoneName,
                   y: parseInt(this.zoneData[i].standardTime)
                 }
               )
-              this.zonePerformanceChart()
+              this.zonePerformanceChart();
             }
           }
           resolve(res);
@@ -132,12 +128,12 @@ export class ZoneReportComponent implements OnInit {
           type: this.zoneReportData.dayType,
           day: this.zoneReportData.dayType == 'week' ? this.zoneReportData.weekDay : ''
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.zoneWisePerformancePerDay(data).then((res: any) => {
-          this.zoneData = []
-          console.log("res 3==", res)
+          this.zoneData = [];
+          console.log("res 3==", res);
           if (res.status) {
-            this.zoneData = res.success
+            this.zoneData = res.success;
             this.dataPoints = [];
             for (let i = 0; i < this.zoneData.length; i++) {
               let dataPointZone = [];
@@ -158,13 +154,13 @@ export class ZoneReportComponent implements OnInit {
                   indexLabel: "{y}",
                 }
               )
-              console.log("datapoints==", this.dataPoints)
+              console.log("datapoints==", this.dataPoints);
             }
-            this.zoneWisePerformancePerDayChart()
+            this.zoneWisePerformancePerDayChart();
           }
           resolve(res);
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -174,26 +170,26 @@ export class ZoneReportComponent implements OnInit {
           toDate: to,
           timeZoneOffset: this.general.getZone(),
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.zoneWiseEfficiency(data).then((res: any) => {
-          this.zoneData = []
-          console.log("res 4==", res)
+          this.zoneData = [];
+          console.log("res 4==", res);
           if (res.status) {
-            this.zoneData = res.success
-            this.dataPoints = []
+            this.zoneData = res.success;
+            this.dataPoints = [];
             for (let i = 0; i < this.zoneData.length; i++) {
               this.dataPoints.push(
                 {
                   label: this.zoneData[i].zoneName,
                   y: parseInt(this.zoneData[i].zoneWiseEfficiency),
                 }
-              )
-              this.zoneEfficiencyChart()
+              );
+              this.zoneEfficiencyChart();
             }
           }
           resolve(res);
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -205,12 +201,12 @@ export class ZoneReportComponent implements OnInit {
           type: this.zoneReportData.dayType,
           day: this.zoneReportData.dayType == 'week' ? this.zoneReportData.weekDay : ''
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getZoneWiseEfficiencyByDay(data).then((res: any) => {
-          this.zoneData = []
-          console.log("res 5==", res)
+          this.zoneData = [];
+          console.log("res 5==", res);
           if (res.status) {
-            this.zoneData = res.success
+            this.zoneData = res.success;
             this.dataPoints = [];
             for (let i = 0; i < this.zoneData.length; i++) {
               let dataPointZone = [];
@@ -231,13 +227,13 @@ export class ZoneReportComponent implements OnInit {
                   indexLabel: "{y}",
                 }
               )
-              console.log("datapoints==", this.dataPoints)
+              console.log("datapoints==", this.dataPoints);
             }
-            this.zoneWiseEfficiencyPerDayChart()
+            this.zoneWiseEfficiencyPerDayChart();
           }
           resolve(res);
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -356,9 +352,8 @@ export class ZoneReportComponent implements OnInit {
 
   }
 
-
   zoneWisePerformancePerDayChart() {
-    var chart = null
+    var chart = null;
     chart = new CanvasJS.Chart("chartContainer", {
       exportEnabled: true,
       animationEnabled: true,
@@ -401,6 +396,7 @@ export class ZoneReportComponent implements OnInit {
       chart.render();
     }
   }
+  
   zoneWiseEfficiencyPerDayChart() {
     var chart = null
     chart = new CanvasJS.Chart("chartContainer", {
@@ -445,22 +441,22 @@ export class ZoneReportComponent implements OnInit {
   }
   getValue() {
     for (let i = 0; i < this.zoneData.length; i++) {
-      console.log("this.zoneData[i].zoneName==", this.zoneData[i].zoneName)
-      return this.zoneData[i].zoneName
+      console.log("this.zoneData[i].zoneName==", this.zoneData[i].zoneName);
+      return this.zoneData[i].zoneName;
     }
   }
   getDatapoints() {
     for (let i = 0; i < this.dataPoints.length; i++) {
       console.log("this.dataPoints[i]===", this.dataPoints[i]);
 
-      return this.dataPoints[i]
+      return this.dataPoints[i];
     }
   }
   download() {
-    var data = {}
-    var fileName = ''
-    let from = moment(this.zoneReportData.fromDate).format("YYYY-MM-DD")
-    let to = moment(this.zoneReportData.toDate).format("YYYY-MM-DD")
+    var data = {};
+    var fileName = '';
+    let from = moment(this.zoneReportData.fromDate).format("YYYY-MM-DD");
+    let to = moment(this.zoneReportData.toDate).format("YYYY-MM-DD");
 
     if (this.zoneReportData.type == '1') {
       data = {
@@ -469,15 +465,15 @@ export class ZoneReportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      fileName = "Report of zone Name - " + this.zoneReportData.zoneId.zoneName
+      fileName = "Zone wise report - " + this.zoneReportData.zoneId.zoneName;
       this.api.downloadzoneWiseReport(data, fileName).then((res: any) => {
-        console.log("res==", res)
+        console.log("res==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
+          this.general.openSnackBar("Downloading!!!", '');
 
         }
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
 
@@ -487,16 +483,15 @@ export class ZoneReportComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
-      this.dataSource.filter = a.trim().toLowerCase()
+      this.dataSource.filter = a.trim().toLowerCase();
     })
   }
   
   getUpdate(event, type) {
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
     this.getData(this.limit, this.offset, type).then(res=>{
-      this.search(this.searhKey,this.zoneData)
+      this.search(this.searhKey,this.zoneData);
     }).catch(err=>{
       console.log("err==",err);
     })

@@ -410,6 +410,19 @@
     </mat-card>
 
     <mat-card>
+        <mat-card-title>User Features</mat-card-title>
+        <mat-card-subtitle>Enable or Disable User Features</mat-card-subtitle><br>
+        <mat-card-content>
+            <form [formGroup]="setUserFeatureForm" class="text-left">
+                <mat-checkbox formControlName="enableMap" color="primary">Enable Map</mat-checkbox> <br>
+                <mat-checkbox formControlName="enableZone" color="primary" (change)="onFeatureChange($event)">Enable Zone</mat-checkbox><br>
+                <mat-checkbox *ngIf="setUserFeatureForm.get('enableZone').value != null && setUserFeatureForm.get('enableZone').value == true" formControlName="enableZoneStandardTime" color="primary">Enable Zone Standard time</mat-checkbox>
+            </form> <br><br><br><br> <br>
+            <button mat-raised-button color="primary" [disabled]="!setUserFeatureForm.valid" (click)="onSubmitUserFeature(setUserFeatureForm.value)">Submit</button>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
         <mat-card-title>
             Define Shift Time
         </mat-card-title>
@@ -454,6 +467,4 @@
             </div>
         </mat-card-content>
     </mat-card>
-
-
 </div>

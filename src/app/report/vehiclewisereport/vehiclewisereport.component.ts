@@ -67,16 +67,16 @@ export class VehiclewisereportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
 
         this.api.genericReport(data).then((res: any) => {
-          this.vehicleName = []
-          console.log("res 0==", res)
+          this.vehicleName = [];
+          console.log("res 0==", res);
           if (res.status) {
             this.currentPageLength = parseInt(res.totalLength)
-            this.vehicleName = res.success
+            this.vehicleName = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
             }
             this.dataSource = new MatTableDataSource(this.vehicleName);
 
@@ -89,7 +89,7 @@ export class VehiclewisereportComponent implements OnInit {
           resolve(res);
 
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -104,28 +104,24 @@ export class VehiclewisereportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.deviceIdReport(data).then((res: any) => {
-          this.vehicleName = []
-          console.log("res 2==", res)
+          this.vehicleName = [];
+          console.log("res 2==", res);
           if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength)
-            this.vehicleName = res.success
+            this.currentPageLength = parseInt(res.totalLength);
+            this.vehicleName = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
             }
             this.dataSource = new MatTableDataSource(this.vehicleName);
-
             setTimeout(() => {
               this.dataSource.sort = this.sort;
-              // this.dataSource.paginator = this.paginator
-
             })
           }
           resolve(res);
-
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -138,16 +134,16 @@ export class VehiclewisereportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
 
         this.api.vehicleNameReport(data).then((res: any) => {
-          this.vehicleName = []
-          console.log("res 3==", res)
+          this.vehicleName = [];
+          console.log("res 3==", res);
           if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength)
-            this.vehicleName = res.success
+            this.currentPageLength = parseInt(res.totalLength);
+            this.vehicleName = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
             }
             this.dataSource = new MatTableDataSource(this.vehicleName);
 
@@ -160,7 +156,7 @@ export class VehiclewisereportComponent implements OnInit {
           resolve(res);
 
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -173,28 +169,25 @@ export class VehiclewisereportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getvehicleServicedReport(data).then((res: any) => {
           this.vehicleName = []
-          console.log("res 4==", res)
+          console.log("res 4==", res);
           if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength)
-            this.vehicleName = res.success
-            this.vehicleTotLen = parseInt(res.totalLength)
+            this.currentPageLength = parseInt(res.totalLength);
+            this.vehicleName = res.success;
+            this.vehicleTotLen = parseInt(res.totalLength);
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].gateInTime, res.success[i].deRegTime)
+              res.success[i].totTime = this.general.getTotTime(res.success[i].gateInTime, res.success[i].deRegTime);
             }
             this.dataSource = new MatTableDataSource(this.vehicleName);
-
             setTimeout(() => {
               this.dataSource.sort = this.sort;
-              // this.dataSource.paginator = this.paginator
-
             })
           }
           resolve(res);
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -207,23 +200,20 @@ export class VehiclewisereportComponent implements OnInit {
           limit: limit,
           offset: offset
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getVehicleZoneWiseReport(data).then((res: any) => {
-          this.vehicleName = []
-          console.log("res 6==", res)
+          this.vehicleName = [];
+          console.log("res 6==", res);
           if (res.status) {
             this.currentPageLength = parseInt(res.totalLength);
             this.vehicleName = res.success;
             for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totalTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime)
+              res.success[i].totalTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
 
             }
             this.dataSource = new MatTableDataSource(this.vehicleName);
-
             setTimeout(() => {
               this.dataSource.sort = this.sort;
-              // this.dataSource.paginator = this.paginator
-
             })
           }
           resolve(res);
@@ -238,10 +228,10 @@ export class VehiclewisereportComponent implements OnInit {
           toDate: to,
           timeZoneOffset: this.general.getZone(),
         }
-        console.log("data to send==", data)
+        console.log("data to send==", data);
         this.api.getJcSummaryData(data).then((res: any) => {
-          console.log("res 7 from api==", res)
-          this.jcSummaryData = {}
+          console.log("res 7 from api==", res);
+          this.jcSummaryData = {};
           if (res.status) {
             this.jcSummaryData.data = res.success;
             this.jcSummaryData.head = ['Sl no.', 'Date', 'Vehicle no.', 'Find Id.'];
@@ -259,12 +249,12 @@ export class VehiclewisereportComponent implements OnInit {
                 this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
               });
             }
-            console.log("res 7==", this.jcSummaryData)
+            console.log("res 7==", this.jcSummaryData);
           }
           resolve(res);
 
         }).catch(err => {
-          console.log("err===", err)
+          console.log("err===", err);
           reject(err);
         })
       }
@@ -272,26 +262,25 @@ export class VehiclewisereportComponent implements OnInit {
   }
 
   download() {
-    var data = {}
-    var fileName = ''
-    let from = moment(this.vehicleReportData.fromDate).format("YYYY-MM-DD")
-    let to = moment(this.vehicleReportData.toDate).format("YYYY-MM-DD")
+    var data = {};
+    var fileName = '';
+    let from = moment(this.vehicleReportData.fromDate).format("YYYY-MM-DD");
+    let to = moment(this.vehicleReportData.toDate).format("YYYY-MM-DD");
     if (this.vehicleReportData.type == '1') {
       data = {
         fromDate: from,
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      console.log("data to send==", data)
-      fileName = "Generic Repot"
+      console.log("data to send==", data);
+      fileName = "Generic Report";
       this.api.downloadGenericReport(data, fileName).then((res: any) => {
-        console.log("res 1==", res)
+        console.log("res 1==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
+          this.general.openSnackBar("Downloading!!!", '');
         }
-
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
 
@@ -303,17 +292,15 @@ export class VehiclewisereportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      fileName = "Report of device Id - " + this.vehicleReportData.deviceId
-      console.log("download data to send==", data)
+      fileName = "Report of device Id - " + this.vehicleReportData.deviceId;
+      console.log("download data to send==", data);
       this.api.downloadDeviceIdReport(data, fileName).then((res: any) => {
-        console.log("res 2==", res)
+        console.log("res 2==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
-
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
     if (this.vehicleReportData.type == '3') {
@@ -323,17 +310,15 @@ export class VehiclewisereportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      console.log("download data to send==", data)
-      fileName = "Report of vehicle name - " + this.vehicleReportData.deviceName
+      console.log("download data to send==", data);
+      fileName = "Vehicle wise report based on location  - " + this.vehicleReportData.deviceName;
       this.api.downloadvehicleNameReport(data, fileName).then((res: any) => {
-        console.log("res 1==", res)
+        console.log("res 1==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
-
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
     if (this.vehicleReportData.type == '4') {
@@ -342,17 +327,15 @@ export class VehiclewisereportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone(),
       }
-      console.log("download data to send==", data)
-      fileName = "Report of serviced vehilce"
+      console.log("download data to send==", data);
+      fileName = "Report - Number of vehicles Serviced";
       this.api.downloadVehicleReport(data, fileName).then((res: any) => {
-        console.log("res 1==", res)
+        console.log("res 1==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
-
       }).catch(err => {
-        console.log("err===", err)
+        console.log("err===", err);
       })
     }
     if (this.vehicleReportData.type == '6') {
@@ -362,24 +345,22 @@ export class VehiclewisereportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      console.log("download data to send==", data)
-      fileName = "Report of vehicle name - " + this.vehicleReportData.deviceName
+      console.log("download data to send==", data);
+      fileName = "Vehicle wise report based on zone  - " + this.vehicleReportData.deviceName;
       this.api.downloadVehicleZoneWiseReport(data, fileName).then((res: any) => {
-        console.log("res 1==", res)
+        console.log("res 1==", res);
         if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '')
-
+          this.general.openSnackBar("Downloading!!!", '');
         }
-
       }).catch(err => {
         console.log("err===", err)
       })
     }
     if (this.vehicleReportData.type == '7') {
-      let fileName = 'Job card wise Report.xlsx'
-
+      let fileName = 'Vehicle and Job card wise report.xlsx';
       let element = document.getElementById('htmlData');
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+      console.log("htmlData===",element);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {dateNF:'mmm d yyyy hh:mm AM/PM;@',cellDates:true});
 
       /* generate workbook and add the worksheet */
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -390,27 +371,25 @@ export class VehiclewisereportComponent implements OnInit {
     }
   }
 
-  async getUpdate(event, type) {
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
+   getUpdate(event, type) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
     this.getData(this.limit, this.offset, type).then(() => {
       console.log("searhkey==", this.searhKey);
-      this.search(this.searhKey.toString(), this.vehicleName)
+      this.search(this.searhKey.toString(), this.vehicleName);
     }).catch(err => {
       console.log("errr===", err);
-
     });
   }
 
   search(a, data) {
     console.log("searhkey==", this.searhKey, data);
-
     this.searhKey = a;
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
-      this.dataSource.filter = a.trim().toLowerCase()
+      this.dataSource.filter = a.trim().toLowerCase();
     })
   }
   searchVehicle(data) {

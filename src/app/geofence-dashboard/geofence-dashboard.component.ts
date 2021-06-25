@@ -16,19 +16,20 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 export class GeofenceDashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  deviceData: any = []
+  deviceData: any = [];
   dataSource: any = [];
   displayedColumns = ['i', 'deviceId', 'deviceName', 'coinId', 'updatedOnLoc', 'geofenceStatus'];
-  geoFencestatus:boolean=false;
-  limit:any=10
-  offset:any=0
-  currentPageLength:any=10
-  currentPageSize:any=10
-  interval : any;
+  geoFencestatus: boolean = false;
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
+  interval: any;
+  searchKey:string='';
   constructor(
     public general: GeneralService,
     private api: ApiService,
-    public login:LoginAuthService,
+    public login: LoginAuthService,
     public dialog: MatDialog,
   ) { }
 
@@ -36,77 +37,76 @@ export class GeofenceDashboardComponent implements OnInit {
     this.refreshGeofence();
     this.login.loginCheckData.subscribe(res => {
       if (!res.other) {
-        this.clearTimeInterval()
+        this.clearTimeInterval();
       }
     });
-    this.interval = setInterval(()=>{
+    this.interval = setInterval(() => {
       // this.refreshGeofence(this.limit,this.offset);
-    },10000);
+    }, 10000);
   }
 
   ngOnDestroy() {
-    this.clearTimeInterval()
+    this.clearTimeInterval();
   }
 
   clearTimeInterval() {
     clearInterval(this.interval);
   }
 
-  status(data){
-    this.deviceData.forEach((element,index) => {
-      if(element.deviceId == data.deviceId){
-        this.deviceData[index].geoFencestatus=true
+  status(data) {
+    this.deviceData.forEach((element, index) => {
+      if (element.deviceId == data.deviceId) {
+        this.deviceData[index].geoFencestatus = true
       }
-      else{
-        this.deviceData[index].geofenceStatus=false
+      else {
+        this.deviceData[index].geofenceStatus = false
       }
     });
-    
+
   }
-  refreshGeofence(limit=10,offset=0) {
-    var data={
-      limit:limit,
-      offset:offset
-    }
-    this.api.getDeviceGeofence(data).then((res:any)=>{
-      console.log("getDeviceGeofence res==",res)
-      if(res.status){
-        this.currentPageLength = parseInt(res.totalLength)
-        this.deviceData=res.success
-        // for(let i=0; i<res.success.length;i++){
-        //   res.success[i].totalTime=this.general.getTotTime(res.success[i].inTime,res.success[i].outTime)
-        // }
-        this.dataSource = new MatTableDataSource(this.deviceData);
-
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-          // this.dataSource.paginator = this.paginator
-
-        })
+  refreshGeofence(limit = 10, offset = 0) {
+    return new Promise((resolve, reject) => {
+      var data = {
+        limit: limit,
+        offset: offset
       }
-      else{
-
-      }
+      this.api.getDeviceGeofence(data).then((res: any) => {
+        console.log("getDeviceGeofence res==", res);
+        if (res.status) {
+          this.currentPageLength = parseInt(res.totalLength);
+          this.deviceData = res.success;
+             this.dataSource = new MatTableDataSource(this.deviceData);
+          setTimeout(() => {
+            this.dataSource.sort = this.sort;
+          })
+        }
+        resolve(res);
+      }).catch(err => {
+        console.log("error==", err);
+        reject(err);
+      })
     })
   }
 
   search(a) {
+    this.searchKey=a;
     this.dataSource = new MatTableDataSource(this.deviceData);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
-      this.dataSource.filter =a.trim().toLowerCase()
+      this.dataSource.filter = a.trim().toLowerCase();
     })
   }
-  getUpdate(event) {
 
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
-    this.refreshGeofence(this.limit, this.offset)
+  getUpdate(event) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.refreshGeofence(this.limit, this.offset).then(()=>{
+      this.search(this.searchKey);
+    })
   }
 
   openDailog(data) {
-    data.type="group";
+    data.type = "group";
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -116,15 +116,13 @@ export class GeofenceDashboardComponent implements OnInit {
       data: data
     }
     const dialogRef = this.dialog.open(GroupingComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
-
     })
+  }
 
-}
   openInfo(data) {
     console.log("data==", data);
-    data.type="non-group";
+    data.type = "non-group";
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -136,7 +134,7 @@ export class GeofenceDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(GroupingComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-    
+
     });
   }
 }

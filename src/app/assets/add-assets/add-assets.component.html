@@ -87,9 +87,9 @@
                 </mat-select>
                 <mat-error>Field required.</mat-error>
             </mat-form-field> <br>
-            <mat-form-field class="w-75" appearance="fill">
+            <mat-form-field class="w-75" appearance="fill" *ngIf="loginData.enableZone">
                 <mat-label>Select Zone</mat-label>
-                <mat-select formControlName="zoneId" autocomplete="off">
+                <mat-select formControlName="zoneId" autocomplete="off" [required]="loginData.enableZone">
                     <mat-option *ngFor="let a of zoneData" [(value)]="a._id">
                         {{a.zoneName}}
                     </mat-option>
