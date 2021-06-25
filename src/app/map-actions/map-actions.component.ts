@@ -13,6 +13,7 @@ import { GeneralService } from '../services/general.service';
 import { MatOption } from '@angular/material/core';
 import * as L from 'leaflet';
 import "leaflet.heat/dist/leaflet-heat.js";
+import { LoginAuthService } from '../services/login-auth.service';
 
 @Component({
   selector: 'app-map-actions',
@@ -38,16 +39,18 @@ export class MapActionsComponent implements OnInit {
   gatewayList: any = [];
   gateway: any = [];
   heat: any;
-
+  loginData:any;
   constructor(
     private fb: FormBuilder,
     public mapService: MapService,
     private api: ApiService,
     public general: GeneralService,
+    private login: LoginAuthService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.resetMap();
     this.createForm();
     this.refreshGateway();
@@ -395,7 +398,7 @@ export class MapActionsComponent implements OnInit {
     // data.breadth = data.height;
     data.gatewayObjectId = this.general.filterArray(data.gatewayId);
     console.log("data.gatewayObjectId==",data.gatewayObjectId);
-    
+
     if (data.gatewayObjectId.length > 0) {
       data.fileData.filename =
         data.gatewayId[0] +

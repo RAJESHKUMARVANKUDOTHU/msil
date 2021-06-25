@@ -44,6 +44,7 @@
     "ng-circle-progress": "^1.6.0",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-captcha": "^9.0.1",
     "ngx-device-detector": "^2.0.3",
     "ngx-intl-tel-input": "^3.0.5",
     "rxjs": "~6.6.0",

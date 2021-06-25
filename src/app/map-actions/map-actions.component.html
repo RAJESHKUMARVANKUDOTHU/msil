@@ -18,8 +18,11 @@
                 <mat-icon>delete</mat-icon>
             </button>
         </form>
-        <button *ngIf="!general.isMobile" mat-raised-button color="primary" routerLink="/zone-configuration" matTooltip="zone configuration">Zone Configuration</button>
-        <button *ngIf="general.isMobile" mat-mini-fab color="primary" routerLink="/zone-configuration" matTooltip="zone configuration">Zone</button>
+        <!--   <span *ngIf="ZoneLoginDetails"> -->
+        <button *ngIf="!general.isMobile && loginData.enableZone" mat-raised-button color="primary" routerLink="/zone-configuration" matTooltip="zone configuration">Zone Configuration</button>
+        <button *ngIf="general.isMobile && loginData.enableZone" mat-mini-fab color="primary" routerLink="/zone-configuration" matTooltip="zone configuration">Zone</button>
+        <!--    </span> -->
+
     </div>
 
     <div [ngClass]="getValidation()">
