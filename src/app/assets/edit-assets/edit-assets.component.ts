@@ -18,8 +18,8 @@ export class EditAssetsComponent implements OnInit {
   gateway: any;
   type: any;
   patchData: any;
-  zoneData:any=[];
-  loginData:any;
+  zoneData: any = [];
+  loginData: any;
   constructor(
     public dialogRef: MatDialogRef<EditAssetsComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -48,7 +48,7 @@ export class EditAssetsComponent implements OnInit {
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
       coinId: [{ value: '', disabled: true }, [Validators.min(1), Validators.max(255)]],
       gatewayId: ['', Validators.required],
-      zoneId:['',Validators.required]
+      zoneId: ['', Validators.required]
     })
 
     this.patchValue();
@@ -76,7 +76,7 @@ export class EditAssetsComponent implements OnInit {
         coinId: this.patchData.coinId,
         coinName: this.patchData.coinName,
         gatewayId: this.patchData.gatewayId,
-        zoneId:this.patchData.zoneId
+        zoneId: this.patchData.zoneId
       })
     }
   }
@@ -92,11 +92,11 @@ export class EditAssetsComponent implements OnInit {
 
           console.log("find submit====", res);
           if (res.status) {
-            if(res.success=='Device updated successfully'){
+            if (res.success == 'Device updated successfully') {
               this.editFind.reset();
               this.dialogRef.close();
             }
-            
+
             this.general.deviceChanges.next(true);
             this.general.openSnackBar(res.success, '');
           }
@@ -115,95 +115,96 @@ export class EditAssetsComponent implements OnInit {
     }
   }
 
-    updateGateway(data) {
-      data.gatewayObjectId = this.patchData.id;
-      data.userId = this.patchData.userId;
-      console.log("gateway ==", data)
-      try {
-        if (this.editGateway.valid) {
-          data.gatewayName = data.gatewayName.trim().replace(/\s\s+/g, ' ');
-          this.api.editGateway(data).then((res: any) => {
+  updateGateway(data) {
+    data.gatewayObjectId = this.patchData.id;
+    data.userId = this.patchData.userId;
+    console.log("gateway ==", data)
+    try {
+      if (this.editGateway.valid) {
+        data.gatewayName = data.gatewayName.trim().replace(/\s\s+/g, ' ');
+        this.api.editGateway(data).then((res: any) => {
 
-            console.log("gateway submit====", res);
-            if (res.status) {
-              if(res.success=='Gateway updated successfully'){
-                this.dialogRef.close();
-                this.editGateway.reset();
-              }
-              this.general.deviceChanges.next(true);
-              this.general.openSnackBar(res.success, '');
+          console.log("gateway submit====", res);
+          if (res.status) {
+            if (res.success == 'Gateway updated successfully') {
+              this.dialogRef.close();
+              this.editGateway.reset();
             }
-            else {
-              this.general.deviceChanges.next(false);
-              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-            }
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
+          }
+          else {
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+          }
 
-          }).catch((err: any) => {
-            console.log("error===", err)
-          })
-        }
-      }
-      catch (err) {
-        console.log("error===", err)
+        }).catch((err: any) => {
+          console.log("error===", err)
+        })
       }
     }
-
-    updateCoin(data) {
-      data.coinObjectId = this.patchData.id;
-      data.userId = this.patchData.userId;
-      try {
-        if (this.editCoin.valid) {
-          data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
-          this.api.editCoin(data).then((res: any) => {
-
-            console.log("coin submit====", res);
-            if (res.status) {
-              if(res.success=='Coin updated successfully'){
-                this.editCoin.reset();
-                this.dialogRef.close();
-              }
-              this.general.deviceChanges.next(true);
-              this.general.openSnackBar(res.success, '');
-            }
-            else {
-              this.general.deviceChanges.next(false);
-              this.general.openSnackBar(res.success == false ? res.message : res.success, '');
-            }
-
-          }).catch((err: any) => {
-            console.log("error===", err);
-          })
-        }
-      }
-      catch (err) {
-        console.log("error===", err);
-      }
-    }
-
-    refreshGateway() {
-      var data='';
-      this.api.getGatewayData(data).then((res: any) => {
-
-        console.log("coin submit====", res);
-        this.gateway = []
-        if (res.status) {
-          this.gateway = res.success;
-        }
-      }).catch((err: any) => {
-        console.log("error===", err);
-      })
-    }
-
-    getZoneDetails() {
-      this.api.getZone().then((res: any) => {
-        console.log("zone details response==", res);
-        this.zoneData = [];
-        if (res.status) {
-          this.zoneData = res.success;
-        }
-        else {
-          this.zoneData = [];
-        }
-      })
+    catch (err) {
+      console.log("error===", err)
     }
   }
+
+  updateCoin(data) {
+    data.coinObjectId = this.patchData.id;
+    data.userId = this.patchData.userId;
+    data.zoneId = this.loginData.enableZone ? data.zoneId : "";
+    console.log("coin submit====", data);
+    try {
+      if (this.editCoin.valid) {
+        data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
+        this.api.editCoin(data).then((res: any) => {
+          console.log("coin submit====", res);
+          if (res.status) {
+            if (res.success == 'Coin updated successfully') {
+              this.editCoin.reset();
+              this.dialogRef.close();
+            }
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
+          }
+          else {
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+          }
+
+        }).catch((err: any) => {
+          console.log("error===", err);
+        })
+      }
+    }
+    catch (err) {
+      console.log("error===", err);
+    }
+  }
+
+  refreshGateway() {
+    var data = '';
+    this.api.getGatewayData(data).then((res: any) => {
+
+      console.log("coin submit====", res);
+      this.gateway = []
+      if (res.status) {
+        this.gateway = res.success;
+      }
+    }).catch((err: any) => {
+      console.log("error===", err);
+    })
+  }
+
+  getZoneDetails() {
+    this.api.getZone().then((res: any) => {
+      console.log("zone details response==", res);
+      this.zoneData = [];
+      if (res.status) {
+        this.zoneData = res.success;
+      }
+      else {
+        this.zoneData = [];
+      }
+    })
+  }
+}
