@@ -99,7 +99,7 @@
 
     <div *ngIf="enable.map">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-7 d-flex justify-content-between">
                 <mat-form-field class="ml-5" style="width: 30% !important;">
                     <mat-label>Layout</mat-label>
                     <mat-select (selectionChange)="layoutSelect($event.value)">
@@ -113,12 +113,12 @@
                         Select the layout
                     </mat-error>
                 </mat-form-field>
-            </div>
-            <div *ngIf="selectedLayout" class="layout-name">
-                <br>{{selectedLayout?.layoutName}}
-            </div>
-            <div *ngIf="!selectedLayout" class="layout-name">
-                <br>No layout
+                <div *ngIf="selectedLayout" class="layout-name">
+                    <br>{{selectedLayout?.layoutName}}
+                </div>
+                <div *ngIf="!selectedLayout" class="layout-name">
+                    <br>No layout
+                </div>
             </div>
         </div>
         <div class="map-container">

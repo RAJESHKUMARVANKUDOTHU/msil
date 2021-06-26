@@ -330,14 +330,23 @@
                 </ng-container>
                 <ng-container matColumnDef="inTime">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>In Time</th>
-                    <td mat-cell *matCellDef="let zone"> {{zone.inTime | date : 'medium'}} </td>
+                    <td mat-cell *matCellDef="let zone">
+                        <span *ngIf="zone.inTime != null &&  zone.inTime != '-';else temp"> {{zone.inTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>>
                 </ng-container>
                 <ng-container matColumnDef="outTime">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Out Time </th>
                     <td mat-cell *matCellDef="let zone">
-                        <span *ngIf="zone.outTime != null"> {{zone.outTime | date : 'medium'}}</span>
-                        <span *ngIf="zone.outTime == null"> -</span>
-                    </td>
+                        <span *ngIf="zone.outTime != null &&  zone.outTime != '-';else temp"> {{zone.outTime | date :
+                            'medium'}}</span>
+                        <ng-template #temp>
+                            <span>-</span>
+                        </ng-template>
+                    </td>>
                 </ng-container>
                 <ng-container matColumnDef="totalTime">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>

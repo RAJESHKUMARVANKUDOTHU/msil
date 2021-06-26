@@ -200,7 +200,7 @@ export class LocationReportComponent implements OnInit {
         toDate: to,
         timeZoneOffset: this.general.getZone()
       }
-      fileName = "Location wise report - " + this.locationReportData.coinId.coinName;
+      fileName = "Location wise report - " + this.locationReportData.coinId[0].coinName;
       this.api.downloadLocationReport(data, fileName).then((res: any) => {
         console.log("res==", res);
         if (res.status) {
