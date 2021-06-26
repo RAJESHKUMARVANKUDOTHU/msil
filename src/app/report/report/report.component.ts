@@ -211,7 +211,7 @@ export class ReportComponent implements OnInit {
         }
         if (type.value == "2") {
           let value = formGroup.get('zoneId').value?.toString().replace(/\s\s+/g, '');
-          console.log("valuee ===",value);
+          console.log("valuee ===", value);
           if (value != '' && value != undefined) {
             formGroup.get('coinId').setErrors(null)
             formGroup.get('zoneId').setErrors(null)
@@ -236,7 +236,7 @@ export class ReportComponent implements OnInit {
         if (type.value == "1") {
           let value = formGroup.get('zoneId').value?.toString().replace(/\s\s+/g, '');
           if (value != '' && value != undefined) {
-            console.log("valuee ===",value);
+            console.log("valuee ===", value);
             formGroup.get('coinId').setErrors(null)
             formGroup.get('zoneId').setErrors(null)
             formGroup.get('dayType').setErrors(null)
@@ -268,7 +268,7 @@ export class ReportComponent implements OnInit {
               return
             }
             else if (formGroup.get('dayType').value == 'week') {
-              console.log("weekday==",formGroup.get('weekDay').value);
+              console.log("weekday==", formGroup.get('weekDay').value);
 
               if (formGroup.get('weekDay').value != '') {
                 formGroup.get('coinId').setErrors(null)

@@ -19,8 +19,8 @@ export class AddAssetsComponent implements OnInit {
   deassignAsset: FormGroup;
   gateway: any;
   type: any;
-  loginData:any;
-  zoneData:any=[];
+  loginData: any;
+  zoneData: any = [];
   constructor(
     public dialogRef: MatDialogRef<AddAssetsComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -30,7 +30,7 @@ export class AddAssetsComponent implements OnInit {
     private api: ApiService,
 
   ) {
-    this.type = data.type
+    this.type = data.type;
   }
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class AddAssetsComponent implements OnInit {
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       coinId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]],
       gatewayId: ['', Validators.required],
-      zoneId:['']
+      zoneId: ['']
     })
 
     this.refreshGateway();
@@ -55,9 +55,9 @@ export class AddAssetsComponent implements OnInit {
   }
 
   findSubmit(data) {
-    var value={
-      deviceId:data.deviceId,
-      deviceName:data.deviceName
+    var value = {
+      deviceId: data.deviceId,
+      deviceName: data.deviceName
     }
     try {
       if (this.addFind.valid) {
@@ -65,7 +65,7 @@ export class AddAssetsComponent implements OnInit {
         this.api.deviceRegistration(value).then((res: any) => {
           console.log("find submit====", res);
           if (res.status) {
-            if(res.success=="Device registered successfully"){
+            if (res.success == "Device registered successfully") {
               this.addFind.reset();
             }
             this.general.deviceChanges.next(true);
@@ -92,7 +92,7 @@ export class AddAssetsComponent implements OnInit {
         this.api.gatewayRegistration(data).then((res: any) => {
           console.log("gateway submit====", res);
           if (res.status) {
-            if(res.success=="Gateway registered successfully"){
+            if (res.success == "Gateway registered successfully") {
               this.addGateway.reset();
             }
             this.general.deviceChanges.next(true);
@@ -113,15 +113,15 @@ export class AddAssetsComponent implements OnInit {
   }
 
   coinSubmit(data) {
-    console.log("coin data==",data);
-    data.zoneId= data.zoneId ? data.zoneId : null;
+    console.log("coin data==", data);
+    data.zoneId = data.zoneId ? data.zoneId : null;
     try {
       if (this.addCoin.valid) {
         data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
         this.api.coinRegistration(data).then((res: any) => {
           console.log("coin submit====", res);
           if (res.status) {
-            if(res.success=="Coin registered successfully"){
+            if (res.success == "Coin registered successfully") {
               this.addCoin.reset();
             }
             this.general.deviceChanges.next(true);
@@ -143,7 +143,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   refreshGateway() {
-    var data='';
+    var data = '';
     this.api.getGatewayData(data).then((res: any) => {
       console.log("gatway submit====", res);
       this.gateway = [];

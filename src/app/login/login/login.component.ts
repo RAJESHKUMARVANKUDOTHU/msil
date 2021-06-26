@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       this.getCodeBoxElement(index - 1).focus();
     }
   }
-  
+
   onSubmit(value) {
     this.loginInvalid = false;
     this.verifyOtp = false;
@@ -73,20 +73,20 @@ export class LoginComponent implements OnInit {
           this.verifyOtp = res.success.isTwoStepAuth == true ? true : false;
           if (res.status) {
             if (res.token) {
-              localStorage.setItem('token',res.token);
+              localStorage.setItem('token', res.token);
               var start = new Date() as any;
               var end = new Date();
               var date = end.setHours(start.getHours() + 1);
               res.success.timer = date;
-              if (this.login.login(res.success)){
+              if (this.login.login(res.success)) {
                 let loginData = this.login.getLoginDetails();
-                loginData?.enableMap ? this.router.navigate(['/dashboard']): this.router.navigate(['/manage-devices'])
+                loginData?.enableMap ? this.router.navigate(['/dashboard']) : this.router.navigate(['/manage-devices'])
               }
               else {
                 this.loginInvalid = true
               }
             }
-            else{
+            else {
               this.loginInvalid = true
             }
           }
@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
           res.success.timer = date;
           if (this.login.login(res.success)) {
             let loginData = this.login.getLoginDetails();
-            loginData?.enableMap ? this.router.navigate(['/dashboard']): this.router.navigate(['/manage-devices']);
+            loginData?.enableMap ? this.router.navigate(['/dashboard']) : this.router.navigate(['/manage-devices']);
           }
         }
       }
@@ -135,9 +135,9 @@ export class LoginComponent implements OnInit {
 
   forgetPassword() {
     localStorage.clear();
-    var a={
-      menu:false,
-      other:false,
+    var a = {
+      menu: false,
+      other: false,
     }
     this.login.loginCheckData.next(a);
     this.router.navigate(['/set-password']);

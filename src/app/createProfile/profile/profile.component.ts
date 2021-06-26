@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   addSubUserForm: FormGroup;
-  displayedColumns: string[] = ["i", 'userName','department','role', 'updatedAt', 'edit', 'isDeleted'];
+  displayedColumns: string[] = ["i", 'userName', 'department', 'role', 'updatedAt', 'edit', 'isDeleted'];
   dataSource: any = [];
   getUserList: any = [];
   passwordType: string = 'password';

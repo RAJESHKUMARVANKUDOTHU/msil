@@ -39,7 +39,7 @@ export class MapActionsComponent implements OnInit {
   gatewayList: any = [];
   gateway: any = [];
   heat: any;
-  loginData:any;
+  loginData: any;
   constructor(
     private fb: FormBuilder,
     public mapService: MapService,
@@ -233,7 +233,7 @@ export class MapActionsComponent implements OnInit {
 
   createMarker() {
     this.clearMap();
-     let coin = this.configCoinForm.get('coinBounds').value;
+    let coin = this.configCoinForm.get('coinBounds').value;
     console.log("coin===", coin);
 
     if (coin != null) {
@@ -355,7 +355,7 @@ export class MapActionsComponent implements OnInit {
       formData.controls.gatewayId.patchValue([
         ...this.newGatewayLayout.map((obj) => {
           if (obj.layoutName == null) {
-           return obj.gatewayId
+            return obj.gatewayId
           }
         }
         ),
@@ -397,7 +397,7 @@ export class MapActionsComponent implements OnInit {
     // data.length = data.width;
     // data.breadth = data.height;
     data.gatewayObjectId = this.general.filterArray(data.gatewayId);
-    console.log("data.gatewayObjectId==",data.gatewayObjectId);
+    console.log("data.gatewayObjectId==", data.gatewayObjectId);
 
     if (data.gatewayObjectId.length > 0) {
       data.fileData.filename =
@@ -618,7 +618,7 @@ export class MapActionsComponent implements OnInit {
               lng: ele.coinBounds[1],
               intensity: 1.0
             })
-          } 
+          }
         })
       }
     })

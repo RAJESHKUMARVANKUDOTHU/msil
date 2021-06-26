@@ -21,8 +21,8 @@ export class ZoneConfigurationComponent implements OnInit {
   @ViewChild('mapElement') mapElement: ElementRef;
   selectZoneForm: FormGroup;
   selectedLayout = {
-    id : null,
-    zones : []
+    id: null,
+    zones: []
   };
   gatewayList: any = [];
   zoneList: any = [];
@@ -144,7 +144,7 @@ export class ZoneConfigurationComponent implements OnInit {
           return;
         })
       })
-      this.selectedLayout['zones']= zones;
+      this.selectedLayout['zones'] = zones;
       this.getLayoutImage(layout);
     }
   }
@@ -158,10 +158,10 @@ export class ZoneConfigurationComponent implements OnInit {
 
   getZoneDetails() {
     this.api.getZone().then((res: any) => {
-      console.log('zone details response==', res, "zonesss==",this.selectedLayout.zones);
+      console.log('zone details response==', res, "zonesss==", this.selectedLayout.zones);
       this.zoneList = [];
       if (res.status) {
-        this.zoneList = res.success.filter(obj=> this.selectedLayout.zones.includes(obj._id));
+        this.zoneList = res.success.filter(obj => this.selectedLayout.zones.includes(obj._id));
         this.createPolygon();
       } else {
         this.zoneList = [];
@@ -187,7 +187,7 @@ export class ZoneConfigurationComponent implements OnInit {
     this.clearMap();
     if (bounds == 1) {
       let layout = this.zoneList.filter((obj) => {
-        return( obj.layoutName && obj.layoutName == this.layoutName && this.selectedLayout.zones.includes(obj._id))
+        return (obj.layoutName && obj.layoutName == this.layoutName && this.selectedLayout.zones.includes(obj._id))
       });
       if (layout) {
         for (let i = 0; i < layout.length; i++) {

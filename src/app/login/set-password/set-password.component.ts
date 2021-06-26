@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,7 +8,7 @@ import {
 import { GeneralService } from '../../services/general.service';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {ReCaptchaV3Service, ReCaptcha2Component} from 'ngx-captcha';
+import { ReCaptchaV3Service, ReCaptcha2Component } from 'ngx-captcha';
 
 @Component({
   selector: 'app-set-password',
@@ -21,9 +21,9 @@ export class SetPasswordComponent implements OnInit {
   passwordIcon: string = 'visibility_off';
   verified: boolean
   @ViewChild('captchaRef') public captchaRef: ReCaptcha2Component;
-  siteKey:string;
-  theme:string;
-  size:string;
+  siteKey: string;
+  theme: string;
+  size: string;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +40,7 @@ export class SetPasswordComponent implements OnInit {
       {
         userName: ['', [Validators.email, Validators.required]],
         password: ['', Validators.required],
-        recaptcha:['',Validators.required],
+        recaptcha: ['', Validators.required],
         otp1: ['', Validators.required],
         otp2: ['', Validators.required],
         otp3: ['', Validators.required],
@@ -49,7 +49,7 @@ export class SetPasswordComponent implements OnInit {
         otp6: ['', Validators.required],
       },
     );
-this.captchavalidation()
+    this.captchavalidation()
   }
   getCodeBoxElement(index) {
     return document.getElementById('codeBox' + index);
@@ -69,28 +69,28 @@ this.captchavalidation()
     }
   }
 
-  verifyUser(email,a) {
+  verifyUser(email, a) {
     // console.log("verifyUser data==", email.toString())
-      var data = {
-        userName:email.toString()
-      }
-      if(a !=''){
-        this.api.forgetPassword(data).then((res: any) => {
-          console.log("forgetPassword res==", res)
-          if (res.status) {
-            this.general.openSnackBar(res.success, '')
-            this.verified = true
-          }
-          else {
-            this.general.openSnackBar(res.success, '')
-            this.verified = false
-          }
-        })
-      }else{
-        this.verified=false;
-      }
-
+    var data = {
+      userName: email.toString()
     }
+    if (a != '') {
+      this.api.forgetPassword(data).then((res: any) => {
+        console.log("forgetPassword res==", res)
+        if (res.status) {
+          this.general.openSnackBar(res.success, '')
+          this.verified = true
+        }
+        else {
+          this.general.openSnackBar(res.success, '')
+          this.verified = false
+        }
+      })
+    } else {
+      this.verified = false;
+    }
+
+  }
   submit(value) {
     console.log('value=', value);
     var data = {
@@ -106,10 +106,6 @@ this.captchavalidation()
           this.general.openSnackBar(res.success, '')
           this.router.navigate(['/login']);
         }
-        else {
-          // this.general.openSnackdBar(res.success == false ? res.message : res.success, '')
-
-        }
       });
     }
   }
@@ -119,17 +115,17 @@ this.captchavalidation()
     this.passwordIcon =
       this.passwordIcon === 'visibility_off' ? 'visibility' : 'visibility_off';
   }
-  captchavalidation(){
-    this.siteKey="6LdTWk8bAAAAAHH9GbQjQAx9jjWumB_8Eqt1mTs2"
-    this.theme= 'normal '
-    this.size='normal'
+  captchavalidation() {
+    this.siteKey = "6LdTWk8bAAAAAHH9GbQjQAx9jjWumB_8Eqt1mTs2"
+    this.theme = 'normal '
+    this.size = 'normal'
     /*   this.reCaptchaV3Service.execute(this.siteKey, 'submit', (token) => {
       console.log(toke)
     }, {
         useGlobalDomain: false
     }); */
   }
-  handleReset(){
-  this.captchaRef.resetCaptcha()
+  handleReset() {
+    this.captchaRef.resetCaptcha();
   }
 }

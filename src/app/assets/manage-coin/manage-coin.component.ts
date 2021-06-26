@@ -16,15 +16,15 @@ import { MatSort } from '@angular/material/sort';
 export class ManageCoinComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  loginData:any;
+  loginData: any;
   dataSource: any = [];
   coinData: any = [];
   fileName: String = '';
-  limit:any=10;
-  offset:any=0;
-  currentPageLength:any=10;
-  currentPageSize:any=10;
-  displayedColumns = ['i', 'coinId', 'coinName','zoneName', 'gatewayId', 'coinBattery', 'updatedOn', 'edit', 'delete'];
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
+  displayedColumns = ['i', 'coinId', 'coinName', 'zoneName', 'gatewayId', 'coinBattery', 'updatedOn', 'edit', 'delete'];
   constructor(
     public dialog: MatDialog,
     private login: LoginAuthService,
@@ -37,7 +37,7 @@ export class ManageCoinComponent implements OnInit {
     this.loginData = this.login.getLoginDetails();
     this.general.deviceChanges.subscribe((res) => {
       if (res) {
-        this.refreshCoin(this.limit, this.offset)
+        this.refreshCoin(this.limit, this.offset);
       }
     })
   }
@@ -50,24 +50,21 @@ export class ManageCoinComponent implements OnInit {
     dialogConfig.data = {
       type: 'coin'
     }
-
     const dialogRef = this.dialog.open(AddAssetsComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
-      this.refreshCoin(this.limit, this.offset)
+      this.refreshCoin(this.limit, this.offset);
     });
   }
 
-  refreshCoin(limit=10,offset=0) {
-    var data={
-      limit:limit,
-      offset:offset
+  refreshCoin(limit = 10, offset = 0) {
+    var data = {
+      limit: limit,
+      offset: offset
     }
-    console.log("limit,offset==",limit,offset)
+    console.log("limit,offset==", limit, offset);
     this.api.getCoinData(data).then((res: any) => {
-
       console.log("coin refresh====", res);
-      this.coinData = []
+      this.coinData = [];
       if (res.status) {
         this.currentPageLength = parseInt(res.totalLength)
         for (let i = 0; i < res.success.length; i++) {
@@ -80,32 +77,28 @@ export class ManageCoinComponent implements OnInit {
               coinName: res.success[i].coinName,
               coinBattery: res.success[i].coinBattery,
               gatewayId: res.success[i].gatewayId,
-              zoneName: res.success[i].zoneId != null?res.success[i].zoneId.zoneName:'-',
-              zoneId: res.success[i].zoneId != null?res.success[i].zoneId._id:'-',
+              zoneName: res.success[i].zoneId != null ? res.success[i].zoneId.zoneName : '-',
+              zoneId: res.success[i].zoneId != null ? res.success[i].zoneId._id : '-',
               updatedOn: res.success[i].updatedOn,
-              batteryRecvTime:res.success[i].batteryRecvTime,
+              batteryRecvTime: res.success[i].batteryRecvTime,
               edit: 'edit',
               delete: 'delete_forever'
             })
           }
         }
         this.dataSource = new MatTableDataSource(this.coinData);
-
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           // this.dataSource.paginator = this.paginator
         })
       }
-      else { }
-
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
 
 
   getBatteryStatus(data) {
-
     if (data.coinBattery == "H") {
       return {
         'background-color': 'green',
@@ -125,7 +118,7 @@ export class ManageCoinComponent implements OnInit {
       }
     }
     else {
-      return {}
+      return {};
     }
   }
 
@@ -140,62 +133,56 @@ export class ManageCoinComponent implements OnInit {
       type: 'coin',
       data: data
     }
-
     const dialogRef = this.dialog.open(EditAssetsComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
-      this.refreshCoin(this.limit, this.offset)
+      this.refreshCoin(this.limit, this.offset);
     });
   }
 
 
   delete(data) {
-    data.coinObjectId = data.id
-
+    data.coinObjectId = data.id;
     if (confirm('Are you sure you want to delete coin?')) {
       this.api.deleteCoin(data).then((res: any) => {
         console.log("coin delete====", res);
-
         if (res.status) {
-          this.refreshCoin(this.limit, this.offset)
-
-          this.general.deviceChanges.next(true)
-          this.general.openSnackBar(res.success, '')
+          this.refreshCoin(this.limit, this.offset);
+          this.general.deviceChanges.next(true);
+          this.general.openSnackBar(res.success, '');
         }
         else {
-          this.refreshCoin(this.limit, this.offset)
-          this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-          this.general.deviceChanges.next(false)
+          this.refreshCoin(this.limit, this.offset);
+          this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+          this.general.deviceChanges.next(false);
         }
       }).catch((err: any) => {
-        console.log("error===", err)
+        console.log("error===", err);
       })
     }
     else { }
   }
 
   download() {
-    this.fileName = "Registered coins"
+    this.fileName = "Registered Coins";
     var data = {
       timeZoneOffset: this.general.getZone()
     }
     this.api.downloadRegisteredCoins(data, this.fileName).then((res: any) => {
-      console.log("Registerd coins download==", res)
+      console.log("Registerd coins download==", res);
       if (res) {
-        this.general.loadingFreez.next({ status: false, msg: "Downloaded Successfully!!" })
+        this.general.loadingFreez.next({ status: false, msg: "Downloaded Successfully!!" });
       }
       else {
-        this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+        this.general.openSnackBar(res.success == false ? res.message : res.success, '');
       }
     }).catch((err: any) => {
-      console.log("error==", err)
+      console.log("error==", err);
     })
   }
 
   getUpdate(event) {
- 
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
-    this.refreshCoin(this.limit, this.offset)
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.refreshCoin(this.limit, this.offset);
   }
 }

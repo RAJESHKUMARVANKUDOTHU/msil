@@ -10,7 +10,7 @@ import { GeneralService } from '../../services/general.service';
 })
 export class EditProfileComponent implements OnInit {
   profileData: any;
-  editProfile:FormGroup;
+  editProfile: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<EditProfileComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -24,8 +24,8 @@ export class EditProfileComponent implements OnInit {
   ngOnInit(): void {
     this.editProfile = this.fb.group({
       userName: [this.profileData.userName, [Validators.email, Validators.required]],
-      role:[this.profileData.role,Validators.required],
-      department:[this.profileData.department,Validators.required]
+      role: [this.profileData.role, Validators.required],
+      department: [this.profileData.department, Validators.required]
     })
   }
 

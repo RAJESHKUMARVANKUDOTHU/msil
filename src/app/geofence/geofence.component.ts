@@ -172,7 +172,7 @@ export class GeofenceComponent implements OnInit {
   getUpdate(event) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
-    this.getGeofence(this.limit, this.offset).then(res=>{
+    this.getGeofence(this.limit, this.offset).then(res => {
       this.search(this.searhKey);
     })
   }

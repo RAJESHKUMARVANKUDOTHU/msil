@@ -29,9 +29,9 @@ export class EditAssetsComponent implements OnInit {
     public general: GeneralService,
 
   ) {
-    this.type = data.type
-    this.patchData = data.data
-    console.log("patch data===", this.patchData)
+    this.type = data.type;
+    this.patchData = data.data;
+    console.log("patch data===", this.patchData);
   }
 
   ngOnInit(): void {
@@ -62,14 +62,13 @@ export class EditAssetsComponent implements OnInit {
       this.editFind.patchValue({
         deviceName: this.patchData.deviceName,
         deviceId: this.patchData.deviceId
-      })
-
+      });
     }
     else if (this.type == 'gateway') {
       this.editGateway.patchValue({
         gatewayName: this.patchData.gatewayName,
         gatewayId: this.patchData.gatewayId
-      })
+      });
     }
     else {
       this.editCoin.patchValue({
@@ -77,26 +76,23 @@ export class EditAssetsComponent implements OnInit {
         coinName: this.patchData.coinName,
         gatewayId: this.patchData.gatewayId,
         zoneId: this.patchData.zoneId
-      })
+      });
     }
   }
 
   updateFind(data) {
-    data.deviceId = this.patchData.deviceId
-    data.deviceObjectId = this.patchData.id
-    console.log("edit device==", data)
+    data.deviceId = this.patchData.deviceId;
+    data.deviceObjectId = this.patchData.id;
+    console.log("edit device==", data);
     try {
       if (this.editFind.valid) {
-
         this.api.editDevice(data).then((res: any) => {
-
           console.log("find submit====", res);
           if (res.status) {
             if (res.success == 'Device updated successfully') {
               this.editFind.reset();
               this.dialogRef.close();
             }
-
             this.general.deviceChanges.next(true);
             this.general.openSnackBar(res.success, '');
           }
@@ -104,7 +100,6 @@ export class EditAssetsComponent implements OnInit {
             this.general.deviceChanges.next(false);
             this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-
         }).catch((err: any) => {
           console.log("error===", err);
         })
@@ -118,7 +113,7 @@ export class EditAssetsComponent implements OnInit {
   updateGateway(data) {
     data.gatewayObjectId = this.patchData.id;
     data.userId = this.patchData.userId;
-    console.log("gateway ==", data)
+    console.log("gateway ==", data);
     try {
       if (this.editGateway.valid) {
         data.gatewayName = data.gatewayName.trim().replace(/\s\s+/g, ' ');
@@ -137,14 +132,13 @@ export class EditAssetsComponent implements OnInit {
             this.general.deviceChanges.next(false);
             this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log("error===", err)
+      console.log("error===", err);
     }
   }
 
@@ -170,7 +164,6 @@ export class EditAssetsComponent implements OnInit {
             this.general.deviceChanges.next(false);
             this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-
         }).catch((err: any) => {
           console.log("error===", err);
         })
@@ -184,9 +177,8 @@ export class EditAssetsComponent implements OnInit {
   refreshGateway() {
     var data = '';
     this.api.getGatewayData(data).then((res: any) => {
-
       console.log("coin submit====", res);
-      this.gateway = []
+      this.gateway = [];
       if (res.status) {
         this.gateway = res.success;
       }

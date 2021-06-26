@@ -25,7 +25,7 @@ export class GeofenceDashboardComponent implements OnInit {
   currentPageLength: any = 10;
   currentPageSize: any = 10;
   interval: any;
-  searchKey:string='';
+  searchKey: string = '';
   constructor(
     public general: GeneralService,
     private api: ApiService,
@@ -75,7 +75,7 @@ export class GeofenceDashboardComponent implements OnInit {
         if (res.status) {
           this.currentPageLength = parseInt(res.totalLength);
           this.deviceData = res.success;
-             this.dataSource = new MatTableDataSource(this.deviceData);
+          this.dataSource = new MatTableDataSource(this.deviceData);
           setTimeout(() => {
             this.dataSource.sort = this.sort;
           })
@@ -89,7 +89,7 @@ export class GeofenceDashboardComponent implements OnInit {
   }
 
   search(a) {
-    this.searchKey=a;
+    this.searchKey = a;
     this.dataSource = new MatTableDataSource(this.deviceData);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
@@ -100,7 +100,7 @@ export class GeofenceDashboardComponent implements OnInit {
   getUpdate(event) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
-    this.refreshGeofence(this.limit, this.offset).then(()=>{
+    this.refreshGeofence(this.limit, this.offset).then(() => {
       this.search(this.searchKey);
     })
   }

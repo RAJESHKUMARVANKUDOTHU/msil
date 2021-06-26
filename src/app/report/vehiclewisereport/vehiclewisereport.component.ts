@@ -359,8 +359,8 @@ export class VehiclewisereportComponent implements OnInit {
     if (this.vehicleReportData.type == '7') {
       let fileName = 'Vehicle and Job card wise report.xlsx';
       let element = document.getElementById('htmlData');
-      console.log("htmlData===",element);
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {dateNF:'mmm d yyyy hh:mm AM/PM;@',cellDates:true});
+      console.log("htmlData===", element);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, { dateNF: 'mmm d yyyy hh:mm AM/PM;@', cellDates: true });
 
       /* generate workbook and add the worksheet */
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -371,7 +371,7 @@ export class VehiclewisereportComponent implements OnInit {
     }
   }
 
-   getUpdate(event, type) {
+  getUpdate(event, type) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
     this.getData(this.limit, this.offset, type).then(() => {
