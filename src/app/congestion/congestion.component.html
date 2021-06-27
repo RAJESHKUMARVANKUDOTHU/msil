@@ -2,9 +2,7 @@
     <button mat-fab color="primary" (click)="destroy()" class="float-right refresh" matTooltip="Refresh">
         <mat-icon>autorenew</mat-icon>
     </button>
-
     <br><br>
-
     <div class="d-md-flex flex-wrap justify-content-md-around  ml-3">
         <mat-card class="text-center">
             <mat-card-title>Congestion</mat-card-title> <br>
@@ -119,10 +117,10 @@
                 </div>
             </div>
         </div>
-        <div class="map-container">
-            <div class="map-frame">
-                <div id="map"></div>
-            </div>
+    </div>
+    <div class="map-container" [hidden]="!enable.map">
+        <div class="map-frame">
+            <div id="map"></div>
         </div>
     </div>
     <div *ngIf="!enable.map">
