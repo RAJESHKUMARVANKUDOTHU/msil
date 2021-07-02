@@ -19,7 +19,8 @@ export class AddAssetsComponent implements OnInit {
   deassignAsset: FormGroup;
   gateway: any;
   type: any;
-  zoneData:any=[];
+  loginData: any;
+  zoneData: any = [];
   constructor(
     public dialogRef: MatDialogRef<AddAssetsComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -29,10 +30,11 @@ export class AddAssetsComponent implements OnInit {
     private api: ApiService,
 
   ) {
-    this.type = data.type
+    this.type = data.type;
   }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.addFind = this.fb.group({
       deviceName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       deviceId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]]
@@ -40,12 +42,13 @@ export class AddAssetsComponent implements OnInit {
     this.addGateway = this.fb.group({
       gatewayName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       gatewayId: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[a-zA-z0-9]{12}$')]],
+      gatewayType: ['',Validators.required]
     })
     this.addCoin = this.fb.group({
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       coinId: ['', [Validators.required, Validators.min(1), Validators.max(65535)]],
       gatewayId: ['', Validators.required],
-      zoneId:['',Validators.required]
+      zoneId: ['']
     })
 
     this.refreshGateway();
@@ -53,9 +56,9 @@ export class AddAssetsComponent implements OnInit {
   }
 
   findSubmit(data) {
-    var value={
-      deviceId:data.deviceId,
-      deviceName:data.deviceName
+    var value = {
+      deviceId: data.deviceId,
+      deviceName: data.deviceName
     }
     try {
       if (this.addFind.valid) {
@@ -63,23 +66,23 @@ export class AddAssetsComponent implements OnInit {
         this.api.deviceRegistration(value).then((res: any) => {
           console.log("find submit====", res);
           if (res.status) {
-            if(res.success=="Device registered successfully"){
-              this.addFind.reset()
+            if (res.success == "Device registered successfully") {
+              this.addFind.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log('error==', err)
+      console.log('error==', err);
     }
   }
 
@@ -90,81 +93,72 @@ export class AddAssetsComponent implements OnInit {
         this.api.gatewayRegistration(data).then((res: any) => {
           console.log("gateway submit====", res);
           if (res.status) {
-            if(res.success=="Gateway registered successfully"){
-              this.addGateway.reset()
+            if (res.success == "Gateway registered successfully") {
+              this.addGateway.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-          // else if((res.status || !res.status) && res.success.toLowerCase()!="gateway registered successfully"){
-          //   var msg = 'Gateway Name Already exists, try different Name'
-          //   this.general.openSnackBar(msg,'')
-          // }
-
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log("error==", err)
+      console.log("error==", err);
     }
   }
 
   coinSubmit(data) {
-    console.log("coin data==",data)
+    console.log("coin data==", data);
+    data.zoneId = data.zoneId ? data.zoneId : null;
     try {
       if (this.addCoin.valid) {
         data.coinName = data.coinName.trim().replace(/\s\s+/g, ' ');
         this.api.coinRegistration(data).then((res: any) => {
-
           console.log("coin submit====", res);
           if (res.status) {
-            if(res.success=="Coin registered successfully"){
-              this.addCoin.reset()
+            if (res.success == "Coin registered successfully") {
+              this.addCoin.reset();
             }
-            this.general.deviceChanges.next(true)
-            this.general.openSnackBar(res.success, '')
+            this.general.deviceChanges.next(true);
+            this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.deviceChanges.next(false)
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+            this.general.deviceChanges.next(false);
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
           }
-
         }).catch((err: any) => {
-          console.log("error===", err)
+          console.log("error===", err);
         })
       }
     }
     catch (err) {
-      console.log("error==", err)
+      console.log("error==", err);
 
     }
   }
 
   refreshGateway() {
-    var data=''
+    var data = '';
     this.api.getGatewayData(data).then((res: any) => {
-
       console.log("gatway submit====", res);
-      this.gateway = []
+      this.gateway = [];
       if (res.status) {
-        this.gateway = res.success
+        this.gateway = res.success;
       }
 
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
 
   getZoneDetails() {
     this.api.getZone().then((res: any) => {
-
       console.log("zone details response==", res);
       this.zoneData = [];
       if (res.status) {

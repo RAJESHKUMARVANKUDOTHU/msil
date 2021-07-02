@@ -14,14 +14,14 @@ import { LoginAuthService } from '../services/login-auth.service';
 export class ZoneDashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  zoneData: any = []
+  zoneData: any = [];
   dataSource: any = [];
   displayedColumns = ['i', 'deviceId', 'deviceName', 'zoneName', 'inTime', 'outTime', 'totalTime'];
   interval: any;
-  limit: any = 10
-  offset: any = 0
-  currentPageLength: any = 10
-  currentPageSize: any = 10
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
   constructor(
     public general: GeneralService,
     private api: ApiService,
@@ -32,7 +32,7 @@ export class ZoneDashboardComponent implements OnInit {
     this.refreshZoneData();
     this.login.loginCheckData.subscribe(res => {
       if (!res.other) {
-        this.clearTimeInterval()
+        this.clearTimeInterval();
       }
     });
     this.interval = setInterval(() => {
@@ -41,7 +41,7 @@ export class ZoneDashboardComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.clearTimeInterval()
+    this.clearTimeInterval();
   }
 
   clearTimeInterval() {
@@ -66,12 +66,7 @@ export class ZoneDashboardComponent implements OnInit {
 
         setTimeout(() => {
           this.dataSource.sort = this.sort;
-          // this.dataSource.paginator = this.paginator
-
         })
-      }
-      else {
-
       }
     })
   }
@@ -80,14 +75,12 @@ export class ZoneDashboardComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.zoneData);
     setTimeout(() => {
       this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
       this.dataSource.filter = a.trim().toLowerCase()
     })
   }
   getUpdate(event) {
-
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
-    this.refreshZoneData(this.limit, this.offset)
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.refreshZoneData(this.limit, this.offset);
   }
 }

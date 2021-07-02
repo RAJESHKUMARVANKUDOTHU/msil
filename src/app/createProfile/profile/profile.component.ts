@@ -18,10 +18,10 @@ import { EditProfileComponent } from '../../createProfile/edit-profile/edit-prof
 export class ProfileComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  addSubUserForm: FormGroup
-  displayedColumns: string[] = ["i", 'userName','department','role', 'updatedAt', 'edit', 'isDeleted'];
-  dataSource: any = []
-  getUserList: any = []
+  addSubUserForm: FormGroup;
+  displayedColumns: string[] = ["i", 'userName', 'department', 'role', 'updatedAt', 'edit', 'isDeleted'];
+  dataSource: any = [];
+  getUserList: any = [];
   passwordType: string = 'password';
   passwordIcon: string = 'visibility_off';
   constructor(
@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
         validators: this.formValidator(),
       });
 
-    this.getUsers()
+    this.getUsers();
   }
 
   formValidator() {
@@ -72,68 +72,69 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
+
+  getUsers() {
+    this.getUserList = [];
+    this.api.viewUsers().then((res: any) => {
+      console.log("get user res===", res);
+      if (res.status) {
+        this.getUserList = res.success;
+        this.dataSource = new MatTableDataSource(this.getUserList);
+
+        setTimeout(() => {
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        })
+      }
+      else { }
+    }).catch((err) => {
+      console.log("err======", err);
+    })
+  }
+
   hideShowPassword() {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'visibility_off' ? 'visibility' : 'visibility_off';
   }
 
   addSubUser(data) {
-    console.log("data===", data)
+    console.log("data===", data);
     if (this.addSubUserForm.valid) {
       try {
         this.api.createSubUsers(data).then((res: any) => {
-          console.log("created sub user res===", res)
+          console.log("created sub user res===", res);
           if (res.status) {
-            this.getUsers()
-            this.addSubUserForm.reset()
-            this.general.openSnackBar(res.success, '')
+            this.getUsers();
+            this.addSubUserForm.reset();
+            this.general.openSnackBar(res.success, '');
           }
         })
           .catch((err) => {
-            console.log("error======", err)
+            console.log("error======", err);
           })
       }
       catch (err) {
-        console.log("err======", err)
+        console.log("err======", err);
       }
     }
   }
 
-  getUsers() {
-    this.getUserList = []
-    this.api.viewUsers().then((res: any) => {
-      console.log("get user res===", res)
-      if (res.status) {
-        this.getUserList = res.success
-        this.dataSource = new MatTableDataSource(this.getUserList);
-
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator
-        })
-      }
-      else { }
-    }).catch((err) => {
-      console.log("err======", err)
-    })
-  }
-
   isDeleted(data) {
-    data.isDeleted = data.isDeleted == true ? false : true
+    data.isDeleted = data.isDeleted == true ? false : true;
     data.id = data._id
     console.log("delete sub usser data==", data);
 
     this.api.deleteSubuser(data).then((res: any) => {
       console.log("delete sub user res===", res)
       if (res.status) {
-        this.getUsers()
-        this.general.openSnackBar(res.success, '')
+        this.getUsers();
+        this.general.openSnackBar(res.success, '');
       }
       else {
-        this.general.openSnackBar(res.success, '')
+        this.general.openSnackBar(res.success, '');
       }
     }).catch((err) => {
-      console.log("error======", err)
+      console.log("error======", err);
     })
   }
 
@@ -146,11 +147,9 @@ export class ProfileComponent implements OnInit {
     dialogConfig.data = {
       data: data
     }
-
     const dialogRef = this.dialog.open(EditProfileComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
-      this.getUsers()
+      this.getUsers();
     });
   }
 

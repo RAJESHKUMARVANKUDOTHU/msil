@@ -155,7 +155,7 @@
         <mat-card-content>
             <form [formGroup]="rangeForm">
                 <mat-form-field>
-                    <mat-label>In feet</mat-label>
+                    <mat-label>in feet</mat-label>
                     <mat-select formControlName="range">
                         <mat-option [value]=25>25</mat-option>
                         <mat-option [value]=50>50</mat-option>
@@ -199,7 +199,7 @@
         <mat-card-content>
             <form [formGroup]="groupCoinForm">
                 <mat-form-field>
-                    <mat-label>Select Coin</mat-label>
+                    <mat-label>Select coin</mat-label>
                     <mat-select formControlName="coinId" multiple>
                         <mat-option #allSelected5 (click)="toggleAllSelectionCoin2(groupCoinForm)" [value]="0">All
                         </mat-option>
@@ -233,7 +233,7 @@
         <mat-card-content>
             <form [formGroup]="timeDelay" id="time">
                 <mat-form-field>
-                    <mat-label>Select Find</mat-label>
+                    <mat-label>Select find</mat-label>
                     <mat-select formControlName="deviceId" multiple>
                         <mat-option #allSelected (click)="toggleAllSelectionDevice(timeDelay)" [value]="0">All
                         </mat-option>
@@ -263,7 +263,7 @@
         <mat-card-content>
             <form [formGroup]="maxFindForm">
                 <mat-form-field>
-                    <mat-label>Select Coin</mat-label>
+                    <mat-label>Select coin</mat-label>
                     <mat-select formControlName="coinId" multiple>
                         <mat-option #allSelected1 (click)="toggleAllSelectionCoins(maxFindForm)" [value]="0">All
                         </mat-option>
@@ -298,7 +298,7 @@
         <mat-card-content>
             <form [formGroup]="findTxPowerForm">
                 <mat-form-field class="w-75">
-                    <mat-label>Select Device</mat-label>
+                    <mat-label>Select find</mat-label>
                     <mat-select formControlName="deviceId" multiple>
                         <mat-option #allSelected2 (click)="toggleAllSelectionDevices(findTxPowerForm)" [value]="0">All
                         </mat-option>
@@ -342,7 +342,7 @@
         <mat-card-content>
             <form [formGroup]="coinPlacementForm">
                 <mat-form-field class="w-75">
-                    <mat-label>Select Coin</mat-label>
+                    <mat-label>Select coin</mat-label>
                     <mat-select formControlName="coinId" multiple>
                         <mat-option #allSelected3 (click)="toggleAllSelectionCoin(coinPlacementForm)" [value]="0">All
                         </mat-option>
@@ -410,6 +410,19 @@
     </mat-card>
 
     <mat-card>
+        <mat-card-title>User Features</mat-card-title>
+        <mat-card-subtitle>Enable or Disable User Features</mat-card-subtitle><br>
+        <mat-card-content>
+            <form [formGroup]="setUserFeatureForm" class="text-left">
+                <mat-checkbox formControlName="enableMap" color="primary">Enable Map</mat-checkbox> <br>
+                <mat-checkbox formControlName="enableZone" color="primary" (change)="onFeatureChange($event)">Enable Zone</mat-checkbox><br>
+                <mat-checkbox *ngIf="setUserFeatureForm.get('enableZone').value != null && setUserFeatureForm.get('enableZone').value == true" formControlName="enableZoneStandardTime" color="primary">Enable Zone Standard time</mat-checkbox>
+            </form> <br><br><br><br> <br>
+            <button mat-raised-button color="primary" [disabled]="!setUserFeatureForm.valid" (click)="onSubmitUserFeature(setUserFeatureForm.value)">Submit</button>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
         <mat-card-title>
             Define Shift Time
         </mat-card-title>
@@ -454,6 +467,4 @@
             </div>
         </mat-card-content>
     </mat-card>
-
-
 </div>

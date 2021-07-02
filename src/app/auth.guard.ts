@@ -9,61 +9,69 @@ import { GeneralService } from './services/general.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  loginData: any
-  constructor(private login: LoginAuthService, private router: Router,private general:GeneralService) { }
+  loginData: any;
+  constructor(private login: LoginAuthService, private router: Router, private general: GeneralService) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.loginData = this.login.getLoginDetails()
-    let token=this.general.getToken()
-   
+    this.loginData = this.login.getLoginDetails();
+    let token = this.general.getToken();
     if (this.loginData && token) {
-      // console.log("in",route.data.role[0].toString() == 'superAdminRole')
-      let role = route.data.role.filter((obj)=>{
-     
-        return obj == this.loginData.role 
-    })
-      console.log("role ===",role)
-        if(role.length){
-          if (role[0] == "superAdminRole") {
-            var a ={
-              menu : false,
-              other : true
-            }
-            this.login.loginCheckData.next(a)
+      let role = route.data.role.filter((obj) => {
+        return obj == this.loginData.role;
+      })
+      console.log("role ===", role);
+      if (role.length) {
+        if (role[0] == "superAdminRole") {
+          var a = {
+            menu: false,
+            other: true
           }
-          else if (role[0] == "adminRole" || role[0] == "userRole"
-           || role[0] == 'coAdminRole' || role[0]== 'subAdminRole') {
-            var a ={
-              menu : true,
-              other : true
-            }
-            if( role[0] == "userRole" || role[0]== 'subAdminRole'){
-                if(state.url == '/setting' || state.url == '/geofence' || state.url == '/profile' 
-                || state.url == '/map-actions' || state.url == '/zone-configuration' ){
-                    this.router.navigate(['/dashboard'])
-                }
-                else{
-                  this.login.loginCheckData.next(a)
-                }
-            }
-            else{
-              this.login.loginCheckData.next(a)
-            }
-          }
-       
-    
-          return true;
+          this.login.loginCheckData.next(a);
         }
+        else if (role[0] == "adminRole" || role[0] == "userRole"
+          || role[0] == 'coAdminRole' || role[0] == 'subAdminRole') {
+          var a = {
+            menu: true,
+            other: true
+          };
+          if (!this.loginData.enableMap) {
+            if (role[0] == "userRole" || role[0] == 'subAdminRole') {
+              if (state.url == '/dashboard' || state.url == '/setting' || state.url == '/geofence' || state.url == '/profile'
+                || state.url == '/map-actions' || state.url == '/zone-configuration' || state.url == '/congestion') {
+                this.router.navigate(['/manage-devices']);
+              }
+            }
+            else {
+              console.log("state url===", state.url)
+              if (state.url == '/dashboard' || state.url == '/map-actions' || state.url == '/zone-configuration' || state.url == '/congestion') {
+                this.router.navigate(['/manage-devices']);
+              }
+            }
+          }
+          else {
+            if (role[0] == "userRole" || role[0] == 'subAdminRole') {
+              if (state.url == '/setting' || state.url == '/geofence' || state.url == '/profile'
+                || state.url == '/map-actions' || state.url == '/zone-configuration') {
+                this.router.navigate(['/dashboard']);
+              }
+            }
+            else {
+              this.login.loginCheckData.next(a);
+            }
+          }
+          this.login.loginCheckData.next(a);
+        }
+        return true;
+      }
     }
-
     else {
-      var a ={
-        menu : false,
-        other : false
+      var a = {
+        menu: false,
+        other: false
       }
       this.login.loginCheckData.next(a);
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login']);
     }
   }
 

@@ -98,6 +98,13 @@
         border: none;
     }
     
+    .head {
+        font-weight: 500;
+        background-color: orange !important;
+        color: white!important;
+        font-size: 0.9rem !important;
+    }
+    
     @media only screen and (max-width: 768px) {
         .mat-menu-panel {
             margin-left: -15px !important;

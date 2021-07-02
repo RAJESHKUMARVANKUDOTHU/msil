@@ -46,6 +46,10 @@
                 <mat-label> Gateway Id</mat-label>
                 <input type="text" matInput formControlName="gatewayId" autocomplete="off" disabled>
             </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Type</mat-label>
+                <input type="text" matInput formControlName="gatewayType" autocomplete="off" disabled>
+            </mat-form-field> <br>
         </form>
         <button mat-raised-button (click)="updateGateway(editGateway.value)" [disabled]="!editGateway.valid" color="primary">Submit</button>
     </div>
@@ -82,7 +86,7 @@
                     Please select gateway Id.
                 </mat-error>
             </mat-form-field> <br>
-            <mat-form-field class="w-75" appearance="fill">
+            <mat-form-field class="w-75" appearance="fill" *ngIf="loginData.enableZone" [required]="loginData.enableZone">
                 <mat-label>Select Zone</mat-label>
                 <mat-select formControlName="zoneId" autocomplete="off">
                     <mat-option *ngFor="let a of zoneData" [(value)]="a._id">

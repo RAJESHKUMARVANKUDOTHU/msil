@@ -18,13 +18,13 @@ export class ManageDeviceComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   findData: any = []
   dataSource: any = [];
-  serviceData: any = []
-  fileName: String = ''
-  role:any
-  limit:any=10
-  offset:any=0
-  currentPageLength:any=10
-  currentPageSize:any=10
+  serviceData: any = [];
+  fileName: String = '';
+  role: any;
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
   displayedColumns = ['i', 'deviceId', 'deviceName', 'deviceToggleStatus', 'updatedOn', 'delete']; //,'batteryStatus'
   constructor(
     public dialog: MatDialog,
@@ -36,11 +36,11 @@ export class ManageDeviceComponent implements OnInit {
   ngOnInit(): void {
     this.refreshDevice()
     // this.getServiceDetails()
-    this.role=this.login.getLoginDetails().role
-    console.log("this.role",this.role)
+    this.role = this.login.getLoginDetails().role;
+    console.log("this.role", this.role)
     this.general.deviceChanges.subscribe((res) => {
       if (res) {
-        this.refreshDevice(this.limit, this.offset)
+        this.refreshDevice(this.limit, this.offset);
       }
     })
   }
@@ -59,21 +59,21 @@ export class ManageDeviceComponent implements OnInit {
     const dialogRef = this.dialog.open(AddAssetsComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.refreshDevice(this.limit, this.offset)
+      this.refreshDevice(this.limit, this.offset);
     });
   }
 
-  refreshDevice(limit=10,offset=0) {
-    var data={
-      limit:limit,
-      offset:offset
+  refreshDevice(limit = 10, offset = 0) {
+    var data = {
+      limit: limit,
+      offset: offset
     }
-    console.log("data==",data)
+    console.log("data==", data)
     this.api.getDeviceData(data).then((res: any) => {
-      this.findData = []
+      this.findData = [];
       console.log("find submit====", res);
       if (res.status) {
-        this.currentPageLength = parseInt(res.totalLength)
+        this.currentPageLength = parseInt(res.totalLength);
 
         for (let i = 0; i < res.success.length; i++) {
           if (res.success[i] != null) {
@@ -98,9 +98,8 @@ export class ManageDeviceComponent implements OnInit {
           // this.dataSource.paginator = this.paginator
         })
       }
-      else { }
     }).catch((err: any) => {
-      console.log("error===", err)
+      console.log("error===", err);
     })
   }
   // onServiceSelection(value, a) {
@@ -129,7 +128,7 @@ export class ManageDeviceComponent implements OnInit {
         'background-color': 'green',
         'width': '31px'
       }
-      return a
+      return a;
     }
     // else if(value == 2){
     //   var a = {
@@ -143,15 +142,15 @@ export class ManageDeviceComponent implements OnInit {
         'background-color': 'red',
         'width': '10px'
       }
-      return a
+      return a;
     }
     else {
-      return {}
+      return {};
     }
   }
 
   edit(data) {
-    if(data.deviceAssignedStatus == false){
+    if (data.deviceAssignedStatus == false) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -163,33 +162,32 @@ export class ManageDeviceComponent implements OnInit {
       }
       const dialogRef = this.dialog.open(EditAssetsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(result => {
-        this.refreshDevice(this.limit, this.offset)
+        this.refreshDevice(this.limit, this.offset);
       });
     }
   }
 
   delete(data) {
-    console.log("data==", data)
-    data.deviceObjectId = data.id
+    console.log("data==", data);
+    data.deviceObjectId = data.id;
     if (confirm('Are you sure you want to delete device?')) {
       this.api.deleteDevice(data).then((res: any) => {
         console.log("device delete====", res);
         if (res.status) {
-          this.refreshDevice(this.limit, this.offset)
-          this.general.deviceChanges.next(true)
-          var msg = res.success
+          this.refreshDevice(this.limit, this.offset);
+          this.general.deviceChanges.next(true);
+          var msg = res.success;
           this.general.openSnackBar(msg, '')
         }
         else {
-          this.refreshDevice(this.limit, this.offset)
-          this.general.deviceChanges.next(false)
-          this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+          this.refreshDevice(this.limit, this.offset);
+          this.general.deviceChanges.next(false);
+          this.general.openSnackBar(res.success == false ? res.message : res.success, '');
         }
       }).catch((err: any) => {
-        console.log("error===", err)
+        console.log("error===", err);
       })
     }
-    else { }
   }
 
   toggle(a) {
@@ -203,61 +201,48 @@ export class ManageDeviceComponent implements OnInit {
       this.api.deviceOnOff(data).then((res: any) => {
         console.log("toggle====", res);
         if (res.status) {
-          this.general.deviceChanges.next(true)
-          this.refreshDevice(this.limit, this.offset)
-          var msg = res.success
-          this.general.openSnackBar(msg, '')
+          this.general.deviceChanges.next(true);
+          this.refreshDevice(this.limit, this.offset);
+          var msg = res.success;
+          this.general.openSnackBar(msg, '');
         }
         else {
-          this.refreshDevice(this.limit, this.offset)
-          this.general.deviceChanges.next(false)
-          this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+          this.refreshDevice(this.limit, this.offset);
+          this.general.deviceChanges.next(false);
+          this.general.openSnackBar(res.success == false ? res.message : res.success, '');
         }
       }).catch((err: any) => {
-        console.log("error===", err)
+        console.log("error===", err);
       })
     }
     else {
-      this.refreshDevice(this.limit, this.offset)
+      this.refreshDevice(this.limit, this.offset);
     }
   }
 
   download() {
     this.fileName = "Registered Asset"
-    var data={
-      timeZoneOffset:this.general.getZone()
+    var data = {
+      timeZoneOffset: this.general.getZone()
     }
-    this.api.downloadRegisteredDevice(data,this.fileName).then((res: any) => {
-      console.log("Registerd asset download==", res)
-      this.general.loadingFreez.next({status:true,msg:"Downloading"})
-      if(res){
-        this.general.loadingFreez.next({status:false,msg:"Downloaded Successfully!!"})
+    this.api.downloadRegisteredDevice(data, this.fileName).then((res: any) => {
+      console.log("Registerd asset download==", res);
+      this.general.loadingFreez.next({ status: true, msg: "Downloading" });
+      if (res) {
+        this.general.loadingFreez.next({ status: false, msg: "Downloaded Successfully!!" });
       }
-      else{
-       this.general.openSnackBar(res.success == false ? res.message : res.success, '')
+      else {
+        this.general.openSnackBar(res.success == false ? res.message : res.success, '');
       }
     }).catch((err: any) => {
-      console.log("error==", err)
+      console.log("error==", err);
     })
   }
 
-  // getServiceDetails() {
-  //   this.api.getServiceType().then((res: any) => {
-  //     console.log("servoce details response==", res)
-  //     this.serviceData = []
-  //     if (res.status) {
-  //       this.serviceData = res.success
-  //     }
-  //     else { }
-  //   })
-  // }
-
-
   getUpdate(event) {
-
-    this.limit = event.pageSize
-    this.offset = event.pageIndex * event.pageSize
-    this.refreshDevice(this.limit, this.offset)
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.refreshDevice(this.limit, this.offset);
   }
 }
 

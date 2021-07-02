@@ -16,20 +16,20 @@ import * as moment from 'moment';
 export class VehicleStatusTrackComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  zoneData: any = []
+  zoneData: any = [];
   dataSource: any = [];
   displayedColumns = ['coinName', 'inTime', 'outTime', 'totTime'];
   vehicleData: any = [];
- 
+
   constructor(
     private api: ApiService,
     public general: GeneralService,
-    private login:LoginAuthService,
+    private login: LoginAuthService,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    
+
     this.route.queryParams.subscribe(async (params) => {
       console.log("params===", params['deviceId'], params['deviceName']);
       await this.getZoneDetails(params['userId']);
@@ -37,15 +37,15 @@ export class VehicleStatusTrackComponent implements OnInit {
     })
   }
 
-  getVehicleStatus(id,name,userId) {
+  getVehicleStatus(id, name, userId) {
     var data = {
       deviceId: id,
       deviceName: name,
-      userId:userId
+      userId: userId
     }
-    console.log("data===", data)
+    console.log("data===", data);
     this.api.getVehicleStatusData(data).then(async (res: any) => {
-      console.log("res==", res)
+      console.log("res==", res);
       if (res.status) {
         this.vehicleData = res.success;
         this.vehicleData.delayTime = 0;
@@ -54,19 +54,19 @@ export class VehicleStatusTrackComponent implements OnInit {
           this.vehicleData.locations[i].totTime = this.general.getTotTime(this.vehicleData.locations[i].inTime, this.vehicleData.locations[i].outTime);
         }
         this.zoneData = this.zoneData.filter((zoneObj) => {
-          this.vehicleData.zoneJC = this.vehicleData.zoneJC.filter((obj)=>{
-            if(zoneObj._id == obj.zoneId){
-              if(obj.delayTime != 0){
-                zoneObj.time = Math.floor(obj.delayTime / (1000 * 60))
-                this.vehicleData.delayTime +=  Math.floor(obj.delayTime / (1000 * 60))
-                if(obj.delayTime > 0){
+          this.vehicleData.zoneJC = this.vehicleData.zoneJC.filter((obj) => {
+            if (zoneObj._id == obj.zoneId) {
+              if (obj.delayTime != 0) {
+                zoneObj.time = Math.floor(obj.delayTime / (1000 * 60));
+                this.vehicleData.delayTime += Math.floor(obj.delayTime / (1000 * 60));
+                if (obj.delayTime > 0) {
                   zoneObj.delayed = true;
                 }
-                else{
+                else {
                   zoneObj.delayed = false;
                   zoneObj.time *= -1;
                 }
-                this.vehicleData.totalStandardTime += obj.standardTime
+                this.vehicleData.totalStandardTime += obj.standardTime;
               }
             }
             return obj;
@@ -74,17 +74,17 @@ export class VehicleStatusTrackComponent implements OnInit {
           return zoneObj
         })
         console.log("this.zoneData-===", this.zoneData);
-        this.vehicleData.EDT =await  this.getEDT(this.vehicleData);
+        this.vehicleData.EDT = await this.getEDT(this.vehicleData);
         this.dataSource = new MatTableDataSource(this.vehicleData.locations);
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator
         })
       } else {
-        this.vehicleData = []
+        this.vehicleData = [];
       }
     }).catch((err) => {
-      console.log("err===", err)
+      console.log("err===", err);
     })
   }
 
@@ -99,7 +99,7 @@ export class VehicleStatusTrackComponent implements OnInit {
         let unique = new Set();
         res.success.forEach(obj => {
           if (!(unique.has(obj?.mainZoneId?._id))) {
-            if(obj?.mainZoneId?._id){
+            if (obj?.mainZoneId?._id) {
               unique.add(obj?.mainZoneId?._id)
               this.zoneData.push({
                 _id: obj?.mainZoneId?._id,

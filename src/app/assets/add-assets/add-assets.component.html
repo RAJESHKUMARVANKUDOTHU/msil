@@ -8,10 +8,10 @@
     <div mat-dialog-content class="h-100 text-center mt-4"><br><br>
         <form [formGroup]="addFind">
             <mat-form-field class="w-75" appearance="fill">
-                <mat-label> Find Name</mat-label>
+                <mat-label> Asset Name</mat-label>
                 <input type="text" matInput formControlName="deviceName" (change)="general.validate($event.target.value)" autocomplete="off" required>
                 <mat-error *ngIf="addFind.get('deviceName').value ==''">
-                    Find name is required.
+                  Asset name is required.
                 </mat-error>
                 <mat-error *ngIf="general.mismatch">
                     No special characters are allowed.
@@ -51,6 +51,16 @@
                     Gateway id should be of 12 Characters.
                 </mat-error>
             </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Type</mat-label>
+                <mat-select formControlName="gatewayType" required>
+                    <mat-option value="wifi">Wifi Gateway</mat-option>
+                    <mat-option value="ethernet">Ethernet Gateway</mat-option>
+                </mat-select>
+                <mat-error>
+                    Field required.
+                </mat-error>
+            </mat-form-field> <br>
 
         </form>
         <button mat-raised-button (click)="gatewaySubmit(addGateway.value)" [disabled]="!addGateway.valid" color="primary">Submit</button>
@@ -87,9 +97,9 @@
                 </mat-select>
                 <mat-error>Field required.</mat-error>
             </mat-form-field> <br>
-            <mat-form-field class="w-75" appearance="fill">
+            <mat-form-field class="w-75" appearance="fill" *ngIf="loginData.enableZone">
                 <mat-label>Select Zone</mat-label>
-                <mat-select formControlName="zoneId" autocomplete="off">
+                <mat-select formControlName="zoneId" autocomplete="off" [required]="loginData.enableZone">
                     <mat-option *ngFor="let a of zoneData" [(value)]="a._id">
                         {{a.zoneName}}
                     </mat-option>

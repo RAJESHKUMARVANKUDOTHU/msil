@@ -22,33 +22,18 @@
                     <mat-label>Choose Report Type</mat-label>
                     <mat-select formControlName="type">
                         <mat-option value="1">Generic report </mat-option>
-                        <!-- <mat-option value="2">Device ID wise report </mat-option> -->
-                        <!-- <mat-option value="3">Vehicle Name wise report </mat-option> -->
-                        <mat-option value="4">Number of vehicles serviced </mat-option>
-                        <mat-option value="3">Vehicle wise report based on location </mat-option>
-                        <mat-option value="6">Vehicle wise report based on zone </mat-option>
-                        <mat-option value="7">Vehicle and Job card wise report</mat-option>
-                        <!-- <mat-option value="8">Service time for vehicle</mat-option> -->
+                        <mat-option value="2">Vehicle wise report based on location </mat-option>
+                        <mat-option value="3" [hidden]="!loginData.enableZone">Vehicle wise report based on zone </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field *ngIf="vehicleReport.get('type').value == '2'">
-                    <mat-label> Device Id</mat-label>
-                    <mat-select formControlName="deviceId">
-                        <mat-option *ngFor="let find of deviceData" [value]="find.deviceId">
-                            {{find.deviceId}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field *ngIf="vehicleReport.get('type').value == '3' || vehicleReport.get('type').value == '6'">
+                <mat-form-field *ngIf="vehicleReport.get('type').value == '2' || vehicleReport.get('type').value == '3'">
                     <mat-label> Vehicle No.</mat-label>
-
                     <input type='text' matInput formControlName="deviceName" [matAutocomplete]="auto" (keyup)="vehicleNames($event)" required>
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let find of deviceData" [value]="find.deviceName">
                             {{find.deviceName}}
                         </mat-option>
                     </mat-autocomplete>
-
                 </mat-form-field> <br>
 
                 <mat-form-field>
@@ -93,14 +78,13 @@
                         <mat-radio-button class="example-radio-button" [value]="7">Last week</mat-radio-button>
                     </mat-radio-group>
                 </div> <br>
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <mat-label>Choose Report Type</mat-label>
                     <mat-select disableRipple formControlName="type">
                         <mat-option value="1">Location wise report</mat-option>
-                        <mat-option value="2">Bay wise report </mat-option>
                     </mat-select>
-                </mat-form-field>
-                <mat-form-field *ngIf="locationReport.get('type').value == '1'">
+                </mat-form-field> -->
+                <mat-form-field>
                     <mat-label> Location Name</mat-label>
                     <input type='text' matInput formControlName="coinId" [matAutocomplete]="auto" (keyup)="coinNames($event)" required>
                     <mat-autocomplete #auto="matAutocomplete">
@@ -109,14 +93,7 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <mat-form-field *ngIf="locationReport.get('type').value == '2'">
-                    <mat-label> Zone Name</mat-label>
-                    <mat-select formControlName="zoneId">
-                        <mat-option *ngFor="let zone of zoneData" [value]="zone">
-                            {{zone.zoneName}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+
                 <mat-form-field>
                     <mat-label>From date</mat-label>
                     <input matInput [matDatepicker]="myDatepicker3" formControlName="fromDate" autocomplete="off" required>
@@ -141,9 +118,9 @@
     </mat-card>
 
 
-    <mat-card class="text-center m-2">
+    <mat-card class="text-center m-2" *ngIf="loginData.enableZone">
         <mat-card-title color="primary">
-            Zone wise Report
+            Zone wise Repor
         </mat-card-title> <br>
         <mat-card-subtitle>
             Enter date range and Select Report type

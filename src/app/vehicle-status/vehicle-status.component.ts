@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class VehicleStatusComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  zoneData: any = []
+  zoneData: any = [];
   dataSource: any = [];
   displayedColumns = ['coinName', 'inTime', 'outTime', 'totTime'];
   vehicleData: any = [];
@@ -28,7 +28,6 @@ export class VehicleStatusComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(async (params) => {
       console.log("params===", params['deviceId'], params['deviceName']);
       await this.getZoneDetails(params['userId']);
@@ -43,9 +42,9 @@ export class VehicleStatusComponent implements OnInit {
       deviceName: name,
       userId: userId
     }
-    console.log("data===", data)
+    console.log("data===", data);
     this.api.getVehicleStatus(data).then(async (res: any) => {
-      console.log("res==", res)
+      console.log("res==", res);
       if (res.status) {
         this.vehicleData = res.success;
         this.vehicleData.delayTime = 0;
@@ -58,8 +57,8 @@ export class VehicleStatusComponent implements OnInit {
           this.vehicleData.zoneJC = this.vehicleData.zoneJC.filter((obj) => {
             if (zoneObj._id == obj.zoneId) {
               if (obj.delayTime != 0) {
-                zoneObj.time = Math.floor(obj.delayTime / (1000 * 60))
-                this.vehicleData.delayTime += Math.floor(obj.delayTime / (1000 * 60))
+                zoneObj.time = Math.floor(obj.delayTime / (1000 * 60));
+                this.vehicleData.delayTime += Math.floor(obj.delayTime / (1000 * 60));
                 if (obj.delayTime > 0) {
                   zoneObj.delayed = true;
                 }
@@ -67,7 +66,7 @@ export class VehicleStatusComponent implements OnInit {
                   zoneObj.delayed = false;
                   zoneObj.time *= -1;
                 }
-                this.vehicleData.totalStandardTime += obj.standardTime
+                this.vehicleData.totalStandardTime += obj.standardTime;
               }
             }
             return obj;
@@ -79,13 +78,13 @@ export class VehicleStatusComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.vehicleData.locations);
         setTimeout(() => {
           this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator
+          this.dataSource.paginator = this.paginator;
         })
       } else {
-        this.vehicleData = []
+        this.vehicleData = [];
       }
     }).catch((err) => {
-      console.log("err===", err)
+      console.log("err===", err);
     })
   }
 
@@ -100,7 +99,7 @@ export class VehicleStatusComponent implements OnInit {
         let unique = new Set();
         res.success.forEach(obj => {
           if (!(unique.has(obj?.mainZoneId?._id))) {
-            if(obj?.mainZoneId?._id){
+            if (obj?.mainZoneId?._id) {
               unique.add(obj?.mainZoneId?._id)
               this.zoneData.push({
                 _id: obj?.mainZoneId?._id,

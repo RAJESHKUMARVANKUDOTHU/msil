@@ -7,6 +7,8 @@ hr {
 }
 
 .head {
+    font-weight: 500;
     background-color: orange !important;
-    letter-spacing: 1px !important;
+    color: white!important;
+    font-size: 0.9rem !important;
 }

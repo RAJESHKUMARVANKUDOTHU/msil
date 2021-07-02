@@ -102,7 +102,7 @@ export class DashboardComponent implements OnInit {
     this.map = L.map('map', {
       attributionControl: false,
       minZoom: 1,
-      tap:false,
+      tap: false,
       maxZoom: 5,
       center: [0, 0],
       zoom: 0,
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit {
 
             this.getZoneVehicleData(this.selectedLayout?.zones);
           }
-        }, 10*1000);
+        }, 10 * 1000);
         let unique = new Set();
         this.zoneList = res.success.map((obj) => {
           obj.highlight = false;
@@ -504,7 +504,7 @@ export class DashboardComponent implements OnInit {
               icon: icon,
             })
             let intersect = this.isMarkerInsidePolygon(m, poly);
-            if(intersect){
+            if (intersect) {
               latlng = [intersect];
             }
             console.log("device == ", this.deviceList[j].deviceName, "intersect==", intersect);
@@ -528,21 +528,21 @@ export class DashboardComponent implements OnInit {
   isMarkerInsidePolygon(marker, poly) {
     var inside = false;
 
-    console.log("poly.getLatLngs()===",poly.getLatLngs());
+    console.log("poly.getLatLngs()===", poly.getLatLngs());
 
     let a = poly.getBounds().contains(marker.getLatLng());
-    console.log("a===",a);
-    if(!a){
-      let b = poly.getLatLngs()[0].map(obj=>[obj.lat,obj.lng]);
-      console.log("b===",b);
-      
+    console.log("a===", a);
+    if (!a) {
+      let b = poly.getLatLngs()[0].map(obj => [obj.lat, obj.lng]);
+      console.log("b===", b);
+
       let c = marker.getLatLng();
-      c = [c.lat,c.lng];
-      console.log("c==",c);
-      
+      c = [c.lat, c.lng];
+      console.log("c==", c);
+
       let d = L.GeometryUtil.closest(this.map, b, c);
-      console.log("d====",d);
-      return [d.lat,d.lng];
+      console.log("d====", d);
+      return [d.lat, d.lng];
     }
     return false
   };

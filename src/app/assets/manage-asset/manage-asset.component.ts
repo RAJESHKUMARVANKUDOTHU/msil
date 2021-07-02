@@ -28,11 +28,11 @@ export class ManageAssetComponent implements OnInit {
   countActive: any = [];
   countOffline: any = [];
   countReg: any = [];
-  serviceData:any=[];
+  serviceData: any = [];
   chartOptions = {
     responsive: true,
   };
-  interval : any;
+  interval: any;
   public colors: Array<any> = [
     {
       backgroundColor: ['rgb(21,157,7)', 'rgb(255,165,7)', 'rgb(5,120,200)'],
@@ -56,9 +56,9 @@ export class ManageAssetComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog
   ) {
-    this.general.deviceChanges.subscribe((res)=>{
+    this.general.deviceChanges.subscribe((res) => {
       console.log(res)
-      if(res){
+      if (res) {
         this.devicesCount();
         this.getAssignAssetList();
         this.getDeAssignAssetList();
@@ -74,29 +74,25 @@ export class ManageAssetComponent implements OnInit {
     this.deassignAssetForm = this.fb.group({
       deviceId: ['', Validators.required],
     });
-    // this.doughnutChartData=this.countActive
-    // this.doughnutChartData1=this.countOffline
-    // this.doughnutChartData2=this.countReg
 
     this.devicesCount();
-    // this.refreshDevice();
     this.getAssignAssetList();
     this.getDeAssignAssetList();
-    this.login.loginCheckData.subscribe(res=>{
-      if(!res.other){
+    this.login.loginCheckData.subscribe(res => {
+      if (!res.other) {
         this.clearTimeInterval()
       }
     })
-    this.interval = setInterval(()=>{
+    this.interval = setInterval(() => {
       this.devicesCount();
-    },10000)
+    }, 10000)
   }
 
   ngOnDestroy() {
     this.clearTimeInterval()
   }
 
-  clearTimeInterval(){
+  clearTimeInterval() {
     clearInterval(this.interval);
   }
 
@@ -137,19 +133,17 @@ export class ManageAssetComponent implements OnInit {
 
   getAssetInfo(a) {
     this.id = a._id;
-    // this.userId=a.userId
   }
   getAssignAssetList() {
     this.api
       .assignAssetList()
       .then((res: any) => {
-
         console.log('assignAsset list res====', res);
         if (res.status) {
           this.getAssetList = res.success;
         }
         else {
-          this.getAssetList = []
+          this.getAssetList = [];
         }
       })
       .catch((err: any) => {
@@ -168,7 +162,6 @@ export class ManageAssetComponent implements OnInit {
         }
         else {
           this.getDeAssetList = [];
-
         }
       })
       .catch((err: any) => {
@@ -178,26 +171,23 @@ export class ManageAssetComponent implements OnInit {
 
   assignAsset(data) {
     data._id = this.id;
-    // data.userId=this.userId
     console.log('assign data==', data);
     if (this.assignAssetForm.valid) {
-
       this.api
         .assignAsset(data)
         .then((res: any) => {
-
           console.log('assignAsset res====', res);
           if (res.status) {
-            this.assignAssetForm.reset()
+            this.assignAssetForm.reset();
             this.general.openSnackBar(res.message, '');
-            this.assignAssetForm.reset()
+            this.assignAssetForm.reset();
             this.getAssignAssetList();
             this.getDeAssignAssetList();
-            this.general.deviceChanges.next(true)
+            this.general.deviceChanges.next(true);
           }
           else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-            this.general.deviceChanges.next(false)
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            this.general.deviceChanges.next(false);
           }
         })
         .catch((err: any) => {
@@ -207,26 +197,23 @@ export class ManageAssetComponent implements OnInit {
   }
 
   deassignAsset(data) {
-     console.log("data==",data);
-     data.deviceId=this.general.filterArray(data.deviceId);
-    // data.userId=this.userId
+    console.log("data==", data);
+    data.deviceId = this.general.filterArray(data.deviceId);
     if (this.deassignAssetForm.valid) {
-
       this.api
         .deassignAsset(data)
         .then((res: any) => {
-
           console.log('De assignAsset res====', res);
           if (res.status) {
-            this.deassignAssetForm.reset()
-            this.getAssignAssetList()
+            this.deassignAssetForm.reset();
+            this.getAssignAssetList();
             this.getDeAssignAssetList();
-            this.general.deviceChanges.next(true)
+            this.general.deviceChanges.next(true);
             this.general.openSnackBar(res.success, '');
           }
           else {
-            this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-            this.general.deviceChanges.next(false)
+            this.general.openSnackBar(res.success == false ? res.message : res.success, '');
+            this.general.deviceChanges.next(false);
           }
         })
         .catch((err: any) => {
@@ -235,32 +222,12 @@ export class ManageAssetComponent implements OnInit {
     }
   }
 
-  // onServiceSelection(value, a) {
-
-  //   var data = {
-  //     serviceId: a._id,
-  //     deviceId: value.deviceId
-  //   }
-  //   console.log("service select data==", data);
-  //   this.api.updateServiceId(data).then((res: any) => {
-  //     console.log("update Services===", res)
-  //     if (res.status) {
-  //       this.refreshDevice(this.limit, this.offset)
-  //       this.general.openSnackBar(res.success, '')
-  //     }
-  //     else {
-  //       this.general.openSnackBar(res.success == false ? res.message : res.success, '')
-  //     }
-  //   })
-
-  // }
   toggleAllSelectionDevice(formData) {
-
     if (this.allSelected.selected) {
-      formData.controls.deviceId.patchValue([...this.getDeAssetList.map(obj => obj.deviceId), 0])
+      formData.controls.deviceId.patchValue([...this.getDeAssetList.map(obj => obj.deviceId), 0]);
     }
     else {
-      formData.controls.deviceId.patchValue([])
+      formData.controls.deviceId.patchValue([]);
     }
   }
 }

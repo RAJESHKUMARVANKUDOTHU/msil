@@ -21,8 +21,8 @@ export class ZoneConfigurationComponent implements OnInit {
   @ViewChild('mapElement') mapElement: ElementRef;
   selectZoneForm: FormGroup;
   selectedLayout = {
-    id : null,
-    zones : []
+    id: null,
+    zones: []
   };
   gatewayList: any = [];
   zoneList: any = [];
@@ -144,7 +144,7 @@ export class ZoneConfigurationComponent implements OnInit {
           return;
         })
       })
-      this.selectedLayout['zones']= zones;
+      this.selectedLayout['zones'] = zones;
       this.getLayoutImage(layout);
     }
   }
@@ -158,10 +158,10 @@ export class ZoneConfigurationComponent implements OnInit {
 
   getZoneDetails() {
     this.api.getZone().then((res: any) => {
-      console.log('zone details response==', res, "zonesss==",this.selectedLayout.zones);
+      console.log('zone details response==', res, "zonesss==", this.selectedLayout.zones);
       this.zoneList = [];
       if (res.status) {
-        this.zoneList = res.success.filter(obj=> this.selectedLayout.zones.includes(obj._id));
+        this.zoneList = res.success.filter(obj => this.selectedLayout.zones.includes(obj._id));
         this.createPolygon();
       } else {
         this.zoneList = [];
@@ -187,7 +187,7 @@ export class ZoneConfigurationComponent implements OnInit {
     this.clearMap();
     if (bounds == 1) {
       let layout = this.zoneList.filter((obj) => {
-        return( obj.layoutName && obj.layoutName == this.layoutName && this.selectedLayout.zones.includes(obj._id))
+        return (obj.layoutName && obj.layoutName == this.layoutName && this.selectedLayout.zones.includes(obj._id))
       });
       if (layout) {
         for (let i = 0; i < layout.length; i++) {
@@ -305,27 +305,3 @@ export class ZoneConfigurationComponent implements OnInit {
   }
 }
 
-// {
-//   id: 1,
-//   name: 'Job card',
-//   bounds: [
-//     [8.667918002363134, -229.21875000000003],
-//     [18.22935133838668, 275.62500000000006],
-//     [-68.56038368664157, 215.15625000000003],
-//   ],
-// },
-// {
-//   id: 2,
-//   name: 'Washing',
-//   bounds: [
-//     [-61.48075950007598, -600.4687500000001],
-//     [7.27529233637217, -503.43750000000006],
-//     [-67.50856836293859, -452.81250000000006],
-//     [-79.63987399850707, -530.1562500000001],
-//   ],
-// },
-// {
-//   id: 3,
-//   name: 'Shopfloor',
-//   bounds: [],
-// },

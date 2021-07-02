@@ -13,9 +13,9 @@ import "leaflet.heat/dist/leaflet-heat.js";
 })
 export class HeatMapComponent implements OnInit {
   map: any = null;
-  bounds:any=[];
-  vehicleData:any=[];
-  marker:any=[];
+  bounds: any = [];
+  vehicleData: any = [];
+  marker: any = [];
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
@@ -24,9 +24,9 @@ export class HeatMapComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.initiateMap();
-    },1);
+    }, 1);
     this.cd.detectChanges();
   }
   ngOnDestroy() {
@@ -74,7 +74,7 @@ export class HeatMapComponent implements OnInit {
             this.clearMapImage();
             L.imageOverlay(imgRes, this.bounds).addTo(this.map);
             this.map.on('load', this.getZoneVehicleData());
-            
+
           })
         }
       }
@@ -83,13 +83,13 @@ export class HeatMapComponent implements OnInit {
   }
 
   getZoneVehicleData() {
- 
+
     // this.api.getZoneVehicleData().then((res: any) => {
     //   console.log('zone vehicle response==', res);
     //   if (res.status) {
     //     this.vehicleData = res.success;
     //     console.log(" this.vehicleData=", this.vehicleData);
-        
+
     //     let data = res.success;
     //     data.map((obj, index) => {
     //       let latlng = [{
@@ -107,16 +107,16 @@ export class HeatMapComponent implements OnInit {
     //   } else {
     //     this.vehicleData = [];
     //   }
-      
+
     // }).catch((err)=>{
     //   console.log("err==",err);
-      
+
     // });
   }
 
   addCoinMarker(data) {
-    console.log("data==",data);
-    
+    console.log("data==", data);
+
     let icon = L.icon({
       iconUrl: '../../assets/marker.png',
       iconSize: [25, 25],
@@ -190,7 +190,7 @@ export class HeatMapComponent implements OnInit {
     let arr = [];
     const conf = {
       radius: 25,
-      scaleRadius :true,
+      scaleRadius: true,
       blur: 15,
       // gradient: {
       //   0.0: 'cyan',
@@ -199,16 +199,16 @@ export class HeatMapComponent implements OnInit {
       // },
       minOpacity: 1,
     }
-    data.filter((obj) => { 
+    data.filter((obj) => {
       arr.push({
-        lat:obj.latlng[0].lat,
-        lng:  obj.latlng[0].lng,
+        lat: obj.latlng[0].lat,
+        lng: obj.latlng[0].lng,
         intensity: 1.0
       })
     })
     var heat = new L.heatLayer(arr, conf).addTo(this.map);
     this.cd.detectChanges()
- 
+
   }
 }
 

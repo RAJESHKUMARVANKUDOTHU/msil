@@ -28,23 +28,23 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     // console.log("tok==",this.login.getLoginDetails())
-    this.token = this.general.getToken()
-    request = this.addAuthenticationToken(request)
+    this.token = this.general.getToken();
+    request = this.addAuthenticationToken(request);
 
     return next.handle(request).pipe(
       (take(1),
         catchError((error: any) => {
           if (error.status === 403 || error.status === 401) {
             if (window.location.pathname != '/login' && window.location.pathname != '/admin-login') {
-              this.general.loadingFreez.next({ status: true, msg: 'Your session has logged out..! please try again later' })
+              this.general.loadingFreez.next({ status: true, msg: 'Your session has logged out..! please try again later' });
               setTimeout(() => {
-                this.general.loadingFreez.next({ status: false, msg: '' })
-                this.login.logout()
+                this.general.loadingFreez.next({ status: false, msg: '' });
+                this.login.logout();
               }, 3000);
             }
             else {
-              this.general.loadingFreez.next({ status: false, msg: '' })
-              this.login.logout()
+              this.general.loadingFreez.next({ status: false, msg: '' });
+              this.login.logout();
             }
           }
           return throwError(error);
@@ -61,7 +61,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
     this.token = this.general.getToken();
-    if (this.token && this.token != null && request.headers.get('skip')==null ) {
+    if (this.token && this.token != null && request.headers.get('skip') == null) {
       request = request.clone({
         setHeaders: { Authorization: `Bearer ${this.token}` },
       });
@@ -73,7 +73,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
             request.body.data = this.general.encrypt(body.data);
           }
         } else {
-          
+
           return request;
         }
       }
