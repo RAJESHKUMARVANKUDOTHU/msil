@@ -283,7 +283,7 @@ export class VehiclewisereportComponent implements OnInit {
         timeZoneOffset: this.general.getZone()
       }
       console.log("data to send==", data)
-      fileName = "Generic Repot"
+      fileName = "Generic Report"
       this.api.downloadGenericReport(data, fileName).then((res: any) => {
         console.log("res 1==", res)
         if (res.status) {
@@ -376,14 +376,13 @@ export class VehiclewisereportComponent implements OnInit {
       })
     }
     if (this.vehicleReportData.type == '7') {
-      let fileName = 'Job card wise Report.xlsx'
-
-      let element = document.getElementById('htmlData');
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-
+      let fileName = 'Vehicle and Job card wise report.xlsx';
+      let element = document.getElementById('htmlData',);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {dateNF:'mmm d yyyy hh:mm AM/PM;@',cellDates:true});
       /* generate workbook and add the worksheet */
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      // console.log("htmlData===",wb,"-------------",ws);
 
       /* save to file */
       XLSX.writeFile(wb, fileName);

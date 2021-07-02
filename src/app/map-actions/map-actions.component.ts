@@ -53,6 +53,7 @@ export class MapActionsComponent implements OnInit {
   ngOnInit(): void {
     this.loginData = this.login.getLoginDetails();
     this.ZoneEnableDetails=this.loginData.enableZone;
+
     this.resetMap();
     this.createForm();
     this.refreshGateway();

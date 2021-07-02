@@ -224,7 +224,7 @@ export class AdminSettingsComponent implements OnInit {
         this.deletionTimeForm.patchValue({
           deletionTime: res.success.deletionTime
         });
-        
+
         this.inOutmergingTimeForm.patchValue({
           inOutMergeTime: res.success.inOutMergeTime
         });
@@ -445,11 +445,11 @@ export class AdminSettingsComponent implements OnInit {
 
   onSubmitMeshForm(data) {
     if (this.meshForm.valid) {
-      data.userId = this.loginData.userData
-      console.log("onSubmit mesh data==", data)
+      data.userId = this.loginData.userData;
+      console.log("onSubmit mesh data==", data);
       this.api.updateMeshId(data).then((res: any) => {
         if (res.status) {
-          console.log("res==", res)
+          console.log("res==", res);
           this.general.openSnackBar(res.success, '');
           this.refreshSettings(data.userId);
         }

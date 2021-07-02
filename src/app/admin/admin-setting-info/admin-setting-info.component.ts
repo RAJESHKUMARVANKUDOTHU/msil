@@ -34,7 +34,7 @@ export class AdminSettingInfoComponent implements OnInit {
   ) {
     this.type = data.type;
     console.log("type==",this.type);
-    
+
   }
 
   ngOnInit(): void {
@@ -77,12 +77,12 @@ export class AdminSettingInfoComponent implements OnInit {
     var data = {
       userId: this.loginData.userData
     }
-    console.log("data==", data)
+    console.log("data==", data);
     this.api.getMeshData(data).then((res: any) => {
-      this.meshData = []
+      this.meshData = [];
       if (res.status) {
-        console.log("res==", res)
-        this.meshData = res.success
+        console.log("res==", res);
+        this.meshData = res.success;
         const control = <FormArray>this.meshForm.controls.items;
         control.controls = [];
         for (var i = 0; i < this.meshData.length; i++) {
@@ -534,7 +534,7 @@ export class AdminSettingInfoComponent implements OnInit {
       }, {})
     }
   }
-  
+
   compareFn(o1, o2): boolean {
     return o1.coinId == o2.coinId;
   }

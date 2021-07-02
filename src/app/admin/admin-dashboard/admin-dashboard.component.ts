@@ -17,10 +17,10 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ["i", 'userName','apiKey', 'updatedAt','settings'];
-  dataSource: any = []
-  addUserForm: FormGroup
-  loginData: any
-  getUserList: any = []
+  dataSource: any = [];
+  addUserForm: FormGroup;
+  loginData: any;
+  getUserList: any = [];
   passwordType: string = 'password';
   passwordIcon: string = 'visibility_off';
   constructor(
@@ -51,48 +51,48 @@ export class AdminDashboardComponent implements OnInit {
     if (this.addUserForm.valid) {
       try {
         this.api.createUsers(data).then((res: any) => {
-          console.log("created user res===", res)
+          console.log("created user res===", res);
           if (res.status) {
-            this.addUserForm.reset()
-            this.general.openSnackBar(res.success,'')
-            this.getAdmins()
+            this.addUserForm.reset();
+            this.general.openSnackBar(res.success,'');
+            this.getAdmins();
           }
-          else { 
-            this.general.openSnackBar(!res.success?res.message:res.success,'')
+          else {
+            this.general.openSnackBar(!res.success?res.message:res.success,'');
           }
         })
           .catch((err) => {
-            console.log("err======", err)
+            console.log("err======", err);
           })
       }
       catch (err) {
-        console.log("err======", err)
+        console.log("err======", err);
       }
     }
   }
 
   getAdmins() {
-    this.getUserList = []
+    this.getUserList = [];
     this.api.viewAdmins().then((res: any) => {
 
-      console.log("get user res===", res)
+      console.log("get user res===", res);;
       if (res.status) {
-        this.getUserList = res.success
+        this.getUserList = res.success;
         this.dataSource = new MatTableDataSource(this.getUserList);
 
         setTimeout(() => {
           this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator
+          this.dataSource.paginator = this.paginator;
         })
       }
       else { }
     }).catch((err) => {
-      console.log("err======", err)
+      console.log("err======", err);
     })
   }
   setting(data){
-    console.log("data",data)
-   
+    console.log("data",data);
+
     this.general.updateItem('sensegiz','userData',data)
     this.router.navigate(['/admin-settings'])
   }
@@ -106,7 +106,7 @@ export class AdminDashboardComponent implements OnInit {
   //         }
   //     }).catch((err)=>{
   //       console.log("err======",err)
-  //     }) 
+  //     })
   //   }
   // }
 

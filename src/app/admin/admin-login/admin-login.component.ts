@@ -42,7 +42,7 @@ export class AdminLoginComponent implements OnInit {
     if (this.adminLoginform.valid) {
       try {
         this.api.adminLogin(data).then((res: any) => {
-          console.log("admin res===", res)
+          console.log("admin res===", res);
           if (res.status) {
             if (res.token) {
               localStorage.setItem('token',res.token)
@@ -53,7 +53,7 @@ export class AdminLoginComponent implements OnInit {
               if (this.login.login(res.success) ){
                 this.router.navigate(['/admin-dashboard'])
               }
-              else { 
+              else {
                 this.loginInvalid = true;
               }
             }
