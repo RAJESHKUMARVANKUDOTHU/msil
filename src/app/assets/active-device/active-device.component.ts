@@ -18,7 +18,7 @@ export class ActiveDeviceComponent implements OnInit {
   @ViewChild('paginator2') paginator2: MatPaginator;
   @ViewChild('sort3') sort3: MatSort;
   @ViewChild('paginator3') paginator3: MatPaginator;
-
+  loginData:any;
   activeDeviceData: any = [];
   activeGatewayData: any = [];
   activeCoinData: any = [];
@@ -27,8 +27,8 @@ export class ActiveDeviceComponent implements OnInit {
   dataSource2: any = [];
   fileName: any = '';
   displayedColumns1 = ['i', 'deviceId', 'deviceName', 'updatedAt'];
-  displayedColumns2 = ['i', 'gatewayId', 'gatewayName', 'updatedAt'];
-  displayedColumns3 = ['i', 'coinId', 'coinName', 'gatewayId', 'updatedAt'];
+  displayedColumns2 = ['i', 'gatewayId', 'gatewayName','gatewayType', 'updatedAt'];
+  displayedColumns3 = ['i', 'coinId', 'coinName', 'zoneId', 'gatewayId', 'updatedAt'];
   interval: any;
   limit: any = 10;
   offset: any = 0;
@@ -46,6 +46,7 @@ export class ActiveDeviceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.refreshActiveDeviceList();
     this.general.deviceChanges.subscribe((res) => {
       if (res) {

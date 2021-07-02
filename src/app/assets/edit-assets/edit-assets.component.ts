@@ -43,6 +43,7 @@ export class EditAssetsComponent implements OnInit {
     this.editGateway = this.fb.group({
       gatewayName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       gatewayId: [{ value: '', disabled: true }],
+      gatewayType:[{ value: '', disabled: true }]
     })
     this.editCoin = this.fb.group({
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+(?: [a-zA-Z0-9_]+)*$')]],
@@ -67,7 +68,8 @@ export class EditAssetsComponent implements OnInit {
     else if (this.type == 'gateway') {
       this.editGateway.patchValue({
         gatewayName: this.patchData.gatewayName,
-        gatewayId: this.patchData.gatewayId
+        gatewayId: this.patchData.gatewayId,
+        gatewayType:this.patchData.gatewayType
       });
     }
     else {

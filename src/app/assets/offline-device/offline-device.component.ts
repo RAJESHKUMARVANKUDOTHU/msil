@@ -23,12 +23,13 @@ export class OfflineDeviceComponent implements OnInit {
   dataSource1: any = [];
   dataSource2: any = [];
   displayedColumns1 = ['i', 'deviceId', 'deviceName', 'updatedAt'];
-  displayedColumns2 = ['i', 'gatewayName', 'gatewayId', 'updatedAt'];
-  displayedColumns3 = ['i', 'coinId', 'coinName', 'gatewayId', 'updatedAt'];
+  displayedColumns2 = ['i', 'gatewayName', 'gatewayId','gatewayType', 'updatedAt'];
+  displayedColumns3 = ['i', 'coinId', 'coinName','zoneId', 'gatewayId', 'updatedAt'];
   interval: any;
   limit: any = 10;
   offset: any = 0;
   type: any = 'all';
+  loginData:any;
   currentPageLength1: any = 10;
   currentPageSize1: any = 10;
   currentPageLength2: any = 10;
@@ -42,6 +43,7 @@ export class OfflineDeviceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.refreshOfflineDeviceList();
     this.general.deviceChanges.subscribe((res) => {
       if (res) {

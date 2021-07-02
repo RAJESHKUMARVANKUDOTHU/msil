@@ -14,7 +14,7 @@
         <table mat-table [dataSource]="dataSource" matSort>
             <div>
                 <ng-container matColumnDef="i">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sl No. </th>
+                    <th mat-header-cell *matHeaderCellDef class="head text-center"> Sl No. </th>
                     <td mat-cell *matCellDef="let i=index"> {{i+1}} </td>
                 </ng-container>
                 <ng-container matColumnDef="deviceId">
@@ -26,30 +26,20 @@
                     <td mat-cell *matCellDef="let find" (click)="openDailog(find)" class="cursor"> {{find.deviceName}} </td>
                 </ng-container>
                 <ng-container matColumnDef="geofenceStatus">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Geofence Status </th>
+                    <th mat-header-cell *matHeaderCellDef class="head text-center">Geofence Status </th>
                     <td mat-cell *matCellDef="let find">
                         <span *ngIf="find.geoFenceSetting?.length ; else data">
-                        <!-- <ng-container *ngFor="let a of find.geoFenceSetting;let i=index;let last= last;">
-                            <span *ngIf="!last && find.geoFencestatus">
-                                <b>{{a.coinName}},</b>
-                            </span>
-                        <span *ngIf="last && find.geoFencestatus">
-                                <b>{{a.coinName}}.</b>
-                            </span>
-                </ng-container> --> <br><br>
+                    <br><br>
                 <button mat-flat-button (click)="openInfo(find)" color="primary">Selected Geofence</button>
-
                 <br>
                 </span>
-                <ng-template #data>
-                    <div class="pt-4">
-                        <span>No Geofence</span>
-                    </div>
-                </ng-template>
-                <!-- <button mat-flat-button *ngIf="find.geoFenceSetting?.length" (click)="openInfo(find)" color="primary">Selected Geofence</button> -->
-
-                <br><br>
-                </td>
+                        <ng-template #data>
+                            <div class="pt-4">
+                                <span>No Geofence</span>
+                            </div>
+                        </ng-template>
+                        <br><br>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="updatedOnLoc">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated Time</th>
@@ -62,20 +52,16 @@
                         <span *ngIf="find.coinId != 0 && find.coinId != null;else data">
                         Current Location <span class="icons" id="greencolordot"><mat-icon>fiber_manual_record</mat-icon></span>
                         <br>{{find.coinName? find.coinName:'-'}} <br>
-                        <!--  <span class="text-success">online</span> -->
                         </span>
                         <ng-template #data>
                             <span *ngIf="find.prevCoinId != 0 && find.prevCoinId != null;else noData">
                             Previous Location <span class="icons" id="redcolordot"><mat-icon>fiber_manual_record</mat-icon></span>
                             <br> {{find.prevCoinName? find.prevCoinName:'-'}} <br>
-                            <!--  <span class="text-danger">offline</span> -->
                             </span>
                         </ng-template>
                         <ng-template #noData>
                             <span>-</span>
-                            <!-- <br> <span class="text-danger">offline</span> -->
                         </ng-template>
-
                     </td>
                 </ng-container>
 

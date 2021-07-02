@@ -21,23 +21,16 @@ export class VehiclewisereportComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   vehicleReportData: any;
   vehicleName: any = [];
-  deviceId: any = [];
-  servicedVehicleData: any = [];
-  vehicleZoneData: any = [];
-  jcSummaryData: any = [];
   dataSource: any = [];
   displayedColumns1 = ['i', 'deviceId', 'deviceName', 'coinName', 'inTime', 'outTime', 'totTime'];
-  displayedColumns2 = ['i', 'deviceName', 'coinName', 'inTime', 'outTime', 'totTime'];
-  displayedColumns3 = ['i', 'deviceId', 'coinName', 'inTime', 'outTime', 'totTime'];
-  displayedColumns4 = ['i', 'deviceName', 'totTime'];
-  displayedColumns6 = ['i', 'deviceId', 'zoneName', 'inTime', 'outTime', 'totalTime'];
-  displayedColumns7 = [];
+  displayedColumns2 = ['i', 'deviceId', 'coinName', 'inTime', 'outTime', 'totTime'];
+  displayedColumns3 = ['i', 'deviceId', 'zoneName', 'inTime', 'outTime', 'totalTime'];
   searhKey: string = '';
-  limit: any = 10
-  offset: any = 0
-  currentPageLength: any = 10
-  currentPageSize: any = 10
-  vehicleTotLen: any = 0
+  limit: any = 10;
+  offset: any = 0;
+  currentPageLength: any = 10;
+  currentPageSize: any = 10;
+ 
   constructor(
     public dialogRef: MatDialogRef<VehiclewisereportComponent>,
     @Inject(MAT_DIALOG_DATA) data,
@@ -93,39 +86,7 @@ export class VehiclewisereportComponent implements OnInit {
           reject(err);
         })
       }
-
-
       if (this.vehicleReportData.type == '2') {
-        data = {
-          deviceId: this.vehicleReportData.deviceId,
-          fromDate: from,
-          toDate: to,
-          timeZoneOffset: this.general.getZone(),
-          limit: limit,
-          offset: offset
-        }
-        console.log("data to send==", data);
-        this.api.deviceIdReport(data).then((res: any) => {
-          this.vehicleName = [];
-          console.log("res 2==", res);
-          if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength);
-            this.vehicleName = res.success;
-            for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].inTime, res.success[i].outTime);
-            }
-            this.dataSource = new MatTableDataSource(this.vehicleName);
-            setTimeout(() => {
-              this.dataSource.sort = this.sort;
-            })
-          }
-          resolve(res);
-        }).catch(err => {
-          console.log("err===", err);
-          reject(err);
-        })
-      }
-      if (this.vehicleReportData.type == '3') {
         data = {
           deviceName: this.vehicleReportData.deviceName,
           fromDate: from,
@@ -161,37 +122,7 @@ export class VehiclewisereportComponent implements OnInit {
         })
       }
 
-      if (this.vehicleReportData.type == '4') {
-        data = {
-          fromDate: from,
-          toDate: to,
-          timeZoneOffset: this.general.getZone(),
-          limit: limit,
-          offset: offset
-        }
-        console.log("data to send==", data);
-        this.api.getvehicleServicedReport(data).then((res: any) => {
-          this.vehicleName = []
-          console.log("res 4==", res);
-          if (res.status) {
-            this.currentPageLength = parseInt(res.totalLength);
-            this.vehicleName = res.success;
-            this.vehicleTotLen = parseInt(res.totalLength);
-            for (let i = 0; i < res.success.length; i++) {
-              res.success[i].totTime = this.general.getTotTime(res.success[i].gateInTime, res.success[i].deRegTime);
-            }
-            this.dataSource = new MatTableDataSource(this.vehicleName);
-            setTimeout(() => {
-              this.dataSource.sort = this.sort;
-            })
-          }
-          resolve(res);
-        }).catch(err => {
-          console.log("err===", err);
-          reject(err);
-        })
-      }
-      if (this.vehicleReportData.type == '6') {
+      if (this.vehicleReportData.type == '3') {
         data = {
           deviceName: this.vehicleReportData.deviceName,
           fromDate: from,
@@ -222,42 +153,6 @@ export class VehiclewisereportComponent implements OnInit {
           reject(err);
         })
       }
-      else if (this.vehicleReportData.type == '7') {
-        data = {
-          fromDate: from,
-          toDate: to,
-          timeZoneOffset: this.general.getZone(),
-        }
-        console.log("data to send==", data);
-        this.api.getJcSummaryData(data).then((res: any) => {
-          console.log("res 7 from api==", res);
-          this.jcSummaryData = {};
-          if (res.status) {
-            this.jcSummaryData.data = res.success;
-            this.jcSummaryData.head = ['Sl no.', 'Date', 'Vehicle no.', 'Find Id.'];
-
-            if (this.jcSummaryData.data[0]?.hasOwnProperty('zoneJC')) {
-              res.success[0].zoneJC.forEach(obj => {
-                let suffix = {
-                  tripCount: 'trip count',
-                  inTime: 'first in time',
-                  outTime: 'last out time',
-                  std: 'Standard time',
-                  deviation: 'Deviation'
-                }
-                let a = [obj.zoneName + ' ' + suffix.tripCount, obj.zoneName + ' ' + suffix.inTime, obj.zoneName + ' ' + suffix.outTime, suffix.std, suffix.deviation]
-                this.jcSummaryData.head = this.jcSummaryData.head.concat(a);
-              });
-            }
-            console.log("res 7==", this.jcSummaryData);
-          }
-          resolve(res);
-
-        }).catch(err => {
-          console.log("err===", err);
-          reject(err);
-        })
-      }
     })
   }
 
@@ -284,26 +179,7 @@ export class VehiclewisereportComponent implements OnInit {
       })
     }
 
-
     if (this.vehicleReportData.type == '2') {
-      data = {
-        deviceId: this.vehicleReportData.deviceId,
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone()
-      }
-      fileName = "Report of device Id - " + this.vehicleReportData.deviceId;
-      console.log("download data to send==", data);
-      this.api.downloadDeviceIdReport(data, fileName).then((res: any) => {
-        console.log("res 2==", res);
-        if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '');
-        }
-      }).catch(err => {
-        console.log("err===", err);
-      })
-    }
-    if (this.vehicleReportData.type == '3') {
       data = {
         deviceName: this.vehicleReportData.deviceName,
         fromDate: from,
@@ -321,24 +197,7 @@ export class VehiclewisereportComponent implements OnInit {
         console.log("err===", err);
       })
     }
-    if (this.vehicleReportData.type == '4') {
-      data = {
-        fromDate: from,
-        toDate: to,
-        timeZoneOffset: this.general.getZone(),
-      }
-      console.log("download data to send==", data);
-      fileName = "Report - Number of vehicles Serviced";
-      this.api.downloadVehicleReport(data, fileName).then((res: any) => {
-        console.log("res 1==", res);
-        if (res.status) {
-          this.general.openSnackBar("Downloading!!!", '');
-        }
-      }).catch(err => {
-        console.log("err===", err);
-      })
-    }
-    if (this.vehicleReportData.type == '6') {
+    if (this.vehicleReportData.type == '3') {
       data = {
         deviceName: this.vehicleReportData.deviceName,
         fromDate: from,
@@ -355,19 +214,6 @@ export class VehiclewisereportComponent implements OnInit {
       }).catch(err => {
         console.log("err===", err)
       })
-    }
-    if (this.vehicleReportData.type == '7') {
-      let fileName = 'Vehicle and Job card wise report.xlsx';
-      let element = document.getElementById('htmlData');
-      console.log("htmlData===", element);
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, { dateNF: 'mmm d yyyy hh:mm AM/PM;@', cellDates: true });
-
-      /* generate workbook and add the worksheet */
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-      /* save to file */
-      XLSX.writeFile(wb, fileName);
     }
   }
 
@@ -391,24 +237,5 @@ export class VehiclewisereportComponent implements OnInit {
       // this.dataSource.paginator = this.paginator;
       this.dataSource.filter = a.trim().toLowerCase();
     })
-  }
-  searchVehicle(data) {
-    console.log('search data===', data);
-    if (data) {
-      this.jcSummaryData.data = this.jcSummaryData.data.filter((obj) => {
-        return (
-          (obj.deviceId
-            .toString()
-            .toLowerCase()
-            .indexOf(data.toString().toLowerCase()) > -1) || (obj.deviceName
-              .toString()
-              .toLowerCase()
-              .indexOf(data.toString().toLowerCase()) > -1)
-        );
-      });
-    }
-    else {
-      this.getData(this.limit, this.offset, '7');
-    }
   }
 }

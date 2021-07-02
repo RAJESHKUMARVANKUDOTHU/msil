@@ -51,6 +51,16 @@
                     Gateway id should be of 12 Characters.
                 </mat-error>
             </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Type</mat-label>
+                <mat-select formControlName="gatewayType" required>
+                    <mat-option value="wifi">Wifi Gateway</mat-option>
+                    <mat-option value="ethernet">Ethernet Gateway</mat-option>
+                </mat-select>
+                <mat-error>
+                    Field required.
+                </mat-error>
+            </mat-form-field> <br>
 
         </form>
         <button mat-raised-button (click)="gatewaySubmit(addGateway.value)" [disabled]="!addGateway.valid" color="primary">Submit</button>

@@ -46,6 +46,10 @@
                 <mat-label> Gateway Id</mat-label>
                 <input type="text" matInput formControlName="gatewayId" autocomplete="off" disabled>
             </mat-form-field> <br>
+            <mat-form-field class="w-75" appearance="fill">
+                <mat-label> Gateway Type</mat-label>
+                <input type="text" matInput formControlName="gatewayType" autocomplete="off" disabled>
+            </mat-form-field> <br>
         </form>
         <button mat-raised-button (click)="updateGateway(editGateway.value)" [disabled]="!editGateway.valid" color="primary">Submit</button>
     </div>

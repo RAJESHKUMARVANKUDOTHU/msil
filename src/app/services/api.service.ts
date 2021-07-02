@@ -1649,88 +1649,88 @@ export class ApiService {
     });
   }
 
-  createServiceType(data) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+  // createServiceType(data) {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //   };
 
-    let url = this.host + '/updateZoneIdServices';
-    let body = {
-      data: data,
-    };
-    return new Promise((resolve, reject) => {
-      this.http.post(url, body, httpOptions).subscribe(
-        (res: any) => {
-          resolve(res.data);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
+  //   let url = this.host + '/updateZoneIdServices';
+  //   let body = {
+  //     data: data,
+  //   };
+  //   return new Promise((resolve, reject) => {
+  //     this.http.post(url, body, httpOptions).subscribe(
+  //       (res: any) => {
+  //         resolve(res.data);
+  //       },
+  //       (err) => {
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
 
-  getServiceType() {
+  // getServiceType() {
 
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //   };
 
-    let url = this.host + '/getServiceDetails';
-    return new Promise((resolve, reject) => {
-      this.http.get(url).subscribe(
-        (res: any) => {
-          resolve(res.data);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
+  //   let url = this.host + '/getServiceDetails';
+  //   return new Promise((resolve, reject) => {
+  //     this.http.get(url).subscribe(
+  //       (res: any) => {
+  //         resolve(res.data);
+  //       },
+  //       (err) => {
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
 
-  updateServiceId(data) {
+  // updateServiceId(data) {
 
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //   };
 
-    let url = this.host + '/updateServiceId';
-    let body = {
-      data: data,
-    };
-    return new Promise((resolve, reject) => {
-      this.http.post(url, body, httpOptions).subscribe(
-        (res: any) => {
-          resolve(res.data);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
-  deleteServices(data) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+  //   let url = this.host + '/updateServiceId';
+  //   let body = {
+  //     data: data,
+  //   };
+  //   return new Promise((resolve, reject) => {
+  //     this.http.post(url, body, httpOptions).subscribe(
+  //       (res: any) => {
+  //         resolve(res.data);
+  //       },
+  //       (err) => {
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
+  // deleteServices(data) {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //   };
 
-    let url = this.host + '/deleteServiceId';
-    let body = {
-      data: data,
-    };
-    return new Promise((resolve, reject) => {
-      this.http.post(url, body, httpOptions).subscribe(
-        (res: any) => {
-          console.log(res.data)
-          resolve(res.data);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
+  //   let url = this.host + '/deleteServiceId';
+  //   let body = {
+  //     data: data,
+  //   };
+  //   return new Promise((resolve, reject) => {
+  //     this.http.post(url, body, httpOptions).subscribe(
+  //       (res: any) => {
+  //         console.log(res.data)
+  //         resolve(res.data);
+  //       },
+  //       (err) => {
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
 
   deleteCoinGroupDetails(data) {
     const httpOptions = {
@@ -2196,26 +2196,26 @@ export class ApiService {
       );
     });
   }
-  getVehicleServiceCount(data) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+  // getVehicleServiceCount(data) {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //   };
 
-    let url = this.host + '/getVehicleServiceCount';
-    let body = {
-      data: data,
-    };
-    return new Promise((resolve, reject) => {
-      this.http.post(url, body, httpOptions).subscribe(
-        (res: any) => {
-          resolve(res.data);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
+  //   let url = this.host + '/getVehicleServiceCount';
+  //   let body = {
+  //     data: data,
+  //   };
+  //   return new Promise((resolve, reject) => {
+  //     this.http.post(url, body, httpOptions).subscribe(
+  //       (res: any) => {
+  //         resolve(res.data);
+  //       },
+  //       (err) => {
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
 
   getdeviceLatLngPerDay(data) {
     const httpOptions = {

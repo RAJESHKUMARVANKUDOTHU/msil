@@ -25,6 +25,7 @@ export class ReportComponent implements OnInit {
   dayError: boolean;
   dayError1: boolean;
   dayError2: boolean;
+  loginData:any;
   constructor(
     private fb: FormBuilder,
     private login: LoginAuthService,
@@ -34,6 +35,7 @@ export class ReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loginData = this.login.getLoginDetails();
     this.vehicleReport = this.fb.group({
       type: ['', Validators.required],
       days: [''],
@@ -47,35 +49,35 @@ export class ReportComponent implements OnInit {
       });
 
     this.locationReport = this.fb.group({
-      type: ['', Validators.required],
+      // type: ['', Validators.required],
       days: [''],
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
-      zoneId: [''],
-      coinId: [''],
-    },
-      {
-        validators: this.formValidate1()
-      });
-
-    this.zoneReport = this.fb.group({
-      type: ['', Validators.required],
-      days: [''],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
-      zoneId: [''],
-      coinId: [''],
-      dayType: [''],
-      weekDay: ['']
-    },
-      {
-        validators: this.formValidate2()
-      });
-
+      coinId: ['', Validators.required],
+    });
+    this.ifEnbaleZone();
     this.patchLocationDate();
     this.patchVehicleDate();
-    this.patchZoneDate();
-    this.getZoneDetails();
+  }
+
+  ifEnbaleZone(){
+    if(this.loginData?.enableZone){
+      this.zoneReport = this.fb.group({
+        type: ['', Validators.required],
+        days: [''],
+        fromDate: ['', Validators.required],
+        toDate: ['', Validators.required],
+        zoneId: [''],
+        coinId: [''],
+        dayType: [''],
+        weekDay: ['']
+      },
+        {
+          validators: this.formValidate2()
+        });
+      this.patchZoneDate();
+      this.getZoneDetails();
+    }
   }
 
   patchVehicleDate() {
@@ -166,7 +168,12 @@ export class ReportComponent implements OnInit {
     return (formGroup: FormGroup) => {
       const type = formGroup.get('type');
       if (formGroup.get('type').value != '') {
-        if (type.value == "3" || type.value == "6") {
+        if (type.value == "1") {
+          formGroup.get('deviceId').setErrors(null)
+          formGroup.get('deviceName').setErrors(null)
+          return
+        }
+        if (type.value == "2" || type.value == "3") {
           let value = formGroup.get('deviceName').value?.toString().replace(/\s\s+/g, '');
           if (value != '' && value != undefined) {
             formGroup.get('deviceId').setErrors(null)
@@ -175,50 +182,6 @@ export class ReportComponent implements OnInit {
           }
           else {
             formGroup.get('deviceName').setErrors(
-              {
-                required: true
-              })
-            return
-          }
-        }
-        if (type.value == "1" || type.value == "4" || type.value == "7") {
-          formGroup.get('deviceId').setErrors(null)
-          formGroup.get('deviceName').setErrors(null)
-          return
-        }
-      }
-    }
-  }
-
-  formValidate1() {
-    return (formGroup: FormGroup) => {
-      const type = formGroup.get('type');
-      if (formGroup.get('type').value != '') {
-        if (type.value == "1") {
-          let value = formGroup.get('coinId').value?.toString().replace(/\s\s+/g, '');
-          if (value != '' && value != undefined) {
-            formGroup.get('coinId').setErrors(null)
-            formGroup.get('zoneId').setErrors(null)
-            return
-          }
-          else {
-            formGroup.get('coinId').setErrors(
-              {
-                required: true
-              })
-            return
-          }
-        }
-        if (type.value == "2") {
-          let value = formGroup.get('zoneId').value?.toString().replace(/\s\s+/g, '');
-          console.log("valuee ===", value);
-          if (value != '' && value != undefined) {
-            formGroup.get('coinId').setErrors(null)
-            formGroup.get('zoneId').setErrors(null)
-            return
-          }
-          else {
-            formGroup.get('zoneId').setErrors(
               {
                 required: true
               })

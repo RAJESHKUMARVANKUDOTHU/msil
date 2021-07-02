@@ -28,7 +28,6 @@ export class VehicleStatusComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(async (params) => {
       console.log("params===", params['deviceId'], params['deviceName']);
       await this.getZoneDetails(params['userId']);

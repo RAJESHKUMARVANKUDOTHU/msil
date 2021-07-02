@@ -24,7 +24,7 @@ export class ManageGatewayComponent implements OnInit {
   offset:any=0;
   currentPageLength:any=10;
   currentPageSize:any=10;
-  displayedColumns = ['i', 'gatewayId', 'gatewayName', 'macId', 'updatedOn', 'edit', 'delete'];
+  displayedColumns = ['i', 'gatewayId', 'gatewayName','gatewayType', 'macId', 'updatedOn', 'edit', 'delete'];
   constructor(
     public dialog: MatDialog,
     private login: LoginAuthService,
@@ -75,6 +75,7 @@ export class ManageGatewayComponent implements OnInit {
               userId: res.success[i].userId,
               gatewayName: res.success[i].gatewayName,
               gatewayId: res.success[i].gatewayId,
+              gatewayType:res.success[i].gatewayType,
               macId: res.success[i].macId != null? res.success[i].macId : '-',
               updatedOn: res.success[i].pingAlertTime ,
               edit: 'edit',

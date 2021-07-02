@@ -42,6 +42,7 @@ export class AddAssetsComponent implements OnInit {
     this.addGateway = this.fb.group({
       gatewayName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
       gatewayId: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('^[a-zA-z0-9]{12}$')]],
+      gatewayType: ['',Validators.required]
     })
     this.addCoin = this.fb.group({
       coinName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]+(?: [a-zA-Z0-9\\s]+)*$')]],
